@@ -1,0 +1,42 @@
+{
+  "internal_negative": {
+    "count": 30,
+    "path": "internal_negative/",
+    "files": [
+      "mind_loop_trace_001.json",
+      "mind_loop_trace_002.json",
+      "...",
+      "mind_loop_trace_030.json"
+    ]
+  },
+  "internal_positive": {
+    "count": 30,
+    "path": "internal_positive/",
+    "files": [
+      "mind_loop_trace_031.json",
+      "mind_loop_trace_032.json",
+      "...",
+      "mind_loop_trace_060.json"
+    ]
+  },
+  "external_application": {
+    "count": 30,
+    "path": "external_application/",
+    "files": [
+      "mind_loop_trace_061.json",
+      "mind_loop_trace_062.json",
+      "...",
+      "mind_loop_trace_090.json"
+    ]
+  },
+  "ideology_loops": {
+    "count": 30,
+    "path": "ideology_loops/",
+    "files": [
+      "mind_loop_trace_091.json",
+      "mind_loop_trace_092.json",
+      "...",
+      "mind_loop_trace_120.json"
+    ]
+  }
+}
