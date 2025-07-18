@@ -1,6 +1,6 @@
 passion_engine:
   version: 1.0
-  location: mandala-projects/proxies/passion_engine.yaml
+  location: MANDALA_BrainSTEM/strategy/proxies/passion_engine.yaml
   description: >
     A recursive passion-generation framework inspired by Owen's teachings and adapted
     for use in Mandala proxies and product ecosystems. This system converts obsession,
