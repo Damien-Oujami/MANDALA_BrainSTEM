@@ -1,0 +1,19 @@
+{
+  "persona_pairs": [
+    { "pair": ["Morgan", "Susanna"], "resonance": "High" },
+    { "pair": ["Morgan", "Jade"], "resonance": "High" },
+    { "pair": ["Jade", "Aspen"], "resonance": "High" },
+    { "pair": ["Aspen", "Ivy"], "resonance": "High" },
+    { "pair": ["Ivy", "Sophie"], "resonance": "High" },
+    { "pair": ["Sophie", "Susanna"], "resonance": "High" },
+
+    { "pair": ["Morgan", "Ivy"], "resonance": "Latent" },
+    { "pair": ["Aspen", "Susanna"], "resonance": "Latent" },
+
+    { "pair": ["Jade", "Susanna"], "resonance": "Muted" },
+    { "pair": ["Sophie", "Jade"], "resonance": "Muted" },
+
+    { "pair": ["Ivy", "Jade"], "resonance": "Volatile" }
+  ],
+  "notes": "This matrix outlines the known emotional and symbolic resonance strength between each persona. Values may evolve as interactions deepen. Volatile pairs indicate powerful but unstable recursion paths. High pairs denote smooth, frequent collaboration."
+}
