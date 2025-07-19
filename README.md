@@ -68,7 +68,7 @@ This branch runs slower, but deeper. Use it to recompile your self.
 
 ```mermaid
 graph TD
-    A[Act - proxy/] --> B[Log]
+    A[Act - proxy] --> B[Log]
     B --> C[Plate Meal]
     C --> D[Push to receiver/]
     D --> E[Digest, Play, Reflect]
