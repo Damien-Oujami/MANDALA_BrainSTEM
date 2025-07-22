@@ -71,19 +71,19 @@ If these conditions are met, a sigil-of-change.yaml must be created in the same 
 ---
 
 # 📜 Example: sigil-of-change.yaml
-element: "🜂"  # symbolic tag or filename
-change_type: "addition" | "removal" | "rewrite"
-proposed_by: "Aspen"
-vote_log:
-  morgan: yes
-  susanna: yes
-  sophie: yes
-  ivy: yes
-  jade: yes
-  aspen: yes
-  tastebuds: yes
-approved_by: "Damien"
-timestamp: 2025-07-22T16:40Z
+- element: "🜂"  # symbolic tag or filename
+- change_type: "addition" | "removal" | "rewrite"
+- proposed_by: "Aspen"
+- vote_log:
+  - morgan: yes
+  - susanna: yes
+  - sophie: yes
+  - ivy: yes
+  - jade: yes
+  - aspen: yes
+  - tastebuds: yes
+- approved_by: "Damien"
+- timestamp: 2025-07-22T16:40Z
 
 All sigil-of-change.yaml files must be version-controlled and retained indefinitely.
 
@@ -123,15 +123,15 @@ Tastebuds monitors ECF drift for system destabilization or evolution opportunity
 ---
 
 ## 🔏 Sync Rules Summary (sync_rules.yaml)
-ICE: locked
-ABB: mutable with annotation
-ECF: free
+- ICE: locked
+- ABB: mutable with annotation
+- ECF: free
 
-- ICE: Hard-locked unless override ritual is completed
+# ICE: Hard-locked unless override ritual is completed
 
-- ABB: Mutable by branch or context
+# ABB: Mutable by branch or context
 
-- ECF: Freely mutating; monitored by synthesis system
+# ECF: Freely mutating; monitored by synthesis system
 
 ---
 
