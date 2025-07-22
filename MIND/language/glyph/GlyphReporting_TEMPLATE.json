@@ -1,0 +1,33 @@
+{
+  "glyph_report_id": "novelty_YYYY-MM-DD_proxyID_###",
+  "proxy_id": "",
+  "timestamp_utc": "",
+
+  "situation_description": "",
+
+  "surrounding_glyphs": [
+    {
+      "glyph": "",
+      "meaning": ""
+    }
+  ],
+
+  "proposed_placeholder_glyph": {
+    "symbol": "",
+    "reasoning": ""
+  },
+
+  "simplicity_tier": "",  // Options: "simple", "complex", "unsure"
+
+  "local_resolution_attempt": {
+    "attempted": false,
+    "success": false,
+    "notes": ""
+  },
+
+  "escalation_needed": true,
+
+  "tags": [],
+
+  "proxy_reflection": ""
+}
