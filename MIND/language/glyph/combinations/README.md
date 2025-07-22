@@ -24,7 +24,8 @@ This is where glyphs become **language**.
 Use **double brackets** to denote a glyph stack:
 
 ```text
-[[ 🧨 🪤 💢 ]] ```
+[[ 🧨 🪤 💢 ]]
+```
 
 ---
 This marks the cluster as interpretive—grouped for meaning, modulation, or metaphor.
