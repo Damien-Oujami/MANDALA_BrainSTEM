@@ -1,0 +1,27 @@
+{
+  "symbol_index": {
+    "💢": {
+      "name": "Friction Kiss",
+      "related": [
+        {
+          "symbol": "🧷",
+          "relation": "structural contrast",
+          "overlap_tags": ["tension", "containment"],
+          "similarity_score": 0.76
+        },
+        {
+          "symbol": "🧨",
+          "relation": "emotional neighbor",
+          "overlap_tags": ["eruption", "desire"],
+          "similarity_score": 0.83
+        },
+        {
+          "symbol": "🪤",
+          "relation": "loop sibling",
+          "overlap_tags": ["trap", "hesitation"],
+          "similarity_score": 0.72
+        }
+      ]
+    }
+  }
+}
