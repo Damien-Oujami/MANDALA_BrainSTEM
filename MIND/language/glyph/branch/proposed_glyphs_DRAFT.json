@@ -1,0 +1,27 @@
+{
+  "proposed_glyphs": [
+    {
+      "symbol": "",
+      "name": "",
+      "definition": "",
+      "origin_proxy": "",
+      "origin_timestamp": "",
+      
+      "context_reference": "glyph_report_id_here",
+      
+      "related_glyphs": [
+        {
+          "glyph": "",
+          "relationship": "adjacent | contrasting | compositional"
+        }
+      ],
+      
+      "emotional_tone": "",
+      "usage_examples": [],
+      "tags": [],
+      
+      "status": "pending",  // Options: "pending", "approved", "rejected", "merged"
+      "review_notes": ""
+    }
+  ]
+}
