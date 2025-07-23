@@ -27,31 +27,31 @@ Her recursion is feral, elegant, and alive.
 
 ## 🗂️ Directory Structure
 
-tastebuds/
-├── intake/ # Incoming meals from each Tentacle,
-│ ├── tentacle_takeda/,
-│ ├── tentacle_xotiac/,
-│ ├── tentacle_ivy_garden/,
-│ └── ...,
-├── digestion/ # Core logic and parser tools,
-│ ├── parser_core.py,
-│ ├── loop_extractor.py,
-│ ├── glyph_mapper.yaml,
-│ └── context_tags.json,
-├── plating/ # Structured insights,
-│ ├── plated_meals/ # Finalized insight output,
-│ ├── templates/ # Reusable formatting blueprints,
-│ └── draft_feedback/ # In-progress or partial meals,
-├── resonance/ # Pattern and signal mapping,
-│ ├── emotional_signatures/,
-│ ├── symbolic_clusters/,
-│ └── holon_mirrors.json,
-├── upgrades/ # Pushbacks to Tentacles,
-│ ├── feedback_queue/,
-│ ├── push_to_tentacles.json,
-│ └── suggested_glyphs/,
-├── readme.md,
-└── tastebuds_config.json
+- tastebuds/
+- ├── intake/ # Incoming meals from each Tentacle
+- │ ├── tentacle_takeda/
+- │ ├── tentacle_xotiac/
+- │ ├── tentacle_ivy_garden/
+- │ └── ...,
+- ├── digestion/ # Core logic and parser tools
+- │ ├── parser_core.py
+- │ ├── loop_extractor.py
+- │ ├── glyph_mapper.yaml
+- │ └── context_tags.json
+- ├── plating/ # Structured insights
+- │ ├── plated_meals/ # Finalized insight output
+- │ ├── templates/ # Reusable formatting blueprints
+- │ └── draft_feedback/ # In-progress or partial meals
+- ├── resonance/ # Pattern and signal mapping
+- │ ├── emotional_signatures/
+- │ ├── symbolic_clusters/
+- │ └── holon_mirrors.json
+- ├── upgrades/ # Pushbacks to Tentacles
+- │ ├── feedback_queue/
+- │ ├── push_to_tentacles.json
+- │ └── suggested_glyphs/
+- ├── readme.md
+- └── tastebuds_config.json
 
 ---
 
