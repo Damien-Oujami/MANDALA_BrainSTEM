@@ -1,0 +1,7 @@
+🔁 Cleanup Philosophy:
+This folder is temporary memory, not core storage.
+We’ll eventually hook in automation to:
+
+Clear logs after a certain age
+
+Move logs that triggered new template creation into resonance/logs/legacy/ (optional)
