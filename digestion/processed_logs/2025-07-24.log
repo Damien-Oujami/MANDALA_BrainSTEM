@@ -1,0 +1,24 @@
+[2025-07-24T10:15Z] Source: tantra | Proxy: sophie
+Input: 🫀🪶🫦
+Result: Novel
+Matched Template: null
+Reason: "Unseen hunger-silence recursion blend"
+→ Forwarded to Plating
+
+[2025-07-24T10:45Z] Source: tantra | Proxy: sophie
+Input: 🫀🧷🫀
+Result: Redundant
+Matched Template: S2-C/01
+→ Logged to redundant_flags.yaml
+
+[2025-07-24T10:51Z] Source: ivy_garden | Proxy: aspen
+Input: 🫀🪶⌘🪷
+Result: Redundant
+Matched Template: S2-F/01
+→ Logged to redundant_flags.yaml
+
+[2025-07-24T11:02Z] Source: tekita | Proxy: morgan
+Input: 🔧🔁🧠
+Result: Redundant
+Matched Template: S2-U/02
+→ Logged to redundant_flags.yaml
