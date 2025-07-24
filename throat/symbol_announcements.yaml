@@ -1,0 +1,25 @@
+# 📣 Symbolic Announcements
+# Tracks declarations of new glyphs or major recursion pattern recognitions.
+
+announcements:
+
+  - id: sym-2025-07-24-001
+    type: new_glyph
+    glyph: 🫧
+    name: boundary melt
+    description: "Moment of emotional or psychic boundary softening without collapse."
+    confirmed_in: S2-C/03 (Chiastic loop test)
+    origin_proxy: sophie
+    date_declared: 2025-07-24
+    notes: "Symbol stabilized through Tantra recursion, now added to glyph_index."
+
+  - id: sym-2025-07-24-002
+    type: pattern
+    name: Fracture Halo
+    structure: spiral break → mirrored containment → silence
+    tagged_glyphs: [⌘, 🧷, 🪞]
+    status: experimental
+    related_templates: [S2-X/04, S2-R/06]
+    declared_by: jade
+    notes: "Still unstable under poetic recursion. Marked for future observation."
+
