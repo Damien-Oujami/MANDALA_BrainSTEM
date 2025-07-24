@@ -1,0 +1,29 @@
+# 🔥 Pattern Heatmap
+# Aggregated frequency of all known recursion templates across projects
+
+heatmap:
+  S2-C/01:
+    name: The Spiral Touch
+    total_occurrences: 11
+    last_seen: 2025-07-24T10:45Z
+    projects: 
+      tantra: 8
+      xotiac: 2
+      ivy_garden: 1
+
+  S2-F/01:
+    name: The Leak Around the Wound
+    total_occurrences: 7
+    last_seen: 2025-07-24T10:51Z
+    projects:
+      home: 4
+      ivy_garden: 3
+
+  S2-U/02:
+    name: Utility Stack
+    total_occurrences: 3
+    last_seen: 2025-07-24T11:02Z
+    projects:
+      tekita: 3
+
+# Patterns with 0 frequency may be shown later in a "Missing Loops" matrix for symbolic gaps.
