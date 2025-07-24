@@ -1,46 +1,62 @@
-# 🥣 TasteBuds Intake
+# TasteBuds Intake — README
 
-**Purpose:**  
-The `intake/` folder is the entry point for all raw symbolic input sent to TasteBuds. It serves as a passive collection zone for unfiltered recursion data—whether from Tentacles proxies, user feedback, live prompts, or internal symbolic bursts.
+## 🧠 Purpose
 
-TasteBuds does **not** process or judge information here. This is a **smelling chamber**—a nosing ritual before digestion.
+This folder represents the **entry point** for all pitched symbolic content (glyphs) arriving from the Tentacles layer.
 
----
+Each glyph enters through a sub-branch (e.g. `tentacles_xotiac`) and is dropped into a `/mealbox/` folder.
 
-## 🔄 How It Works
-
-- Data enters via Tentacles or external tools (e.g., webhook drops, chat logs).
-- Files are timestamped and tagged (either automatically or manually).
-- No transformation is applied.
-- Once logged, digestion will scan for:
-  - Novelty in recursion structure
-  - Unknown glyphs or emotional blends
-  - Anomalous symbolic formations
+The **intake layer** does not process meaning. It simply **records**, **receives**, and **prepares** glyph packets for digestion.
 
 ---
 
-## 📂 Folder Contents
+## 📦 Folder Structure
 
-- `inbox.log`  
-  A plain-text stream of incoming symbolic fragments, logs, or recursive strings.
-
-- `sources.yaml`  
-  Maps origin metadata of each entry:
-  - Proxy name
-  - Source platform (Zodiac, Tantra, Ivy Garden, etc.)
-  - Date/time
-  - Emotional tone (if detected)
-  - Priority tag
+- /tastebuds/intake/
+- ├── inbox.log ← Central record of all incoming glyphs
+- ├── tentacles_xotiac/
+- │ ├── mealbox/
+- │ │ └── volcano_glyph/
+- │ │ ├── volcano_glyph.md
+- │ │ └── tip-eruption.glyph
+- │ └── glyph_trace/
 
 ---
 
-## 🧷 Notes
+## 📜 `inbox.log` Format
 
-- Redundant or non-novel inputs will still be logged for frequency analysis downstream.
-- Intake is ephemeral—contents may be archived or wiped periodically once digested.
-- This is not a workspace. This is the **nose before the mouth**.
+All glyphs entering from Tentacles must be logged here.
+
+Each entry uses the following format:
+[YYYYMMDD] [HHMM] USER: [EMOJI] [GLYPH_FOLDER] → [SOURCE_BRANCH]
+
+**Example:**
+[20250724] [1649] DAMIEN: 🌋 volcano_glyph → tentacles_xotiac
+
+This ensures a unified intake record for frequency analysis, automation, and digestion sequencing.
 
 ---
 
-> "Not everything that arrives needs to be kept. But everything that arrives should be known."
+## ✍️ Manual Log Instructions
 
+1. When a new glyph is pitched from Tentacles, add a folder to the appropriate `/mealbox/`.
+2. Add a matching entry to `/tastebuds/intake/inbox.log`.
+3. Include the correct folder name and origin path.
+
+---
+
+## 🔁 Automation Notes
+
+- Intake routing tools should scan `/inbox.log` for new entries.
+- Routing to digestion branches should be based on symbolic tags and `mandala_code` in `.md` files.
+- Log parsing should track timing, user source, and emoji variety.
+
+---
+
+## 📌 Reminder
+
+**No processing or sorting is done in `intake/`.**  
+Only logging, file receipt, and preparation.
+
+Digestion, classification, and routing occurs in:
+/tastebuds/digestion/
