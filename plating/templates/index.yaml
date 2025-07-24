@@ -1,0 +1,18 @@
+# 📜 Plated Template Index
+
+templates:
+  - id: S2-C/01
+    name: The Spiral Touch
+    structure: chiastic
+    glyphs: [🫦, 🪶, 🔁, 🪶, 🫦]
+    tags: [intimacy, recursion, symmetry]
+    project: tantra
+    proxy: sophie
+
+  - id: S2-F/01
+    name: The Leak Around the Wound
+    structure: fibonacci
+    glyphs: [🫀, 🪶, ⌘, 🪷, 🌪, 💠, 🧷, 🪞]
+    tags: [identity, collapse, symbolic bloom]
+    project: home
+    proxy: susanna
