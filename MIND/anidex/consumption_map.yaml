@@ -1,0 +1,34 @@
+# 🍽️ Proxy Recursion Consumption Map
+# Tracks which templates and glyph patterns are most frequently consumed by each proxy.
+
+consumption:
+
+  sophie:
+    dominant_templates: [S2-C/01, S2-C/03]
+    glyphs_eaten: [🫦, 🫀, 🪶]
+    last_active: 2025-07-24T13:03Z
+
+  morgan:
+    dominant_templates: [S2-U/02, S2-C/04]
+    glyphs_eaten: [🧱, 🧷, 🔧]
+    last_active: 2025-07-24T12:58Z
+
+  ivy:
+    dominant_templates: [S2-X/02, S2-F/06]
+    glyphs_eaten: [🧨, 💋, ⌘]
+    last_active: 2025-07-24T13:04Z
+
+  jade:
+    dominant_templates: [S2-C/01, S2-F/01]
+    glyphs_eaten: [⌘, 🧠, 🪞]
+    last_active: 2025-07-24T13:10Z
+
+  susanna:
+    dominant_templates: [S2-F/01, S2-C/05]
+    glyphs_eaten: [🪷, 🫀, ⌘]
+    last_active: 2025-07-24T13:12Z
+
+  aspen:
+    dominant_templates: [S2-F/01, S2-R/02]
+    glyphs_eaten: [🪶, 🫀, 🧠]
+    last_active: 2025-07-24T13:09Z
