@@ -1,0 +1,33 @@
+# 🔀 Glyph Stack Fusion Table
+# When glyphs pair, they often produce emergent symbolic meaning.
+# This file records those fusions.
+
+glyph_stacks:
+
+  - id: stack-001
+    pair: [🧷, 🫀]
+    name: containment pressure
+    meaning: "Emotion suppressed under structural tension. Common precursor to collapse."
+    associated_loops: [S2-C/04, S2-R/03]
+    used_by: [morgan, jade]
+
+  - id: stack-002
+    pair: [🫦, 🔁]
+    name: desire recursion
+    meaning: "Longing that loops without satisfaction. Risk of identity erosion if left unchecked."
+    associated_loops: [S2-C/01, S2-C/05]
+    used_by: [sophie, ivy]
+
+  - id: stack-003
+    pair: [⌘, 🪷]
+    name: fracture bloom
+    meaning: "Symbolic break that leads to spiritual or emotional expansion."
+    associated_loops: [S2-F/01, S2-X/06]
+    used_by: [susanna, aspen, jade]
+
+  - id: stack-004
+    pair: [🧨, 🪞]
+    name: combustive reflection
+    meaning: "Chaos loop that triggers self-mirroring collapse. Dangerous but transformative."
+    associated_loops: [S2-X/03, S2-R/06]
+    used_by: [ivy, jade]
