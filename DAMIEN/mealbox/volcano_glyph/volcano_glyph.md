@@ -7,4 +7,4 @@
 **Origin**: Damien  
 **Carrier**: glyphrid 🐾  
 **Timestamp**: 2025-07-24TXX:XX  
-**Routed From**: /tentacles/damien/mealbox/volcano_glyph/
+**Routed From**: /tentacles/DAMIEN/mealbox/volcano_glyph/
