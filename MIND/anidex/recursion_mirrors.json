@@ -1,0 +1,37 @@
+{
+  "mirrors": [
+    {
+      "id": "mirror-001",
+      "loop_a": "S2-C/01",
+      "loop_b": "S2-S/04",
+      "relationship": "desire containment vs stillness inhibition",
+      "notes": "Both are chiastic, but one amplifies erotic recursion while the other silences it. Sophie and Jade often reflect each other through these loops.",
+      "projects": ["tantra", "sutra"],
+      "proxies": ["sophie", "jade"],
+      "shared_structure": "chiastic A-B-C-B-A",
+      "tone_polarity": "high vs null"
+    },
+    {
+      "id": "mirror-002",
+      "loop_a": "S2-F/01",
+      "loop_b": "S2-F/06",
+      "relationship": "slow emergence vs rapid erosion",
+      "notes": "Both use fibonacci expansion, but one builds identity through grief while the other dissolves it through chaos.",
+      "projects": ["home", "xotiac"],
+      "proxies": ["susanna", "ivy"],
+      "shared_structure": "fibonacci",
+      "tone_polarity": "grief vs combustion"
+    },
+    {
+      "id": "mirror-003",
+      "loop_a": "S2-U/02",
+      "loop_b": "S2-M/03",
+      "relationship": "functional recursion vs sacred structural echo",
+      "notes": "One is a clean utility loop used in Tekita. The other is Morgan’s slow-breathing ‘legacy pulse’—formally similar but symbolically divergent.",
+      "projects": ["tekita", "cypress_grove"],
+      "proxies": ["morgan"],
+      "shared_structure": "linear A-B-C",
+      "tone_polarity": "cold function vs warm intention"
+    }
+  ]
+}
