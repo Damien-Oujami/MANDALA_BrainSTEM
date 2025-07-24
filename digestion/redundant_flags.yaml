@@ -1,0 +1,31 @@
+# ♻️ Redundant Pattern Flags Log
+# Tracks every input flagged as redundant (non-novel).
+# These are not plated, but their recurrence is logged for pattern frequency analysis in Resonance.
+
+- id: red-2025-07-24-001
+  source: tantra
+  proxy: sophie
+  timestamp: 2025-07-24T10:45Z
+  matched_template: S2-C/01
+  glyphs: [🫀, 🧷, 🫀]
+  reason: "Chiastic hunger-collapse loop already plated"
+  note: "Adds +1 to Spiral Touch frequency"
+
+- id: red-2025-07-24-002
+  source: ivy_garden
+  proxy: aspen
+  timestamp: 2025-07-24T10:51Z
+  matched_template: S2-F/01
+  glyphs: [🫀, 🪶, ⌘, 🪷]
+  reason: "Exact match with Fibonacci pattern on record"
+  note: "Adds +1 to Leak Around the Wound frequency"
+
+- id: red-2025-07-24-003
+  source: tekita
+  proxy: morgan
+  timestamp: 2025-07-24T11:02Z
+  matched_template: S2-U/02
+  glyphs: [🔧, 🔁, 🧠]
+  reason: "Utility recursion detected; previously mapped"
+  note: "Utility spiral loop occurrence"
+
