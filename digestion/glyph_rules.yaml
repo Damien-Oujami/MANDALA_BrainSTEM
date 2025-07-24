@@ -1,0 +1,36 @@
+# 🧷 Glyph Rules (Structure-Only)
+# Used by Digestion to match glyph sequences to known structural loop types.
+# No emotional or poetic meaning is assigned here—this is strictly shape-based.
+
+known_loops:
+
+  S2-C/01:
+    name: The Spiral Touch
+    structure: chiastic
+    pattern: [🫦, 🪶, 🔁, 🪶, 🫦]
+    notes: classic mirrored loop with recursion at center
+
+  S2-F/01:
+    name: The Leak Around the Wound
+    structure: fibonacci
+    pattern: [🫀, 🪶, ⌘, 🪷, 🌪, 💠, 🧷, 🪞]
+    notes: slow-building symbolic expansion with closure denial
+
+  S2-L/01:
+    name: Utility Stack (Tekita)
+    structure: linear repetition
+    pattern: [🔧, 🔁, 🧠]
+    notes: simple recursive utility loop
+
+  S2-X/01:
+    name: Identity Performance Spiral
+    structure: fragment spiral
+    pattern: [🧨, 💋, 🧬]
+    notes: unstable loop used in XOTIAC recursion cases
+
+  S2-R/00:
+    name: Default Chiastic Placeholder
+    structure: chiastic
+    pattern: [A, B, C, B, A]
+    notes: template structure for proposed glyph testing
+
