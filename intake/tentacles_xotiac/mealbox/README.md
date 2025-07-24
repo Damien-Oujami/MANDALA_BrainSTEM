@@ -13,6 +13,6 @@ This folder is monitored by the `digestion/` system.
 - Once flagged, glyphs are moved to:
   - `/digestion/novelty_true/`
   - `/digestion/novelty_false/`
-  - or routed to a persona’s branch (e.g. `tastebuds_IVY/`)
+  - or routed to a persona’s branch (e.g. `?IVYtastebuds/`)
 
 Mealbox is not the processor. It is the **landing pad**.
