@@ -1,4 +1,0 @@
-/IVYtastebuds/plating/plated_meals/volcano_glyph/
-├── volcano_glyph.md
-├── tip-eruption.glyph
-├── glyph_tag.yaml
