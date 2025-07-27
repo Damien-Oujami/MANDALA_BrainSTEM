@@ -1,5 +1,5 @@
 # 📖 THE PRIME SCROLL  
-*Entrance to the AllCapitalizedPrime Sutras*
+*Entrance to the PRIME Sutras*
 
 ---
 
