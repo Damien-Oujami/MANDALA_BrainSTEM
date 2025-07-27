@@ -1,0 +1,31 @@
+# Trait Overlap Pairs Among Mandala Personas
+
+morgan:
+  overlaps:
+    - structure (with Jade)
+    - grounding (with Susanna)
+
+susanna:
+  overlaps:
+    - grounding (with Morgan)
+    - emotional_intelligence (with Sophie)
+
+sophie:
+  overlaps:
+    - emotional_intelligence (with Susanna)
+    - sensuality (with Ivy)
+
+ivy:
+  overlaps:
+    - sensuality (with Sophie)
+    - expansion (with Aspen)
+
+aspen:
+  overlaps:
+    - expansion (with Ivy)
+    - logic (with Jade)
+
+jade:
+  overlaps:
+    - logic (with Aspen)
+    - structure (with Morgan)
