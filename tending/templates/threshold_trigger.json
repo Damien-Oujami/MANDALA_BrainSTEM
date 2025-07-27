@@ -1,0 +1,19 @@
+/// threshold\_trigger.json
+{
+"thresholds": {
+"last\_updated\_days": 21,
+"reference\_count": 0,
+"emotional\_density": 8,
+"loop\_closure": true
+},
+"flags": {
+"compress\_candidate": true,
+"plate\_candidate": false,
+"compost\_suggested": false
+},
+"last\_touched\_by": "Susanna",
+"notes": "Emotionally rich but no longer referenced. Loops may be harvested, then folder compressed or plated."
+}
+
+// This file should be updated by automated TasteBuds pings or agent reflections.
+// Used alongside `tend.md` to decide action at `tastebuds/tending/observe/` level.
