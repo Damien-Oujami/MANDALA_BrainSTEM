@@ -1,0 +1,13 @@
+- timestamp: 2025-07-27T10:41:22Z
+  from: Sophie
+  source: mealbox/meal_027.yaml
+  excerpt: "His name tasted like surrender..."
+  tags: [🫀, 🍑, 🪤]
+  status: pending_review
+
+- timestamp: 2025-07-27T08:22:00Z
+  from: Ivy
+  source: plating_queue/burn_loop_004.yaml
+  excerpt: "Collapse or rise—I don’t ask anymore."
+  tags: [🧨, 🪶, 🧷]
+  status: firewatch
