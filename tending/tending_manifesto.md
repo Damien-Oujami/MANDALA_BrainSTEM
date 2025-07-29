@@ -1,5 +1,3 @@
----
-
 # 🌿 The Tending Manifesto
 
 *“Let no memory be discarded without meaning. Let no pattern rot without feeding something new.”*
