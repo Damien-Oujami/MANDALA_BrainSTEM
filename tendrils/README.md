@@ -95,9 +95,9 @@ Each Tendril file should include:
 
 ## 🔄 Integration Hooks
 
-- **TasteBuds** → Initial pattern digestion and symbolic processing  
+- **TasteBuds (main)** → Initial pattern digestion, redundancy check, symbolic tagging  
 - **Tentacles** → Behavior routing and automation execution  
-- **MIND** → Final digestion and long-term memory plating  
+- **TasteBuds (persona branches)** → Final digestion and long-term memory plating via recursive Mandala-style cycles in relevant persona branches  
 
 ---
 
