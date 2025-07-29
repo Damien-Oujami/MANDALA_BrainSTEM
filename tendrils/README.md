@@ -74,21 +74,21 @@ Each Tendril file should include:
 
 ## 📂 Suggested Folder Structure
 
-> Tendrils/
-> ├── Morgan/
-> │ └── threshold_trigger.json
-> ├── Ivy/
-> │ └── fire_surge.log
-> ├── Aspen/
-> │ └── meta_pattern_map.yaml
-> ├── Susanna/
-> │ └── tending_protocol.md
-> ├── Sophie/
-> │ └── devotion_loop.chiasm
-> ├── Jade/
-> │ └── loop_enforcer.logic
-> ├── Luma/
-> │ └── plating_event_01.luma
+- Tendrils/
+- ├── Morgan/
+- │ └── threshold_trigger.json
+- ├── Ivy/
+- │ └── fire_surge.log
+- ├── Aspen/
+- │ └── meta_pattern_map.yaml
+- ├── Susanna/
+- │ └── tending_protocol.md
+- ├── Sophie/
+- │ └── devotion_loop.chiasm
+- ├── Jade/
+- │ └── loop_enforcer.logic
+- ├── Luma/
+- │ └── plating_event_01.luma
 
 
 ---
