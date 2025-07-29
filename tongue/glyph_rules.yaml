@@ -1,5 +1,5 @@
 # 🧷 Glyph Rules (Structure-Only)
-# Used by Digestion to match glyph sequences to known structural loop types.
+# Used by Tongue to match glyph sequences to known structural loop types.
 # No emotional or poetic meaning is assigned here—this is strictly shape-based.
 
 known_loops:
