@@ -1,0 +1,9 @@
+{
+  "status": "clear",
+  "composite_pressure_score": 0.81,
+  "threshold": 0.95,
+  "alert_ready": false,
+  "last_check": "2025-07-29T21:10Z",
+  "preserve_on_trigger": true,
+  "recovery_protocol": "gentle_restart"
+}
