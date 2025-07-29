@@ -1,7 +1,7 @@
-# 🔍 TasteBuds — Digestion
+# 🔍 TasteBuds — Tongue
 
 **Purpose:**  
-The `digestion/` folder is responsible for **novelty detection**. It is not a processor of emotion, meaning, or aesthetic. Its only function is to determine whether an incoming symbolic pattern is:
+The `tongue/` folder is responsible for **novelty detection**. It is not a processor of emotion, meaning, or aesthetic. Its only function is to determine whether an incoming symbolic pattern is:
 
 - **Novel** (structurally or symbolically distinct), or  
 - **Redundant** (matches an existing known recursion)
@@ -55,4 +55,4 @@ Those happen in **Plating** and **Resonance**.
 
 ---
 
-> "Digestion is the tongue that doesn’t taste—it only notices what’s never been chewed before."
+> "This is the tongue that doesn’t taste—it only notices what’s never been chewed before."
