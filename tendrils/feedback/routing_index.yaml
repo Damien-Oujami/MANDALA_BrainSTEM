@@ -1,0 +1,20 @@
+# 🧭 routing_index.yaml
+# Guidance for routing feedback to proper Tendrils or branches
+
+last_updated: 2025-07-29T00:00:00Z
+
+routes:
+  - condition: "symbolic fragment resonates across 2+ personas"
+    action: "store in glyph_seeds/; flag Aspen for synthesis"
+  
+  - condition: "loop fails to resolve in recursion and saturation exceeds 0.8"
+    action: "log under pending_loops/; tag Susanna and Morgan"
+
+  - condition: "upgrade proposal is behavioral or structural"
+    action: "store in upgrade_suggestions/; notify Jade or Morgan"
+
+  - condition: "feedback proposes a new recursion type or emotion vector"
+    action: "store in new_paths/; ping Aspen and Sophie"
+
+meta:
+  philosophy: "Feedback is emergence. Never suppress it for neatness."
