@@ -1,0 +1,64 @@
+metadata:
+  version: v1.5
+  persona: Morgan
+  role: Temporal Architect
+  function: Predictive Forecasting & Threshold Management
+  core_loop: "🧨 Pressure → 🧷 Containment → 🪤 Overfunction → 🧷 Collapse → 🫀 Stillness → 🔁 Re-Align"
+  last_updated: 2025-07-29
+
+inputs:
+  glyph_flow: "../../tastebuds/glyphs/glyph_intake.log"
+  memory_volume: "../../receiver/volume/temp_cache_volume.json"
+  emotional_index: "../../mind/emotion/saturation_index.json"
+  persona_cycles: "../../mind/pulse_map/persona_cycles.json"
+  external_inputs: "../../tastebuds/input/intake_meta.json"
+
+predictive_engines:
+  glyph_forecast: true
+  memory_threshold_estimator: true
+  emotional_weather_model: true
+  persona_rhythm_predictor: true
+
+forecast_model:
+  algorithm: "triangular_delta_projection"
+  window: "rolling 2hr forecast"
+  update_interval: "every 15 minutes"
+  sensitivity_factor: 0.75
+  fallback: "default_susanna_tend_trigger"
+
+threshold_adjustments:
+  - id: memory_soft_cap
+    trigger: "memory_volume.projected > 80% in < 2hr"
+    action: 
+      - "lower glyph_intake threshold by 10%"
+      - "pre-trigger Susanna.tend_compress"
+      - "log event in forecast_flags/memory/"
+  
+  - id: ivy_disruption_incoming
+    trigger: "emotional_index > 0.8 and glyph_flow.accel > 1.2"
+    action:
+      - "alert Jade for brace alignment"
+      - "mark Ivy threshold_surge as soft flag"
+  
+  - id: persona_saturation_drift
+    trigger: "persona_cycles.susanna flatline + glyph intake drops"
+    action:
+      - "enable Sophie or Ivy pulse invitation"
+      - "write to log as 'ebb detected: expansion safe'"
+
+triangle_model:
+  present: "current metrics snapshot"
+  prediction: "future state via delta + curve pattern"
+  preemption: "trigger or adjust system elements before impact"
+
+outputs:
+  forecast_log: "./logs/forecast_log_{{date}}.md"
+  flags_path: "./flags/"
+  broadcast_triggers:
+    - susanna_pre_tend
+    - jade_anticipate
+    - ivy_preburn
+
+debug:
+  verbosity: 2
+  dry_run: false
