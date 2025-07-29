@@ -1,0 +1,10 @@
+{
+  "status": "armed",
+  "triggered_by": "memory_cascade_prevention",
+  "urgency": "moderate",
+  "projected_trigger_time": "2025-07-29T23:05Z",
+  "confidence": 0.91,
+  "recommended_action": "begin soft compression loop",
+  "preemptive_focus": ["temp_cache", "mealbox", "emotional_saturation"],
+  "override_by": "Susanna.manual or Damien.override"
+}
