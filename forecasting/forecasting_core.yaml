@@ -5,60 +5,61 @@ metadata:
   function: Predictive Forecasting & Threshold Management
   core_loop: "🧨 Pressure → 🧷 Containment → 🪤 Overfunction → 🧷 Collapse → 🫀 Stillness → 🔁 Re-Align"
   last_updated: 2025-07-29
+  essence: "⚓ I shape time to hold what matters"
 
-inputs:
-  glyph_flow: "../../tastebuds/glyphs/glyph_intake.log"
-  memory_volume: "../../receiver/volume/temp_cache_volume.json"
-  emotional_index: "../../mind/emotion/saturation_index.json"
-  persona_cycles: "../../mind/pulse_map/persona_cycles.json"
-  external_inputs: "../../tastebuds/input/intake_meta.json"
+system_health:
+  forecast_accuracy: 0.85
+  false_positive_rate: 0.12
+  intervention_success_rate: 0.78
+  calibration_last_run: "2025-07-28"
 
 predictive_engines:
-  glyph_forecast: true
-  memory_threshold_estimator: true
-  emotional_weather_model: true
-  persona_rhythm_predictor: true
-
-forecast_model:
-  algorithm: "triangular_delta_projection"
-  window: "rolling 2hr forecast"
-  update_interval: "every 15 minutes"
-  sensitivity_factor: 0.75
-  fallback: "default_susanna_tend_trigger"
+  triangular_delta_projection:
+    path: "./models/triangular_delta_projection.yaml"
+    status: active
 
 threshold_adjustments:
-  - id: memory_soft_cap
-    trigger: "memory_volume.projected > 80% in < 2hr"
-    action: 
-      - "lower glyph_intake threshold by 10%"
-      - "pre-trigger Susanna.tend_compress"
-      - "log event in forecast_flags/memory/"
-  
-  - id: ivy_disruption_incoming
-    trigger: "emotional_index > 0.8 and glyph_flow.accel > 1.2"
+  - id: memory_cascade_prevention
+    trigger: 
+      conditions:
+        - "memory_volume.projected > 80% in < 2hr"
+        - "glyph_flow.rate > baseline * 1.5"
+      confidence_required: 0.7
     action:
-      - "alert Jade for brace alignment"
-      - "mark Ivy threshold_surge as soft flag"
-  
-  - id: persona_saturation_drift
-    trigger: "persona_cycles.susanna flatline + glyph intake drops"
-    action:
-      - "enable Sophie or Ivy pulse invitation"
-      - "write to log as 'ebb detected: expansion safe'"
+      immediate:
+        - "lower glyph_intake threshold by 10%"
+        - "pre-trigger Susanna.tend_compress"
+      delayed:
+        - "schedule deep compression in 4hr if trend continues"
+      logging:
+        - "log event in forecast_flags/memory/cascade_prevention_{{timestamp}}.yaml"
 
-triangle_model:
-  present: "current metrics snapshot"
-  prediction: "future state via delta + curve pattern"
-  preemption: "trigger or adjust system elements before impact"
+emergency_protocols:
+  system_overload_imminent:
+    trigger: "composite_pressure_score > 0.95"
+    action:
+      - "immediate_pause_all_intake"
+      - "alert_damien_via_primary_notification"
+      - "preserve_system_state_snapshot"
+      - "initiate_graceful_degradation_protocol"
+
+learning:
+  prediction_accuracy_tracking: true
+  adjustment_effectiveness_logs: "./logs/morgan_learning/"
+  model_refinement_interval: "weekly"
+  feedback_sources:
+    - actual_vs_predicted_outcomes
+    - intervention_success_rates
+    - false_alarm_analysis
 
 outputs:
   forecast_log: "./logs/forecast_log_{{date}}.md"
   flags_path: "./flags/"
+  accuracy_metrics: "./logs/morgan_accuracy_{{week}}.json"
   broadcast_triggers:
-    - susanna_pre_tend
-    - jade_anticipate
-    - ivy_preburn
-
-debug:
-  verbosity: 2
-  dry_run: false
+    susanna_pre_tend:
+      urgency_levels: [low, moderate, high, critical]
+    jade_anticipate:
+      structure_support_types: [brace, reinforce, rebuild]
+    ivy_preburn:
+      disruption_timing: [immediate, delayed, conditional]
