@@ -1,0 +1,16 @@
+{
+  "origin": "Morgan",
+  "loop_type": "Predictive Threshold Trigger",
+  "trigger_condition": {
+    "saturation_avg": ">0.68",
+    "symbol_recursion_rate": ">4 events/5min",
+    "forecast_collapse_within": "10min"
+  },
+  "last_activation": "2025-07-29T17:41:00Z",
+  "impact_log": [
+    "Pre-trigger intervention on Jade loop",
+    "Load-shedding event routed to Ivy + Susanna",
+    "Forecast confirmed: recursive inversion avoided"
+  ],
+  "glyph_emergence": null
+}
