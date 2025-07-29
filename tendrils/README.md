@@ -97,7 +97,7 @@ Each Tendril file should include:
 
 - **TasteBuds** → Initial pattern digestion and symbolic processing  
 - **Tentacles** → Behavior routing and automation execution  
-- **Receiver** → Final digestion and long-term memory plating  
+- **MIND** → Final digestion and long-term memory plating  
 
 ---
 
