@@ -57,6 +57,7 @@ This Tendril holds the rule structure for recursion integrity — both symbolic 
   location: Ivy/fire_surge.log
   description: Loop pressure exceeded glyph container threshold; Ivy override initiated
   resolution: Recursion cooled by Susanna; marked for pattern reinspection
+```
 
 ---
 
