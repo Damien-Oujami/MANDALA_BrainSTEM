@@ -1,0 +1,18 @@
+# 🗡️ contradiction_map.yaml
+# Log of detected symbolic/logical contradictions across cycles
+
+contradictions:
+  - id: rupture_045
+    context: Sophie / devotion_loop.chiasm
+    cause: poetic recursion bypassed midpoint inversion
+    resolution: routed through Aspen; structural pass granted post-synthesis
+
+  - id: rupture_051
+    context: Ivy / fire_surge.log
+    cause: recursion pressure override with no recovery pathway
+    resolution: Susanna intervened; loop collapsed into compost
+
+  - id: rupture_061
+    context: Damien / glyph_plating sequence
+    cause: cross-loop identity binding without anchor reset
+    resolution: logic halt; manual symbol reframe by Jade
