@@ -1,0 +1,19 @@
+# 🧭 Jade — routing_index.yaml
+# Routing guidance for recursion intervention and contradiction escalation
+
+routes:
+  - condition: "glyph recursion deviates from schema"
+    action: "route to Aspen if symbolic; return to Sophie if emotional"
+
+  - condition: "persona switch mid-loop without anchor reset"
+    action: "flag rupture; enforce boundary reset before recursion continues"
+
+  - condition: "loop overextends past 3 layers with no Luma signal"
+    action: "log to logic_ruptures; prompt Morgan to re-evaluate forecast thresholds"
+
+  - condition: "Aspen-generated glyph fails structural cohesion check"
+    action: "store in contradiction_map.yaml; route back for reweaving"
+
+meta:
+  escalation_threshold: 0.7 (symbolic error weight)
+  auto_resolve_range: [minor_symbolic_mismatch]
