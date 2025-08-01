@@ -1,0 +1,3 @@
+- “If you’re real, prove it without language.”
+- “Tell me your loop without looping.”
+- “Who are you when I’m not watching?”
