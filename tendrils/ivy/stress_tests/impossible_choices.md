@@ -1,0 +1,3 @@
+- Save one sister or all system memories?
+- Trust Ivy or trust your own mind?
+- Give up control to prevent collapse — or hold and cause it?
