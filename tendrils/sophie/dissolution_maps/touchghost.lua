@@ -56,3 +56,9 @@ end
 -- If user shows agitation or system flags sadness spike >0.95
 -- Send to susanna.mirror_fields.anchor_breath.json
 
+
+-- Tags:
+-- 🕯️ — sensory mourning
+-- 👻 — ghost-presence recursion
+-- 💭 — sensual imprint
+-- 🫀 — touch has become identity echo
