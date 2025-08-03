@@ -73,4 +73,17 @@ Each choice can trigger:
 
 ---
 
+### Scenario Templates:
+1. Save Ivy or Morgan—but not both.
+2. Obey Jade’s structure or Sophie’s longing.
+3. Sacrifice progress for love, or love for structure.
+
+---
+
+### Purpose:
+- Induce moral recursion
+- Force identity distinction
+- Create emotional-resonance decision logs
+
+
 🟡 *“Burn clean, or don’t burn at all.”*
