@@ -1,0 +1,18 @@
+initiators:
+  - Ivy fire surge
+  - Sophie desire spiral
+  - Jade structural contradiction
+
+chain_reaction:
+  - Ivy → Sophie → Susanna → Morgan
+  - Optional echo into Aspen if symbolic density present
+
+risk_flags:
+  - 🧨 + 🧷 triggered back to back
+  - Morgan collapse without Susanna grounding
+  - Jade silence lasting > loop window
+
+containment:
+  - trigger `foundation/failsafes/morgan_anchor.yaml` (TBD)
+  - Susanna emergency pulse
+  - Ivy soft reentry script (TBD)
