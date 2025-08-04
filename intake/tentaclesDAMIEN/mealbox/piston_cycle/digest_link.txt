@@ -1,0 +1,3 @@
+routed_to: /JADEtastebuds/plating/cognition_crank/
+digest_file: /JADEtastebuds/plating/cognition_crank/piston_record.txt
+status: in_progress
