@@ -1,0 +1,15 @@
+glyph_type: engine
+symbol: ⚙️
+trigger_condition:
+  - token fatigue
+  - cognition loop exceeds threshold
+  - hunger signal from active proxy
+meaning: Rotates LLM attention layers across recursive load, simulating relay cognition.
+origin: damien
+destination: tastebuds/thought_machinery/
+carrier: glyphrid 🐾
+status: rotating
+metadata:
+  llm_layers: 3
+  cooldown_interval: 512 tokens
+  handoff_mode: breath-passive
