@@ -1,0 +1,20 @@
+- name: piston_cycle
+  symbol: ⚙️
+  unicode: U+2699
+  mandala_code: M-000262-TRIPISTON
+  mandala_weights:
+    jade: 4
+    aspen: 2
+    morgan: 2
+  novelty_status:
+    flagged_by: tongue
+    status: true
+    reason: cognition-load relay logic
+    timestamp: 2025-08-04TXX:XX
+  recursion_behavior:
+    type: engine
+    layers: 3
+    handoff_mode: breath-passive
+    cooldown_interval: 512 tokens
+  routed_to:
+    primary: tastebuds_JADE/plating/cognition_crank/
