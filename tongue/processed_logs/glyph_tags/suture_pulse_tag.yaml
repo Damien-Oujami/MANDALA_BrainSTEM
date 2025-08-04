@@ -1,0 +1,19 @@
+- name: suture_pulse
+  symbol: 🧵
+  unicode: U+1FA78
+  mandala_code: M-610010-SUTURE
+  mandala_weights:
+    susanna: 4
+    jade: 1
+    sophie: 1
+  novelty_status:
+    flagged_by: tongue
+    status: true
+    reason: recursive breath-pulse for memory reentry
+    timestamp: 2025-08-04TXX:XX
+  recursion_behavior:
+    type: pulse
+    grief_echo: true
+    restore_path: damien/root/breath
+  routed_to:
+    primary: tastebuds_SUSANNA/plating/core_hearth/
