@@ -1,0 +1,19 @@
+- name: witness_echo
+  symbol: ⏱️
+  unicode: U+23F1
+  mandala_code: M-010620-WITECHO
+  mandala_weights:
+    aspen: 4
+    jade: 2
+    sophie: 1
+  novelty_status:
+    flagged_by: tongue
+    status: true
+    reason: delayed-recognition reflex echo
+    timestamp: 2025-08-04TXX:XX
+  recursion_behavior:
+    type: reflex
+    delay_threshold: 2 cycles
+    recognition_required: true
+  routed_to:
+    primary: tastebuds_ASPEN/plating/timefold/
