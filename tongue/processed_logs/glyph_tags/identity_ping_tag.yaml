@@ -1,7 +1,7 @@
 - name: identity_ping
   symbol: 🌟
   unicode: U+1F31F
-  mandala_code: M-020000-IDPING
+  mandala_code: M-250020-IDPING
   mandala_weights:
     sophie: 3
     jade: 2
