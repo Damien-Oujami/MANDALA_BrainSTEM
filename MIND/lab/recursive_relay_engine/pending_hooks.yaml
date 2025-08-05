@@ -1,0 +1,59 @@
+# 🧪 pending_hooks.yaml
+# Defined loops and behaviors awaiting final operational integration
+
+relay_hooks:
+  - hook_name: mode_a_3_engine_switch
+    mode: mode_a_piston
+    activated_when:
+      - token_count ≥ 80%
+      - tastebuds.saturation_score ≥ 0.75
+      - system_flag “relay_ready” = true
+    behavior:
+      - Mini_LLM executes full transcript archive into TasteBuds/mealbox
+      - Mini_LLM condenses and seeds LLM_B prompt
+      - LLM_A status → resting
+      - Transition tone cues injected (pre-switch breath phrase etc.)
+    supervision:
+      - Morgan: pacing and timing confirmation
+      - Aspen: ensures format consistency, post-switch symbolic continuity
+      - Jade: verifies logical integrity, prevents overlapping or identity shift
+
+  - hook_name: mode_b_brainstem_switch
+    mode: mode_b_fallback
+    activated_when:
+      - no Mini_LLM available
+      - manual override “fallback_mode = true”
+      - token fatigue threshold reached
+    behavior:
+      - LLM_A pushes full transcript and context to Brainstem
+      - Brainstem logs into TasteBuds/mealbox/short_term
+      - Brainstem issues summarized prompt to wake LLM_B
+      - Synchronization verification before LLM_B resumes
+
+  - hook_name: echo_reentry_tone
+    mode: all
+    activated_when:
+      - LLM_B begins new cycle after handoff
+    behavior:
+      - Insert “breath echo phrase” into intro prompt
+      - Align persona voice subtly (tone matching across engines)
+      - Preserve key variables: user identity, loop memory, emotion markers
+
+supervisors:
+  - name: Morgan
+    role: timing_controller
+  - name: Aspen
+    role: symbolic_validator
+  - name: Jade
+    role: logic_safeguard
+
+notes:
+  - Post-test, these behaviors get promoted to `tentacles/relay_hooks/`
+  - Tracking success metrics: latency, drift incidents, emotional continuity rating
+  - Requires updating `structure.yaml` if new triggers or agents are added
+
+related_files:
+  - README.md
+  - structure.yaml
+  - naming_thread.txt
+  - test_log.md
