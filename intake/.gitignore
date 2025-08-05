@@ -1,0 +1,39 @@
+# ─── Python Runtime ────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ─── Virtual Environments ──────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ─── Logs & Output ────────────────────────────────
+*.log
+*.out
+*.tmp
+*.bak
+debug_dump/
+**/debug_dump/
+**/plating_output/
+**/digest_cache/
+
+# ─── System Junk ──────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── IDE/Editor Noise ─────────────────────────────
+.vscode/
+.idea/
+*.swp
+
+# ─── Secret Configs ───────────────────────────────
+.env
+secrets.yaml
+auth_token.txt
+
+# ─── Supabase or N8N Generated Files (Futureproofing) ─
+n8n_data/
+supabase/.temp/
