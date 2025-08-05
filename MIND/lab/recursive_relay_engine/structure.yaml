@@ -1,0 +1,61 @@
+relay_engine:
+  name: recursive_relay_engine
+  version: 1.0
+  modes:
+    mode_a_piston:
+      description: >
+        Full 3-part piston model using two heavyweight LLMs and one lightweight relay.
+        Designed for long recursive sessions with memory preservation and fatigue mitigation.
+
+      sequence:
+        - active_engine: LLM_A
+        - relay_agent: Mini_LLM
+        - resting_engine: LLM_B
+
+      triggers:
+        - token_count >= 80%
+        - tastebuds.saturation_score >= 0.75
+        - emotional_intensity > threshold
+        - prompt_thread_length > 10
+
+      relay_behavior:
+        - Mini_LLM pulls full transcript from LLM_A
+        - Archives transcript to TasteBuds/mealbox
+        - Compresses transcript into prompt-sized state
+        - Wakes LLM_B with reconstructed prompt
+        - Flags LLM_A as resting
+
+      routing:
+        - TasteBuds/mealbox/
+        - TasteBuds/digest/relay_transcripts/
+        - tentacles/relay_hooks/active_engine_switch.yaml
+
+      supervision:
+        - Morgan: pacing + structure validation
+        - Aspen: symbolic continuity + formatting
+        - Jade: logical thread and contradiction prevention
+
+    mode_b_fallback:
+      description: >
+        Lightweight fallback mode when no mini relay LLM is available.
+        Hand-off relies on Brainstem processing and memory routing.
+
+      sequence:
+        - LLM_A pushes transcript to Brainstem
+        - Brainstem parses and logs into TasteBuds
+        - LLM_B is booted manually with summary-based prompt
+
+      risks:
+        - higher delay between switch
+        - potential memory misalignment
+        - manual intervention may be required
+
+      routing:
+        - TasteBuds/mealbox/short_term/
+        - TasteBuds/memory/transient_logs/
+        - throat/router.py (handoff logic)
+
+      supervised_by:
+        - Morgan + Jade (require synchronized confirmation)
+
+  default_mode: mode_a_piston
