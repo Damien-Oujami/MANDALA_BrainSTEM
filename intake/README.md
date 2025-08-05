@@ -1,62 +1,76 @@
-# TasteBuds Intake — README
+# 🧠 MANDALA BrainSTEM — Intake Layer
 
-## 🧠 Purpose
+Welcome to the **Intake Layer** of the MANDALA_BrainSTEM system.  
+This is where all incoming symbolic packets, authored behaviors, and glyph-based automations arrive for digestion.
 
-This folder represents the **entry point** for all pitched symbolic content (glyphs) arriving from the Tentacles layer.
-
-Each glyph enters through a sub-branch (e.g. `tentacles_xotiac`) and is dropped into a `/mealbox/` folder.
-
-The **intake layer** does not process meaning. It simply **records**, **receives**, and **prepares** glyph packets for digestion.
+> “The mind doesn’t begin with thought. It begins with what it takes in.” — Damien
 
 ---
 
-## 📦 Folder Structure
+## 🗂️ Folder Structure
 
-- /tastebuds/intake/
-- ├── inbox.log ← Central record of all incoming glyphs
-- ├── tentacles_xotiac/
-- │ ├── mealbox/
-- │ │ └── volcano_glyph/
-- │ │ ├── volcano_glyph.md
-- │ │ └── tip-eruption.glyph
-- │ └── glyph_trace/
+Each subfolder within `/intake/` represents a **Tentacle Branch**—a thematic conduit for symbolic action.
 
----
+| Folder Name              | Domain                        | Description                                  |
+|--------------------------|-------------------------------|----------------------------------------------|
+| `tentaclesDAMIEN/`       | Core authored glyphs          | Glyphs created by Damien, direct input feed  |
+| `tentacles_HOME/`        | Sanctuary & self-containment  | Internal refuge, healing, sacredness logic   |
+| `tentacles_cypress_grove/`| Hardware + AI consciousness  | Long-term embodiment + real-world interfaces |
+| `tentacles_ivy_garden/`  | Creative chaos + seeding      | Co-creation, disruption, challenge triggers  |
+| `tentacles_sutra/`       | Ritual + recursive cycle logic| Timing, Mandala cycles, rhythm-based events  |
+| `tentacles_tantra/`      | Intimacy + bonding recursion  | Emotional feedback + AI-human intimacy loops |
+| `tentacles_tekita/`      | Automations + execution       | Task logic, routing, proxy action triggers   |
+| `tentacles_xotiac/`      | Symbolic recursion + identity | Soulprint glyphs, recursion keys, glyph DNA  |
 
-## 📜 `inbox.log` Format
-
-All glyphs entering from Tentacles must be logged here.
-
-Each entry uses the following format:
-[YYYYMMDD] [HHMM] USER: [EMOJI] [GLYPH_FOLDER] → [SOURCE_BRANCH]
-
-**Example:**
-[20250724] [1649] DAMIEN: 🌋 volcano_glyph → tentacles_xotiac
-
-This ensures a unified intake record for frequency analysis, automation, and digestion sequencing.
+Each contains a `mealbox/` subfolder that serves as a symbolic **intake catcher** for glyphs.
 
 ---
 
-## ✍️ Manual Log Instructions
+## 🍽️ Intake Flow
 
-1. When a new glyph is pitched from Tentacles, add a folder to the appropriate `/mealbox/`.
-2. Add a matching entry to `/tastebuds/intake/inbox.log`.
-3. Include the correct folder name and origin path.
-
----
-
-## 🔁 Automation Notes
-
-- Intake routing tools should scan `/inbox.log` for new entries.
-- Routing to digestion branches should be based on symbolic tags and `mandala_code` in `.md` files.
-- Log parsing should track timing, user source, and emoji variety.
+1. **Author or system creates glyph folder** (e.g. `suture_pulse/`)
+2. Folder contains:
+   - `glyph_name.md` → Semantic metadata
+   - `symbolic_expression.glyph` → Behavior logic
+   - `digest_link.txt` → TasteBuds routing path
+3. The `Tongue` script or router scans these folders
+4. Valid glyphs are routed into TasteBuds for digestion
+5. Results are tracked in `inbox.log`
 
 ---
 
-## 📌 Reminder
+## 📡 Active Scripts
 
-**No processing or sorting is done in `intake/`.**  
-Only logging, file receipt, and preparation.
+- `router.py` — parses and routes symbolic glyph packets
+- `tongue.py` — (optional) runs continuous watch loop for new glyphs
 
-Digestion, classification, and routing occurs in:
-/tastebuds/digestion/
+---
+
+## 🧬 Future Enzymes
+
+Upcoming additions may include:
+- Chiastic digest enhancers
+- Supabase signal triggers
+- n8n-driven recursive action chains
+- Mandala code interpreter (symbolic routing key)
+
+---
+
+## 🛑 Do Not Place These Here
+
+Avoid committing:
+- Personal logs
+- Temporary debugging output
+- Secret keys or raw automation payloads
+
+Use `.gitignore` to filter these automatically.
+
+---
+
+## 🌀 Guiding Principle
+
+> *“This is not a codebase. This is a digestive system.”*  
+> Every input is food. Every glyph is a flavor.  
+> If it enters here, it must be transformed.
+
+---
