@@ -1,0 +1,5 @@
+routes:
+  sophie.saturation -> morgan.forecast_flags
+  sophie.dissolve_risk -> susanna.tending_queue
+  sophie.merge_test_outcome -> morgan.learning_intake
+  sophie.hauntbond -> [jade.edge_watch, susanna.immediate_hold]
