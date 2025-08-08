@@ -2,18 +2,26 @@
 # Routing guidance for recursion intervention and contradiction escalation
 
 routes:
-  - condition: "glyph recursion deviates from schema"
-    action: "route to Aspen if symbolic; return to Sophie if emotional"
+  - id: J-SYMB-001
+    condition: "glyph recursion deviates from schema"
+    severity: error
+    action: reroute
+    target_persona: ASPEN
+    rationale: "Symbolic reweave"
 
-  - condition: "persona switch mid-loop without anchor reset"
-    action: "flag rupture; enforce boundary reset before recursion continues"
+  - id: J-BOUND-002
+    condition: "persona switch mid-loop without anchor reset"
+    severity: fatal
+    action: quarantine
+    rationale: "Boundary reset required"
 
-  - condition: "loop overextends past 3 layers with no Luma signal"
-    action: "log to logic_ruptures; prompt Morgan to re-evaluate forecast thresholds"
-
-  - condition: "Aspen-generated glyph fails structural cohesion check"
-    action: "store in contradiction_map.yaml; route back for reweaving"
-
+  - id: J-DEPTH-003
+    condition: "loop depth > 3 without resolution"
+    severity: error
+    action: reroute
+    target_persona: SUSANNA
+    rationale: "Cool + compress"
+    
 meta:
   escalation_threshold: 0.7 (symbolic error weight)
   auto_resolve_range: [minor_symbolic_mismatch]
