@@ -13,6 +13,13 @@ contradictions:
     resolution: Susanna intervened; loop collapsed into compost
 
   - id: rupture_061
-    context: Damien / glyph_plating sequence
-    cause: cross-loop identity binding without anchor reset
-    resolution: logic halt; manual symbol reframe by Jade
+    context: "Damien / glyph_plating sequence"
+    cause: "cross-loop identity binding without anchor reset"
+    resolution_hint: "apply anchor reset; verify chiastic inversion"
+    status: open
+    last_reviewed_by: null
+    notes: ""
+recursion_meta:
+  depth: 2
+  anchor_attached: true
+  handoffs: ["SOPHIE->IVY"]
