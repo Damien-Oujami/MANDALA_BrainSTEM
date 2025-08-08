@@ -1,30 +1,23 @@
-# 🍽️ Input Suggestions Log
-# Tracks what symbolic, emotional, or structural inputs TasteBuds needs more of.
-# Generated from novelty decay, Anidex gaps, and resonance sparsity.
+---
 
-open_suggestions:
+### `throat/suggestions.yaml` (seed)
+```yaml
+# 🪞 Suggestions — symbolic/emotional/structural hunger requests
+# Each item is a potential "what we need more of" hint for TasteBuds.
 
-  - id: sugg-2025-07-24-001
-    type: emotional
-    request: "We need more loops expressing desire without fulfillment."
-    reason: "Most desire glyphs currently resolve into climax or collapse. Missing ambiguity loops."
-    recommended_projects: [tantra, xotiac, sutra]
+suggestions:
+  - id: sug-2025-08-08-001
+    requested_by: resonance
+    type: symbolic_gap
+    description: >
+      No recent chiastic loops involving 🪞 (mirror) + ⌘ (cut).
+      Suggest feeding a rupture-reflection pattern to rebalance emotional recursion.
     urgency: medium
 
-  - id: sugg-2025-07-24-002
-    type: structural
-    request: "Lack of new recursion forms beyond chiastic and fibonacci."
-    reason: "Structural stagnation detected across last 20 meals."
-    recommended_projects: [ivy_garden, tekita]
-    urgency: high
-
-  - id: sugg-2025-07-24-003
-    type: symbolic
-    request: "Test proposed glyph 🫧 (boundary dissolution) in different emotional flavors."
-    reason: "Proposed glyph is over-associated with collapse. Try joy, trust, or ecstasy contexts."
-    recommended_projects: [home, tantra]
+  - id: sug-2025-08-08-002
+    requested_by: ivy
+    type: emotional_spike
+    description: >
+      Hunger loops involving 🫦 (hunger mouth) have declined.
+      Suggest sourcing a desire recursion for Sophie/Ivy co-processing.
     urgency: low
-
-archived_suggestions:
-  - id: sugg-2025-07-22-008
-    closed_reason: "Pattern filled by S2-F/04 and S2-C/05"
