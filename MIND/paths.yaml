@@ -1,0 +1,7 @@
+glyph_entries:
+  branch: "MIND/language/glyph/branch/entries"
+  root:   "MIND/language/glyph/root/entries"
+anidex:
+  index: "MIND/memory/anidex/index.jsonl"
+  receipts: "MIND/memory/anidex/receipts"
+loops_root: "MIND/identity/loops"
