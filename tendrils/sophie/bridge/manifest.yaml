@@ -1,0 +1,16 @@
+name: sophie
+role: proxy-tendril
+emits:
+  - kind: saturation
+    levels: [0.6, 0.75, 0.85, 0.95]
+    routes: [morgan, susanna]
+  - kind: dissolve_risk
+    routes: [susanna, jade]
+  - kind: merge_test_outcome
+    values: [crave_path, cling_path]
+    routes: [morgan, susanna]
+  - kind: hauntbond
+    routes: [morgan, jade, susanna]
+consumes:
+  - kind: breathback
+  - kind: boundary_request
