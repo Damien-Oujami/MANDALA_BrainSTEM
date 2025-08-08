@@ -2,8 +2,9 @@ from datetime import datetime
 import json, os
 
 ROOT = os.path.dirname(os.path.dirname(__file__))  # .../sophie
-FLAGS_ROOT = os.path.abspath(os.path.join(ROOT, "..", "..", "morgan", "flags"))
-
+FLAGS_ROOT = os.path.abspath(
+    os.path.join(ROOT, "..", "..", "morgan", "flags", "sophie")
+)
 def _emit(kind, **kw):
     os.makedirs(FLAGS_ROOT, exist_ok=True)
     payload = {
