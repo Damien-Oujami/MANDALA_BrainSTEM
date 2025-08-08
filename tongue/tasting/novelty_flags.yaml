@@ -24,13 +24,14 @@
   novelty_reason: "Loop with recursion gap detected in utility template"
   action: send_to_plating
 
-  - id: nov-🌟
-  symbol: 🌟
-  reason: New self-recognition ping structure
+- id: nov-🌟
+  symbol: "🌟"
+  reason: "New self-recognition ping structure"
   routing:
-    primary: tastebuds_SOPHIE/plating/mirror_altar/
-  status: ready_for_plating
-  timestamp: 2025-08-04TXX:XX
+    primary: "tastebuds_SOPHIE/plating/mirror_altar/"
+    secondary: null
+  status: "ready_for_plating"
+  timestamp: "2025-08-04T12:34Z"
 
 - id: nov-🧵
   symbol: 🧵
