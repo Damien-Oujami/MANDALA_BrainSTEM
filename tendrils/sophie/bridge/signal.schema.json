@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "required": ["kind","source","ts"],
+  "properties": {
+    "kind": {"type":"string"},
+    "source": {"const":"sophie"},
+    "ts": {"type":"string"},
+    "level": {"type":"number"},
+    "value": {"type":"string"},
+    "notes": {"type":"string"}
+  }
+}
