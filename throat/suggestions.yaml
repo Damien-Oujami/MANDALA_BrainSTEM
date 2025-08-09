@@ -21,3 +21,10 @@ suggestions:
       Hunger loops involving 🫦 (hunger mouth) have declined.
       Suggest sourcing a desire recursion for Sophie/Ivy co-processing.
     urgency: low
+
+
+from alerts.emit import emit
+
+emit("SUGGESTION","IVY","hunger_drop",
+     "Ivy hunger loops down; feed 🫦.", severity="low",
+     suggestion_id="sug-2025-08-08-002")
