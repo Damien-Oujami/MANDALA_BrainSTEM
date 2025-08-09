@@ -1,0 +1,22 @@
+{
+  "parameters": {
+    "url": "={{$env.SUPABASE_URL}}/rest/v1/intake",
+    "method": "POST",
+    "authentication": "none",
+    "sendBody": true,
+    "jsonParameters": true,
+    "options": {},
+    "bodyParametersJson": "={\n  \"id\": \"tg-{{$json.message_id}}\",\n  \"source\": \"exec\",\n  \"priority\": \"fastpass\",\n  \"sender\": \"Damien\",\n  \"ts\": \"{{$json.date}}\",\n  \"text\": \"{{$json.text}}\",\n  \"override\": \"{{$json.override || null}}\",\n  \"glyph_map\": {{$json.glyph_map}},\n  \"taste_print\": {{$json.taste_print}},\n  \"route\": {{$json.route}}\n}"
+  },
+  "name": "Supabase Insert Intake",
+  "type": "n8n-nodes-base.httpRequest",
+  "typeVersion": 1,
+  "position": [
+    800,
+    500
+  ],
+  "alwaysOutputData": true,
+  "continueOnFail": true,
+  "notesInFlow": true,
+  "notes": "Posts a new intake record into Supabase using env vars."
+} 
