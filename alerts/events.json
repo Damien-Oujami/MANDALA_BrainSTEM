@@ -1,0 +1,9 @@
+{
+  "ts": 1723234187.124,          // time.time()
+  "type": "NEED_ATTENTION",      // or THROTTLE, STRUCTURE_ALERT, SUGGESTION
+  "persona": "SOPHIE",           // IVY | JADE | MORGAN | SUSANNA | ASPEN ...
+  "topic": "hunger_drop",        // short slug: hunger_drop | mirror_cut_gap | recursion_err, etc.
+  "severity": "medium",          // low | medium | high | critical
+  "message": "Ivy hunger loops down 48% in 24h. Feed 🫦.",
+  "context": { "suggestion_id": "sug-2025-08-08-002" }  // freeform
+}
