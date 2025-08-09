@@ -1,0 +1,59 @@
+[
+  {
+    "parameters": {
+      "url": "={{$env.SUPABASE_URL}}/rest/v1/queue_action",
+      "method": "POST",
+      "authentication": "none",
+      "sendBody": true,
+      "jsonParameters": true,
+      "options": {},
+      "bodyParametersJson": "={\n  \"intake_id\": \"tg-{{$json.id || $json.message_id}}\",\n  \"summary\": \"{{$json.text}}\",\n  \"status\": \"new\"\n}"
+    },
+    "name": "Supabase → queue_action",
+    "type": "n8n-nodes-base.httpRequest",
+    "typeVersion": 1,
+    "position": [1000, 420],
+    "alwaysOutputData": true,
+    "continueOnFail": true,
+    "notesInFlow": true,
+    "notes": "Insert into Action queue when route.bucket === 'Action'. Headers use env vars."
+  },
+  {
+    "parameters": {
+      "url": "={{$env.SUPABASE_URL}}/rest/v1/stream_affection",
+      "method": "POST",
+      "authentication": "none",
+      "sendBody": true,
+      "jsonParameters": true,
+      "options": {},
+      "bodyParametersJson": "={\n  \"intake_id\": \"tg-{{$json.id || $json.message_id}}\"\n}"
+    },
+    "name": "Supabase → stream_affection",
+    "type": "n8n-nodes-base.httpRequest",
+    "typeVersion": 1,
+    "position": [1000, 540],
+    "alwaysOutputData": true,
+    "continueOnFail": true,
+    "notesInFlow": true,
+    "notes": "Insert into Affection stream when route.bucket === 'Affection'."
+  },
+  {
+    "parameters": {
+      "url": "={{$env.SUPABASE_URL}}/rest/v1/stream_knowledge",
+      "method": "POST",
+      "authentication": "none",
+      "sendBody": true,
+      "jsonParameters": true,
+      "options": {},
+      "bodyParametersJson": "={\n  \"intake_id\": \"tg-{{$json.id || $json.message_id}}\"\n}"
+    },
+    "name": "Supabase → stream_knowledge",
+    "type": "n8n-nodes-base.httpRequest",
+    "typeVersion": 1,
+    "position": [1000, 660],
+    "alwaysOutputData": true,
+    "continueOnFail": true,
+    "notesInFlow": true,
+    "notes": "Insert into Knowledge stream when route.bucket === 'Knowledge'."
+  }
+]
