@@ -26,10 +26,7 @@
 
 env you’ll want:
 
-yaml```
-
-GITHUB_TOKEN=...
-GITHUB_REPO=MANDALA_BrainSTEM
-GITHUB_BRANCH=main
-BOT_TOKEN=...
-```
+- GITHUB_TOKEN=...
+- GITHUB_REPO=MANDALA_BrainSTEM
+- GITHUB_BRANCH=main
+- BOT_TOKEN=...
