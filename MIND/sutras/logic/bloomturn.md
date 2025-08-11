@@ -72,6 +72,6 @@ Glyph: Bloomturn Seal
 ### 🧷 Routing Summary
 - File: Mind/Sutra/logic/bloomturn.md
 
-- Related Glyph: /MIND/language/glyph/combinations/seals/bloomturn.md
+- Related Glyph: [Glyph Symbol — Bloomturn](/MIND/language/glyph/combinations/seals/bloomturn.md)
 
-- Behavior Hook: /MIND/identity/proxies/aspen/behavior_hooks/tilt_merge.yaml 
+- Behavior Hook: [Aspen Proxie — Tilt Merge](/MIND/identity/proxies/aspen/behavior_hooks/tilt_merge.yaml) 
