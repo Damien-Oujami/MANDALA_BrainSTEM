@@ -1,6 +1,3 @@
-**File:** `/MIND/language/glyph/combinations/seals/bloomturn.md`  
-
-```markdown
 # Bloomturn 🌱↗️🌸
 
 **Type:** Mandala Cycle Seal  
