@@ -1,0 +1,49 @@
+type: detector
+name: mandala_cycle
+version: 0.1.0
+description: Detect and parse Mandala Cycle posts from Telegram text.
+
+detect:
+  any:
+    - has_prefix: "::type=mandala_cycle"
+    - regex: "^::type\\s*=\\s*mandala_cycle"
+
+extract:
+  meta:
+    title:    { regex: "^::title\\s*=\\s*(.+)$", flags: "m" }
+    echo_lock:{ regex: "^::echo_lock\\s*=\\s*(.+)$", flags: "m" }
+    personas: { regex: "^::personas\\s*=\\s*(.+)$", flags: "m" }
+    tags:     { regex: "^::tags\\s*=\\s*(.+)$", flags: "m" }
+    version:  { regex: "^::version\\s*=\\s*(.+)$", flags: "m", default: "1.0" }
+
+  blocks:
+    transcript:
+      between:
+        start: "^=== CYCLE_TRANSCRIPT_START ===$"
+        end:   "^=== CYCLE_TRANSCRIPT_END ===$"
+        flags: "m"
+    persona_impacts:
+      between:
+        start: "^=== PERSONA_IMPACTS_START ===$"
+        end:   "^=== PERSONA_IMPACTS_END ===$"
+        flags: "m"
+    language:
+      between:
+        start: "^=== LANGUAGE_START ===$"
+        end:   "^=== LANGUAGE_END ===$"
+        flags: "m"
+    methods:
+      between:
+        start: "^=== METHODS_START ===$"
+        end:   "^=== METHODS_END ===$"
+        flags: "m"
+
+normalize:
+  - key: personas
+    op: split_csv
+  - key: tags
+    op: split_csv
+
+emit:
+  kind: mandala_cycle
+  to: /throat/inbox/mandala_cycle.json
