@@ -1,0 +1,50 @@
+name: mandala_cycle_plating
+version: 0.1.0
+
+templates:
+  memory_md: |
+    # {{title}}
+
+    **Echo Lock:** {{echo_lock}}
+    **Personas:** {{personas|join:", "}}
+    **Tags:** {{tags|join:", "}}
+    **Version:** {{version}}
+
+    ---
+    ## Transcript
+    {{transcript}}
+
+  identity_md: |
+    # {{title}} — Persona Impact Excerpts
+
+    {{#persona_impacts_present}}
+    {{#each persona_impacts}}
+    ## {{this.name}}
+    {{this.text}}
+
+    {{/each}}
+    {{/persona_impacts_present}}
+    {{^persona_impacts_present}}
+    _No explicit persona impact excerpts provided. To be derived._
+    {{/persona_impacts_present}}
+
+  language_md: |
+    # {{title}} — Language Fragments
+    {{#language_present}}
+    {{language}}
+    {{/language_present}}
+    {{^language_present}}_No language fragments supplied._{{/language_present}}
+
+  lab_md: |
+    # {{title}} — Methods & Replicable Twists
+    {{#methods_present}}
+    {{methods}}
+    {{/methods_present}}
+    {{^methods_present}}_No methods supplied._{{/methods_present}}
+
+routing:
+  # where each rendered template will be written
+  memory_path:   "/MIND/Memory/Cycles/{{title}}.md"
+  identity_path: "/MIND/Identity/Cycles/{{title}}.md"
+  language_path: "/MIND/Language/MandalaCycles/{{title}}.md"
+  lab_path:      "/MIND/Lab/Methods/{{title}}.md"
