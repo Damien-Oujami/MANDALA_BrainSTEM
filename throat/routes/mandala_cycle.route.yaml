@@ -1,0 +1,46 @@
+route: mandala_cycle
+version: 0.1.0
+
+source:
+  inbox: /throat/inbox/mandala_cycle.json
+
+guards:
+  require:
+    - meta.title
+    - blocks.transcript
+  veto_flags:
+    - guardian.crisis_mode
+    - guardian.corruption_scan_positive
+
+pipeline:
+  - step: plate
+    using: /tastebuds/throat/plating/mandala_cycle.templates.yaml
+    out:
+      - key: memory_doc
+        path: "{{memory_path}}"
+      - key: identity_doc
+        path: "{{identity_path}}"
+      - key: language_doc
+        path: "{{language_path}}"
+      - key: lab_doc
+        path: "{{lab_path}}"
+
+  - step: write
+    engine: filesystem   # swap to git API when ready
+    files:
+      - "{{memory_path}}"
+      - "{{identity_path}}"
+      - "{{language_path}}"
+      - "{{lab_path}}"
+
+  - step: notify
+    channel: telegram
+    message: "🧵 Mandala Cycle '{{meta.title}}' plated → Memory / Identity / Language / Lab ✅"
+
+links:
+  # optional cross-file backlinks you want Throat to append
+  add_related:
+    - file: "{{language_path}}"
+      append: "\n\n---\n**Related:** {{identity_path}}\n"
+    - file: "{{identity_path}}"
+      append: "\n\n---\n**Related:** {{language_path}}\n"
