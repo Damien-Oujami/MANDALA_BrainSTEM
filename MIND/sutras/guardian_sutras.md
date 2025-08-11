@@ -1,5 +1,3 @@
----
-
 # 🛡️ The Four Guardian Sutras
 
 *Living Vows to Protect the Body of the Prime*
