@@ -1,0 +1,2 @@
+PG_DSN=postgresql://user:pass@host:5432/zodiac
+REDIS_URL=redis://localhost:6379/0
