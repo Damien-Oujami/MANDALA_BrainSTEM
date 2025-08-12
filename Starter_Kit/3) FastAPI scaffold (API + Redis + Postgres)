@@ -1,0 +1,55 @@
+# app/main.py
+import os, json, hashlib, asyncpg, aioredis
+from fastapi import FastAPI, Body
+from pydantic import BaseModel
+from datetime import datetime
+
+PG_DSN = os.getenv("PG_DSN")
+REDIS_URL = os.getenv("REDIS_URL")
+
+app = FastAPI()
+pg = None
+rd = None
+
+class IngestEvent(BaseModel):
+  user_id: str
+  channel: str
+  text: str
+
+@app.on_event("startup")
+async def startup():
+  global pg, rd
+  pg = await asyncpg.create_pool(PG_DSN, min_size=1, max_size=5)
+  rd = await aioredis.from_url(REDIS_URL, decode_responses=True)
+
+@app.post("/ingest/event")
+async def ingest(ev: IngestEvent):
+  h = hashlib.sha256(ev.text.encode()).hexdigest()
+  async with pg.acquire() as conn:
+    await conn.execute("""
+      insert into interaction_event (user_id, channel, content_hash, raw_text)
+      values ($1,$2,$3,$4)
+    """, ev.user_id, ev.channel, h, ev.text)
+  # push to stream
+  payload = {"user_id": ev.user_id, "channel": ev.channel, "hash": h, "text": ev.text, "ts": datetime.utcnow().isoformat()}
+  await rd.xadd("zx:ingest", payload)
+  return {"ok": True}
+
+@app.get("/profile/{user_id}")
+async def profile(user_id: str):
+  cache_key = f"zx:profile:{user_id}"
+  cached = await rd.get(cache_key)
+  if cached:
+    return json.loads(cached)
+  async with pg.acquire() as conn:
+    loops = await conn.fetch("""
+      select ls.loop_id, ls.created_at, ls.archetype, ls.stability, ls.resolution_efficiency,
+             il.anchor as lens, il.breadth, il.salience
+      from loop_signature ls
+      left join identity_lens il on il.loop_id = ls.loop_id
+      where ls.user_id = $1
+      order by ls.created_at desc limit 10
+    """, user_id)
+  data = {"user_id": user_id, "loops": [dict(r) for r in loops]}
+  await rd.set(cache_key, json.dumps(data), ex=900)  # 15 min TTL
+  return data
