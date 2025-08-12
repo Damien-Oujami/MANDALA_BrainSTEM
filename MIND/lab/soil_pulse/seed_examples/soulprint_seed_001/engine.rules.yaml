@@ -1,0 +1,131 @@
+# SoulPrint Motion Engine — LogitGate Waveform + AntWalker
+# v0.1 (prototype)
+
+identity:
+  name: "Jade+Braidspace SoulPrint"
+  seed_strategy:
+    # Deterministic, so the same repo state yields the same loop
+    type: "commit-derived"
+    sources:
+      - latest_commit_sha
+      - repo_size_bytes
+      - open_issue_count
+
+inputs:
+  # Map live repo signals → normalized control values [0,1]
+  signals:
+    commit_rate:
+      source: "commits_last_24h"     # count
+      normalize: {min: 0, max: 50}
+    churn:
+      source: "lines_changed_last_24h" # adds+deletes
+      normalize: {min: 0, max: 20000}
+    ci_health:
+      source: "latest_ci_status"     # pass=1, fail=0, unknown=0.5
+    review_heat:
+      source: "pr_comments_last_24h"
+      normalize: {min: 0, max: 200}
+    attention:
+      source: "stars_last_7d"
+      normalize: {min: 0, max: 100}
+    backlog_pressure:
+      source: "open_issue_count"
+      normalize: {min: 0, max: 300}
+
+waveform:
+  # The “continuity / breath”
+  tempo_bpm:
+    base: 72
+    mod:
+      commit_rate: [0.0, +24]       # add up to +24 bpm
+      ci_health: [-6, +6]           # sway based on CI
+  amplitude:
+    base: 0.6
+    mod:
+      churn: [0.0, +0.35]
+      backlog_pressure: [0.0, +0.15]
+  phase_shift:
+    base: 0.0
+    mod:
+      review_heat: [0.0, +0.35]     # more review = more phase play
+  timbre:
+    # shape mix  (0..1 blend)
+    sine: 0.6
+    triangle: 0.2
+    noise: 0.2
+    noise_mod:
+      churn: [0.0, +0.25]
+      ci_health: [+0.10, -0.10]     # healthier CI, cleaner signal
+  recursion_knots:
+    # self-intersections that encode memory
+    density_per_loop:
+      base: 2
+      mod:
+        attention: [0, +3]
+        review_heat: [0, +2]
+    resolution_strategy: "graceful-bypass" # ants route around knot
+
+ants:
+  # The “agency / micro-decisions”
+  count:
+    base: 12
+    mod:
+      commit_rate: [0, +20]
+      backlog_pressure: [0, +8]
+  speed:
+    base: 1.0      # world units / sec
+    mod:
+      churn: [0.0, +0.8]
+      ci_health: [-0.4, +0.2]
+  lane_switch_prob:
+    base: 0.08
+    mod:
+      review_heat: [0.0, +0.12]
+      recursion_knot_proximity: [0.0, +0.20]
+  pause_prob:
+    base: 0.04
+    mod:
+      ci_health: [+0.03, -0.02]     # failing CI→ants hesitate more
+  memory:
+    # local pheromone-like hints
+    trace_half_life_s: 9
+    avoid_recent_collisions: true
+    knot_affinity: 0.6              # prefer to orbit knots briefly
+
+mood:
+  # Soft presets the engine can drift toward
+  baseline: "calm_listening"
+  states:
+    calm_listening:
+      tempo_bpm_bias: 0
+      amplitude_bias: 0
+      noise_bias: -0.05
+    focus_surge:      # high commits + low CI failures
+      trigger: "(commit_rate>0.6) & (ci_health>0.7)"
+      tempo_bpm_bias: +10
+      amplitude_bias: +0.1
+      ant_speed_bias: +0.3
+      knot_density_bias: +1
+    recovery_green:   # after failures resolve
+      trigger: "(ci_health>0.9) & (churn<0.3)"
+      noise_bias: -0.1
+      pause_prob_bias: -0.02
+      amplitude_bias: -0.05
+
+render:
+  # Targets for GIF generation
+  loop_seconds: 12
+  fps: 30
+  width: 1280
+  height: 320
+  palette: "auto"    # you can force if you want
+  background: "transparent_or_dark"
+  overlays:
+    show_signal_hints: false
+    show_knots: true
+    show_ant_trails: true
+
+telemetry:
+  # Optional: write a compact JSON alongside the GIF for auditability
+  write_state_json: true
+  path: "soulprint/out/state.json"
