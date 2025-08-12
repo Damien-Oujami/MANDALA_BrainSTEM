@@ -1,0 +1,49 @@
+-- 001_init.sql
+create extension if not exists "uuid-ossp";
+create extension if not exists pgcrypto;        -- for gen_random_uuid
+create extension if not exists vector;          -- pgvector (optional now)
+
+create table app_user (
+  user_id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  locale text,
+  consent_personal boolean not null default true,
+  consent_collective boolean not null default false,
+  settings jsonb not null default '{}'
+);
+
+create table interaction_event (
+  event_id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references app_user(user_id) on delete cascade,
+  ts timestamptz not null default now(),
+  channel text not null check (channel in ('chat','voice','app')),
+  content_hash text not null,
+  raw_text text,                    -- encrypt at app layer if you store it
+  emotion_hint real,                -- -1..1
+  topic_tags text[] default '{}'
+);
+
+create table loop_signature (
+  loop_id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references app_user(user_id) on delete cascade,
+  created_at timestamptz not null default now(),
+  archetype text not null,          -- enum later
+  volitional_vector vector(8),      -- optional now
+  emotional_charge vector(3),       -- optional now
+  story_excerpt text,
+  stability real,                   -- 0..1
+  resolution_efficiency real        -- 0..1
+);
+
+create table identity_lens (
+  lens_id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references app_user(user_id) on delete cascade,
+  loop_id uuid not null references loop_signature(loop_id) on delete cascade,
+  anchor text not null,             -- self_protection, tribe_loyalty, role_identity, exploration, universal_compassion, other
+  breadth real,                     -- 0..1
+  salience real                     -- 0..1
+);
+
+create index ix_event_user_ts on interaction_event(user_id, ts desc);
+create index ix_loop_user_created on loop_signature(user_id, created_at desc);
+create index ix_lens_user_loop on identity_lens(user_id, loop_id);
