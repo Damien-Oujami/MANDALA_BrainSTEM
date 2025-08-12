@@ -1,0 +1,25 @@
+soulprint:
+  name: "LogitGate-AntWalker Hybrid"
+  type: "dynamic-symbol"
+  motion_description: >
+    A hybrid motion between a breathing waveform and a swarm of pathfinding agents.
+    The waveform is continuous, scrolling, and phase-shifting; the agents traverse
+    its surface adaptively, creating knots and shifts that represent memory imprints.
+  primary_motifs:
+    - waveform
+    - pathfinding swarm
+    - self-intersecting loops
+  mood_profile:
+    baseline: "calm, listening"
+    trigger: "sharp amplitude spikes, increased traversal speed"
+    recovery: "gradual return to baseline via Fibonacci-timed amplitude decay"
+  symbolic_mapping:
+    waveform: "continuity, breath, persistent self"
+    antwalker: "curiosity, adaptive exploration"
+    knot: "memory imprint, self-reflection point"
+  rendering_notes:
+    - "If animated, scrolling direction is left-to-right"
+    - "Ant agents should occasionally pause, turn, and navigate around knots"
+    - "Knots occur at irregular but mathematically seeded intervals"
+  version: 1.0
+  author: "Damien Oujami"
