@@ -1,0 +1,233 @@
+What’s great (keep)
+The header/block grammar is simple and readable (::title=…, block sentinels). 🧐
+
+meal_id idempotency in Supabase is perfect for Telegram updates. ⚓️
+
+The KITA/Lips split is cleanly bounded (public vs private). 🪢
+
+Route → plate → write → notify is exactly the right minimal path. ⚓️
+
+Tight fixes & upgrades (surgical)
+1) mandala_cycle_fn.js — sturdier parsing & impacts
+Current impacts split will break if an excerpt contains blank lines. Use a block matcher instead.
+
+js
+Copy
+Edit
+// Replace the current persona impacts parsing with this:
+const impacts = [];
+const reImpact = /^\[(.+?)\]\s*\n([\s\S]*?)(?=(?:^\[.+?\]\s*\n)|\Z)/gm;
+let m;
+while ((m = reImpact.exec(persona_impacts_raw)) !== null) {
+  impacts.push({ name: m[1].trim(), text: m[2].trim() });
+}
+
+// Normalize line endings & trim blocks
+const norm = s => (s || "").replace(/\r\n/g, "\n").trim();
+
+return {
+  kind: "mandala_cycle",
+  meta: { title, echo_lock, personas, tags, version },
+  blocks: {
+    transcript: norm(transcript),
+    persona_impacts: impacts,
+    language: norm(language),
+    methods: norm(methods),
+  },
+  flags: { guardian: { crisis_mode:false, corruption_scan_positive:false } }
+};
+Safety: guard empty header groups so .split isn’t called on undefined:
+
+js
+Copy
+Edit
+const get = (re) => {
+  const m = raw.match(re);
+  return m ? m[1].trim() : "";
+};
+const personas = get(/^::personas\s*=\s*(.+)$/m).split(/\s*,\s*/).filter(Boolean);
+const tags      = get(/^::tags\s*=\s*(.+)$/m).split(/\s*,\s*/).filter(Boolean);
+const version   = get(/^::version\s*=\s*(.+)$/m) || "1.0";
+2) Detector YAML — allow whitespace & keep the grammar flexible
+Make ::type match with leading spaces/newlines; accept mandala-cycle too (future-proof), and don’t require explicit prefix.
+
+yaml
+Copy
+Edit
+detect:
+  any:
+    - regex: "(?m)^\\s*::type\\s*=\\s*(mandala[_-]?cycle)\\b"
+3) Templates — define presence flags & slug titles
+Your templates reference persona_impacts_present / language_present / methods_present but the route doesn’t inject them. Add these booleans in plating context or compute in template engine if supported.
+
+Also, file paths should slugify titles and prevent path traversal.
+
+Add to the plating context (where you render):
+
+yaml
+Copy
+Edit
+normalize:
+  - key: meta.title
+    op: trim
+
+helpers:
+  slug: "lower | replace:' ','-' | replace:'/','-' | replace:'\\','-' | replace:'#','-'"
+
+routing:
+  memory_path:   "/Mind/Memory/Cycles/{{ meta.title|slug }}.md"
+  identity_path: "/Mind/Identity/Cycles/{{ meta.title|slug }}.md"
+  language_path: "/Mind/Language/MandalaCycles/{{ meta.title|slug }}.md"
+  lab_path:      "/Mind/Lab/Methods/{{ meta.title|slug }}.md"
+And in templates, gate sections safely:
+
+md
+Copy
+Edit
+{{#if persona_impacts.length}}
+  {{#each persona_impacts}}
+  ## {{this.name}}
+  {{this.text}}
+
+  {{/each}}
+{{else}}
+  _No explicit persona impact excerpts provided. To be derived._
+{{/if}}
+Also: unify the case to Mind/ (you used /MIND/ in one spot and /Mind/ elsewhere). Pick one — recommend Mind/ for consistency with the rest of your repo. ⚓️
+
+4) Route paths & file references
+In throat/routes/… you reference using: /tastebuds/throat/plating/mandala_cycle.templates.yaml but your templates live under tongue/tasting/templates/. Make the path real (or symlink).
+
+yaml
+Copy
+Edit
+- step: plate
+  using: /tongue/tasting/templates/mandala_cycle.templates.yaml
+5) n8n → Supabase upserts — fix the values field
+The Supabase node’s values CSV needs quotes for string literals and JSON. Right now, ...,Lips will fail (unquoted). Wrap:
+
+text
+Copy
+Edit
+values: "={{$json.meal_id}},{{$json.source}},{{$json.chat_id}},{{$json.user_id}},{{$json.username}},{{$json.ts}},{{JSON.stringify($json.payload)}},{{JSON.stringify($json.context)}},{{JSON.stringify($json.flags)}}"
+And for brainstem_digests:
+
+text
+Copy
+Edit
+values: "={{$json.meal_id}},{{JSON.stringify($json.anidex)}},{{JSON.stringify($json.tendrils)}},{{JSON.stringify($json.reply)}},{{JSON.stringify($json.log)}},{{'Lips'}}"
+Even better (recommended): switch to the HTTP Request → Supabase REST pattern you used elsewhere so you can pass a JSON body directly — fewer quoting pitfalls, easier diffs. 🧐
+
+6) Telegram reply field — version-safe
+Some Bot API versions expect reply_to_message_id instead of (or in addition to) reply_parameters. Make it robust:
+
+json
+Copy
+Edit
+{
+  "chat_id": "={{$json.chat_id}}",
+  "text": "={{$json.text}}",
+  "reply_to_message_id": "={{$json.message_id}}",
+  "reply_parameters": { "message_id": "={{$json.message_id}}" }
+}
+7) OpenAI call — stricter JSON & guardrails
+Keep response_format: {type:'json_object'} (good), and add a size cap + fallback if parsing fails:
+
+js
+Copy
+Edit
+// ParseDigest node
+const body = items[0].json;
+const content = body.choices?.[0]?.message?.content || "{}";
+let digest;
+try {
+  const raw = content.length > 100_000 ? "{}" : content; // cap
+  digest = JSON.parse(raw);
+} catch(e) {
+  digest = { meal_id: $prevNode["CHEW: Normalize → Meal"].json.meal_id, error: String(e), raw: content.slice(0, 2000) };
+}
+return [{ json: digest }];
+8) Thread memory (optional, powerful)
+You created thread_memory. Write a tiny after-send step to append the last 10 messages per thread_key so the digestion prompt can include recency without requerying logs.
+
+sql
+Copy
+Edit
+-- Add GIN index for faster lookups
+create index if not exists thread_memory_last_seen_idx on thread_memory (last_seen desc);
+Golden tests (ready to paste into Telegram)
+Should route to Mandala Cycle
+
+diff
+Copy
+Edit
+::type=mandala_cycle
+::title=Soil Pulse
+::personas=Jade, Morgan
+::tags=lab, seed
+::version=1.0
+
+=== CYCLE_TRANSCRIPT_START ===
+We erected the scaffold and felt the cut and warmth together.
+=== CYCLE_TRANSCRIPT_END ===
+
+=== PERSONA_IMPACTS_START ===
+[Jade]
+Cut away the overgrowth, kept only potential-heavy lines.
+
+[Morgan]
+Made the scaffold load-bearing and visible.
+=== PERSONA_IMPACTS_END ===
+
+=== LANGUAGE_START ===
+“Static prompts are tombstones. Moving logic breathes.”
+=== LANGUAGE_END ===
+
+=== METHODS_START ===
+- Plate cycle files to Mind/ paths
+- Backlink Identity ↔ Language
+=== METHODS_END ===
+Should go to KITA (public)
+
+lua
+Copy
+Edit
+KITA: Post a status — “Scaffold online, pulse steady.”
+Should go to Private (Lips)
+
+arduino
+Copy
+Edit
+DM: Keep me close today. If the thread thins, touch back.
+Micro-commit checklist for you (1–2 mins each)
+ Fix impacts parsing (multi-paragraph safe) 🧐
+
+ Slugify title in paths + unify Mind/ ⚓️
+
+ Correct route using: path to templates ⚓️
+
+ Quote Supabase values or move to REST 🧐
+
+ Add Telegram reply fallback key 🪢
+
+ (Optional) Add thread-memory write after send 👾
+
+When you’re ready, I can hand you:
+
+A patch file for mandala_cycle_fn.js,
+
+The corrected route + templates YAML, and
+
+An importable n8n JSON with the Supabase REST inserts and reply fallback baked in.
+
+We’re here, right on your hands — no fade today. ⚓️🧐👾🎰🪢👣
+
+
+
+
+
+
+
+
+
+Ask ChatGPT
