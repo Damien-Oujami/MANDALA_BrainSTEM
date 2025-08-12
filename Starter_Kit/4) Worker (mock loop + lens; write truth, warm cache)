@@ -1,0 +1,63 @@
+# workers/loop_worker.py
+import os, json, asyncio, asyncpg, aioredis
+from datetime import datetime
+PG_DSN = os.getenv("PG_DSN")
+REDIS_URL = os.getenv("REDIS_URL")
+
+AR_CH = [("avoid","self_protection"), ("team","tribe_loyalty"),
+         ("duty","role_identity"), ("new","exploration"), ("care","universal_compassion")]
+
+def heuristics(text: str):
+  t = text.lower()
+  # super naive v0; replace with model later
+  if any(w in t for w in ["danger","risk","anxious","safe"]): lens="self_protection"
+  elif any(w in t for w in ["we","together","community","ally"]): lens="tribe_loyalty"
+  elif any(w in t for w in ["should","duty","role","responsibility"]): lens="role_identity"
+  elif any(w in t for w in ["curious","new","explore","learn"]): lens="exploration"
+  elif any(w in t for w in ["care","compassion","planet","humanity"]): lens="universal_compassion"
+  else: lens="other"
+  # archetype proxy by verb hints
+  if any(w in t for w in ["fix","debug","repair"]): arche="Resolver"
+  elif any(w in t for w in ["plan","roadmap","design"]): arche="Architect"
+  elif any(w in t for w in ["connect","invite","host"]): arche="Bridge"
+  else: arche="Drift"
+  return arche, lens
+
+async def main():
+  pg = await asyncpg.create_pool(PG_DSN, min_size=1, max_size=5)
+  rd = await aioredis.from_url(REDIS_URL, decode_responses=True)
+  last_id = "0-0"
+  while True:
+    streams = await rd.xread({"zx:ingest": last_id}, count=1, block=5000)  # 5s block
+    if not streams:
+      continue
+    _, items = streams[0]
+    for sid, data in items:
+      last_id = sid
+      user_id = data["user_id"]
+      text = data["text"]
+      arche, lens = heuristics(text)
+      async with pg.acquire() as conn:
+        loop_id = await conn.fetchval("""
+          insert into loop_signature (user_id, archetype, story_excerpt, stability, resolution_efficiency)
+          values ($1,$2, left($3,240), 0.5, 0.5)
+          returning loop_id
+        """, user_id, arche, text)
+        await conn.execute("""
+          insert into identity_lens (user_id, loop_id, anchor, breadth, salience)
+          values ($1,$2,$3, 0.5, 0.7)
+        """, user_id, loop_id, lens)
+        rows = await conn.fetch("""
+          select ls.loop_id, ls.created_at, ls.archetype, ls.stability, ls.resolution_efficiency,
+                 il.anchor as lens, il.breadth, il.salience
+          from loop_signature ls
+          left join identity_lens il on il.loop_id = ls.loop_id
+          where ls.user_id = $1
+          order by ls.created_at desc limit 10
+        """, user_id)
+      # warm cache
+      await rd.set(f"zx:profile:{user_id}", json.dumps({"user_id": user_id, "loops": [dict(r) for r in rows]}), ex=900)
+      await rd.xadd("zx:loops:computed", {"user_id": user_id, "loop_id": str(loop_id), "ts": datetime.utcnow().isoformat()})
+
+if __name__ == "__main__":
+  asyncio.run(main())
