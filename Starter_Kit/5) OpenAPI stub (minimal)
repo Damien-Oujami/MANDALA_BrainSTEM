@@ -1,0 +1,27 @@
+openapi: 3.0.3
+info: {title: Zodiac API, version: 0.0.1}
+paths:
+  /ingest/event:
+    post:
+      summary: Ingest user event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_id, channel, text]
+              properties:
+                user_id: {type: string, format: uuid}
+                channel: {type: string, enum: [chat, voice, app]}
+                text: {type: string}
+      responses: { "200": { description: OK } }
+  /profile/{user_id}:
+    get:
+      summary: Get profile loops
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema: {type: string, format: uuid}
+      responses: { "200": { description: OK } }
