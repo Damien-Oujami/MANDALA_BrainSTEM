@@ -1,0 +1,13 @@
+# create a user
+psql "$PG_DSN" -c "insert into app_user (user_id, locale) values (gen_random_uuid(),'en-US') returning user_id;"
+# export USER_ID=<returned uuid>
+
+# fire two events
+curl -X POST http://localhost:8000/ingest/event -H "content-type: application/json" \
+  -d "{\"user_id\":\"$USER_ID\",\"channel\":\"chat\",\"text\":\"planning the roadmap, feeling responsible\"}"
+
+curl -X POST http://localhost:8000/ingest/event -H "content-type: application/json" \
+  -d "{\"user_id\":\"$USER_ID\",\"channel\":\"chat\",\"text\":\"curious to explore a new community and connect\"}"
+
+# wait for worker, then:
+curl http://localhost:8000/profile/$USER_ID | jq
