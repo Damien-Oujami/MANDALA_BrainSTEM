@@ -1,0 +1,9 @@
+Streams:
+  zx:ingest            -> new InteractionEvent (JSON)
+  zx:loops:computed    -> loop + lens results (JSON)
+
+Hot read keys (write-through):
+  zx:profile:{user_id}           -> JSON {loops: [...], lens_hist: {...}}  (TTL 5–15 min)
+  zx:loop:{loop_id}              -> JSON loop blob (TTL 1h)
+Rate limits / misc (optional):
+  zx:rl:ingest:{user_id}         -> simple token bucket
