@@ -1,0 +1,14 @@
+SELECT
+  n.nspname AS schema,
+  t.relname AS tbl,
+  i.relname AS index_name,
+  string_agg(a.attname, ', ' ORDER BY a.attnum) AS pk_columns
+FROM pg_index x
+JOIN pg_class t ON t.oid = x.indrelid
+JOIN pg_namespace n ON n.oid = t.relnamespace
+JOIN pg_class i ON i.oid = x.indexrelid
+JOIN pg_attribute a ON a.attrelid = t.oid AND a.attnum = ANY(x.indkey)
+WHERE x.indisprimary
+  AND n.nspname NOT IN ('pg_catalog','information_schema')
+GROUP BY n.nspname, t.relname, i.relname
+ORDER BY schema, tbl;
