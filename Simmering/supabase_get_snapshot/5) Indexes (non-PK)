@@ -1,0 +1,14 @@
+SELECT
+  schemaname AS schema,
+  tablename  AS tbl,
+  indexname,
+  indexdef
+FROM pg_indexes
+WHERE schemaname NOT IN ('pg_catalog','information_schema')
+  AND indexname NOT IN (
+    SELECT i.relname
+    FROM pg_index x
+    JOIN pg_class i ON i.oid = x.indexrelid
+    WHERE x.indisprimary
+  )
+ORDER BY schema, tbl, indexname;
