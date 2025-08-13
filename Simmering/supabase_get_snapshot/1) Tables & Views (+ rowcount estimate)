@@ -1,0 +1,17 @@
+WITH objs AS (
+  SELECT n.nspname AS schema,
+         c.relname AS name,
+         CASE c.relkind
+           WHEN 'r' THEN 'TABLE'
+           WHEN 'v' THEN 'VIEW'
+           WHEN 'm' THEN 'MATERIALIZED VIEW'
+           WHEN 'f' THEN 'FOREIGN TABLE'
+           ELSE c.relkind::text
+         END AS kind,
+         c.reltuples::bigint AS est_rows
+  FROM pg_class c
+  JOIN pg_namespace n ON n.oid = c.relnamespace
+  WHERE n.nspname NOT LIKE 'pg_%' AND n.nspname <> 'information_schema'
+    AND c.relkind IN ('r','v','m','f')
+)
+SELECT * FROM objs ORDER BY schema, kind, name;
