@@ -1,0 +1,21 @@
+// Build a stable meal_id and normalize message
+const m = $json.message || $json.edited_message || {};
+const from = m.from || {};
+const chat = m.chat || {};
+const text = (m.text || m.caption || "").trim();
+const ts = new Date((m.date || Math.floor(Date.now()/1000)) * 1000).toISOString();
+const meal_id = `tg-${chat.id}-${m.message_id}`;
+
+return [{
+  json: {
+    meal_id,
+    source: "telegram",
+    chat_id: chat.id,
+    user_id: from.id,
+    username: from.username || null,
+    ts,
+    payload: m,            // raw Telegram payload
+    context: {},           // fill later if you want
+    flags: {}
+  }
+}];
