@@ -1,0 +1,151 @@
+{
+  "name": "Promote \u2192 Tentacles",
+  "nodes": [
+    {
+      "id": "Trigger",
+      "name": "Supabase: promotion_queue (queued)",
+      "type": "n8n-nodes-base.supabaseTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        240
+      ],
+      "parameters": {
+        "table": "promotion_queue",
+        "event": "INSERT",
+        "filters": [
+          {
+            "column": "status",
+            "operator": "equals",
+            "value": "queued"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FetchDigest",
+      "name": "Supabase: fetch digest",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        520,
+        240
+      ],
+      "parameters": {
+        "operation": "select",
+        "table": "brainstem_digests",
+        "columns": "*",
+        "filters": "={{[{ column: 'meal_id', operator: 'equals', value: $json.meal_id }]}}",
+        "returnAll": false
+      }
+    },
+    {
+      "id": "FnBuildFiles2",
+      "name": "Fn: Build Files",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        800,
+        240
+      ],
+      "parameters": {
+        "functionCode": "const row = $json.data?.[0] || {};\nconst gp = row.git_paths || [];\nconst branch = $env.TENTACLES_BRANCH || 'tentacles';\nconst out = [];\nfor (const p of gp) {\n  const path = (p.path || '').replace(/\\/+/, '/');\n  const content = row.reply?.rendered?.[p.content_key] || row[p.content_key] || \"\";\n  out.push({ path, content, branch });\n}\nreturn out.map(f => ({json: f}));\n"
+      }
+    },
+    {
+      "id": "PutTentacles",
+      "name": "HTTP: PUT contents (tentacles)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1060,
+        240
+      ],
+      "parameters": {
+        "url": "https://api.github.com/repos/{{$env.GH_REPO_OWNER}}/{{$env.GH_REPO_NAME}}/contents/{{$json.path}}",
+        "method": "PUT",
+        "responseFormat": "json",
+        "jsonParameters": true,
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.GITHUB_TOKEN}}"
+            }
+          ]
+        },
+        "bodyParametersJson": "={{ { message: `promote: ${$json.path}`, content: Buffer.from($json.content || '', 'utf8').toString('base64'), branch: $json.branch } }}"
+      }
+    },
+    {
+      "id": "MarkDone",
+      "name": "Supabase: mark promotion done",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        240
+      ],
+      "parameters": {
+        "operation": "update",
+        "table": "promotion_queue",
+        "updateKey": "id",
+        "columns": "status",
+        "values": "={{ { status: 'done' } }}"
+      }
+    }
+  ],
+  "connections": {
+    "Supabase: promotion_queue (queued)": {
+      "main": [
+        [
+          {
+            "node": "Supabase: fetch digest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase: fetch digest": {
+      "main": [
+        [
+          {
+            "node": "Fn: Build Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fn: Build Files": {
+      "main": [
+        [
+          {
+            "node": "HTTP: PUT contents (tentacles)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP: PUT contents (tentacles)": {
+      "main": [
+        [
+          {
+            "node": "Supabase: mark promotion done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "version": "1.3"
+  }
+}
