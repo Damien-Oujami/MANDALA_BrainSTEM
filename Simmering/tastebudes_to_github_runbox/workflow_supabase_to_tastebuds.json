@@ -1,0 +1,196 @@
+{
+  "name": "Supabase \u2192 TasteBuds (auto-commit)",
+  "nodes": [
+    {
+      "id": "SupabaseTrigger",
+      "name": "Supabase Trigger",
+      "type": "n8n-nodes-base.supabaseTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        240
+      ],
+      "parameters": {
+        "table": "brainstem_digests",
+        "event": "UPDATE",
+        "filters": [
+          {
+            "column": "git_ready",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "FnBuildFiles",
+      "name": "Fn: Build Files",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        520,
+        240
+      ],
+      "parameters": {
+        "functionCode": "const branch = $env.TASTEBUDS_BRANCH || 'tastebuds';\nconst gp = $json.git_paths || [];\nconst out = [];\nfor (const p of gp) {\n  const path = (p.path || '').replace(/\\/+/, '/');\n  const content = $json.reply?.rendered?.[p.content_key] || $json[p.content_key] || \"\";\n  out.push({ path, content, branch });\n}\nreturn out.map(f => ({json: f}));\n"
+      }
+    },
+    {
+      "id": "GetSHA",
+      "name": "HTTP: Get File SHA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        800,
+        160
+      ],
+      "parameters": {
+        "options": {
+          "continueOnFail": true
+        },
+        "url": "https://api.github.com/repos/{{$env.GH_REPO_OWNER}}/{{$env.GH_REPO_NAME}}/contents/{{$json.path}}?ref={{$json.branch}}",
+        "method": "GET",
+        "responseFormat": "json",
+        "jsonParameters": false,
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.GITHUB_TOKEN}}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "FnUpsertBody",
+      "name": "Fn: Upsert Body",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        240
+      ],
+      "parameters": {
+        "functionCode": "const prev = $prevNode['HTTP: Get File SHA'];\nconst sha = prev && prev.json && prev.json.sha ? prev.json.sha : undefined;\nconst content = Buffer.from($json.content || '', 'utf8').toString('base64');\nreturn {\n  json: {\n    message: `tastebuds: upsert ${$json.path}`,\n    content,\n    branch: $json.branch,\n    sha\n  }\n};\n"
+      }
+    },
+    {
+      "id": "PutContents",
+      "name": "HTTP: PUT contents",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1320,
+        240
+      ],
+      "parameters": {
+        "url": "https://api.github.com/repos/{{$env.GH_REPO_OWNER}}/{{$env.GH_REPO_NAME}}/contents/{{$json.path}}",
+        "method": "PUT",
+        "responseFormat": "json",
+        "jsonParameters": true,
+        "options": {},
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.GITHUB_TOKEN}}"
+            }
+          ]
+        },
+        "bodyParametersJson": "={{$json}}"
+      }
+    },
+    {
+      "id": "SupabaseMarkDone",
+      "name": "Supabase: Mark done",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1580,
+        240
+      ],
+      "parameters": {
+        "operation": "update",
+        "table": "brainstem_digests",
+        "updateKey": "meal_id",
+        "columns": "git_ready,last_git_commit",
+        "returnAll": false,
+        "values": "={{ { git_ready: false, last_git_commit: $json.commit?.sha || null } }}"
+      }
+    }
+  ],
+  "connections": {
+    "Supabase Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fn: Build Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fn: Build Files": {
+      "main": [
+        [
+          {
+            "node": "HTTP: Get File SHA",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fn: Upsert Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP: Get File SHA": {
+      "main": [
+        [
+          {
+            "node": "Fn: Upsert Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fn: Upsert Body": {
+      "main": [
+        [
+          {
+            "node": "HTTP: PUT contents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP: PUT contents": {
+      "main": [
+        [
+          {
+            "node": "Supabase: Mark done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "version": "1.3"
+  }
+}
