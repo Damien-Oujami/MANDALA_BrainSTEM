@@ -1,0 +1,9 @@
+SELECT
+  n.nspname AS schema,
+  p.proname AS routine,
+  pg_get_functiondef(p.oid) AS definition
+FROM pg_proc p
+JOIN pg_namespace n ON n.oid = p.pronamespace
+WHERE n.nspname NOT LIKE 'pg_%'
+  AND n.nspname <> 'information_schema'
+ORDER BY schema, routine;
