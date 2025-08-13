@@ -1,0 +1,24 @@
+-- RLS status
+SELECT
+  n.nspname AS schema,
+  c.relname AS tbl,
+  c.relrowsecurity AS rls_enabled,
+  c.relforcerowsecurity AS rls_forced
+FROM pg_class c
+JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE n.nspname NOT IN ('pg_catalog','information_schema')
+  AND c.relkind = 'r'
+ORDER BY schema, tbl;
+
+-- Policies
+SELECT
+  schemaname  AS schema,
+  tablename   AS tbl,
+  policyname,
+  permissive,
+  roles,
+  cmd,
+  qual,
+  with_check
+FROM pg_policies
+ORDER BY schema, tbl, policyname;
