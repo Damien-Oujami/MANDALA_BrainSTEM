@@ -1,0 +1,10 @@
+SELECT
+  event_object_schema AS schema,
+  event_object_table  AS tbl,
+  trigger_name,
+  action_timing,
+  event_manipulation AS event,
+  action_statement
+FROM information_schema.triggers
+WHERE event_object_schema NOT IN ('pg_catalog','information_schema')
+ORDER BY schema, tbl, trigger_name;
