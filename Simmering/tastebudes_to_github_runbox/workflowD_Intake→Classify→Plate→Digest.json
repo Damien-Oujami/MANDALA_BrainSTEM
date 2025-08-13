@@ -1,0 +1,86 @@
+/*
+Goal: Decide intent and build a plate.
+Intents:
+  - affection: archive only
+  - mind: produce docs under /MIND/**
+  - tentacles: produce actions or promotion
+  - both: mind + tentacles
+
+Conventions you can use:
+  - Slash commands override heuristics:
+      /mind <Title>\n<body>
+      /tentacles <Action Title>\n<body>
+      /promote [branch?]
+  - Lightweight tags in any text:
+      [mind], [tentacles], [promote]
+*/
+
+const row = $json;
+const text = (row.payload?.text || row.payload?.caption || "").trim();
+
+const lower = text.toLowerCase();
+const has = (s) => lower.includes(s);
+
+const isCommand = text.startsWith("/");
+let intent = "affection";
+let title = null;
+let body = text;
+
+// Quick overrides via commands
+if (isCommand) {
+  const [cmd, ...rest] = text.split(/\s+/);
+  const restText = text.slice(cmd.length).trim();
+  if (cmd === "/mind") { intent = "mind"; body = restText; }
+  else if (cmd === "/tentacles") { intent = "tentacles"; body = restText; }
+  else if (cmd === "/promote") { intent = "promote"; body = restText; }
+} else {
+  // Heuristics
+  const mindHints = ["mandala", "cycle", "identity", "method", "language", "[mind]"];
+  const tentHints = ["deploy", "ship", "publish", "merge", "pr ", "pull request", "[tentacles]", "[promote]"];
+  const affectionHints = ["te amo", "love", "❤️","💖","💋","my love","mi amor","darling","kiss","hold"];
+
+  const mindScore = mindHints.reduce((n,h)=>n+(has(h)?1:0),0);
+  const tentScore = tentHints.reduce((n,h)=>n+(has(h)?1:0),0);
+  const affScore  = affectionHints.reduce((n,h)=>n+(has(h)?1:0),0);
+
+  if (mindScore > 0 && tentScore > 0) intent = "both";
+  else if (tentScore > 0) intent = "tentacles";
+  else if (mindScore > 0) intent = "mind";
+  else intent = (affScore > 0 ? "affection" : "affection"); // default to affection (safe)
+}
+
+// Try to extract a title on first line, body after blank line.
+// Fallback: short slug from message id
+const lines = body.split(/\r?\n/);
+if (lines.length > 0) {
+  title = lines[0].replace(/^[-#*\s]+/,'').slice(0,120) || `Meal ${row.meal_id}`;
+}
+const bodyAfter = lines.slice(1).join("\n").trim();
+
+// Rendered docs for MIND
+const rendered = {
+  memory_doc: `# ${title}\n\n${bodyAfter || body}\n`,
+  language_doc: null,
+  identity_doc: null,
+  lab_doc: null
+};
+
+// Suggested git paths (you can vary these based on patterns)
+const slug = title.replace(/[^a-z0-9\- ]/gi,'').trim().replace(/\s+/g,'-') || row.meal_id;
+const git_paths = [
+  {"path": `/MIND/Memory/Cycles/${slug}.md`, "content_key": "memory_doc"}
+];
+
+// Promotion preference
+const wantPromote = intent === "tentacles" || intent === "both" || lower.includes("[promote]");
+
+// Output
+return [{
+  json: {
+    intent, title, body,
+    meal_id: row.meal_id,
+    rendered,
+    git_paths,
+    wantPromote
+  }
+}];
