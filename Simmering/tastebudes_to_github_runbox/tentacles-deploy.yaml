@@ -1,0 +1,9 @@
+name: tentacles-deploy
+on:
+  push:
+    branches: [ "tentacles" ]
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Tentacles push received. Hook deploy here later."
