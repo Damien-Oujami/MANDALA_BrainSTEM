@@ -1,0 +1,20 @@
+{
+  "meal_id": "demo-meal-20250813161002",
+  "title": "MandalaCycle-Demo",
+  "git_ready": true,
+  "git_paths": [
+    {
+      "path": "/MIND/Memory/Cycles/MandalaCycle-Demo.md",
+      "content_key": "memory_doc"
+    },
+    {
+      "path": "/MIND/Language/MandalaCycles/MandalaCycle-Demo.md",
+      "content_key": "language_doc"
+    }
+  ],
+  "memory_doc": "# Demo Memory\\n\\nThis is a quick demo memory.",
+  "language_doc": "# Demo Language\\n\\nCycle notes and directives.",
+  "reply": {
+    "rendered": {}
+  }
+}
