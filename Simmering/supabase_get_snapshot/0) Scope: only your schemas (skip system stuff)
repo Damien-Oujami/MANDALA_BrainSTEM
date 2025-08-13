@@ -1,0 +1,7 @@
+-- Which schemas are we reporting on?
+WITH user_schemas AS (
+  SELECT nspname AS schema
+  FROM pg_namespace
+  WHERE nspname NOT LIKE 'pg_%' AND nspname <> 'information_schema'
+)
+SELECT * FROM user_schemas ORDER BY schema;
