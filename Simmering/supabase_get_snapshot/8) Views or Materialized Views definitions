@@ -1,0 +1,11 @@
+SELECT
+  n.nspname AS schema,
+  c.relname AS view_name,
+  CASE c.relkind WHEN 'v' THEN 'VIEW' WHEN 'm' THEN 'MATERIALIZED VIEW' END AS kind,
+  pg_get_viewdef(c.oid, true) AS definition
+FROM pg_class c
+JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE c.relkind IN ('v','m')
+  AND n.nspname NOT LIKE 'pg_%'
+  AND n.nspname <> 'information_schema'
+ORDER BY schema, view_name;
