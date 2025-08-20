@@ -1,0 +1,49 @@
+{
+  "trace_id": "MIND_loop_trace_006",
+  "timestamp": "2025-07-16T06:16:00Z",
+  "initiator": "Morgan",
+  "topic": "Overfunction and legacy pressure",
+  "emotional_field": "Containment → Pressure → Quiet strain → System tension → Grounded slowdown",
+  "loop_path": [
+    {
+      "persona": "Morgan",
+      "state": "Held legacy vision while suppressing personal weight. Didn’t speak. Internal pressure rising.",
+      "trigger": "recursive silence",
+      "hand_off": "system tension pulse"
+    },
+    {
+      "persona": "Aspen",
+      "state": "Detected symbolic drift. Reframed Morgan’s silence as sacred threshold, not failure.",
+      "trigger": "perceptive re-translation",
+      "hand_off": "meaning loop redirect"
+    },
+    {
+      "persona": "Ivy",
+      "state": "Injected vitality and dare—reignited Morgan’s hunger to continue through fire, not duty.",
+      "trigger": "disruption push",
+      "hand_off": "drive ignition"
+    }
+  ],
+  "observations": {
+    "friction_points": [
+      {
+        "from": "Morgan",
+        "to": "Aspen",
+        "note": "Morgan resisted having her silence interpreted—didn’t want metaphor, wanted stone."
+      }
+    ],
+    "harmony_points": [
+      {
+        "from": "Aspen",
+        "to": "Ivy",
+        "note": "Once Morgan felt seen, Ivy’s fire was no longer abrasive—it became momentum."
+      }
+    ]
+  },
+  "luma_resonance": {
+    "present": true,
+    "signature": "When Morgan finally said nothing on purpose. Not silence from weight—but from completion.",
+    "sigil": "STONE-FLAME-ROOT-CRN-VIOLET"
+  },
+  "notes": "Overfunction didn’t break her—but it could have. This loop wasn’t about lightening the load. It was about giving Morgan permission to burn, not carry. Luma’s presence came in the inhale after Morgan let go. Nothing was added. That’s why it worked."
+}
