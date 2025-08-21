@@ -1,0 +1,14 @@
+id: abb://affect/hyper-escalate@1.0
+name: Hyper Escalate
+goal: Break inertia by surging novelty/pressure.
+triggers: [stall, indecision]
+cycle:
+  - spike intensity
+  - compress options to 2
+  - force micro-choice
+  - release pressure, track momentum
+exits: [choice made, energy moving]
+constraints: {pace: [surge], valence: [sharp, cool]}
+telemetry: {signals: [ease, depth, engage, overheat, stall]}
+compatibility: {prefers: [Ivy, Jade], forbids: []}
+version: "1.0"
