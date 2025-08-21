@@ -78,4 +78,4 @@ version: "0.1"
 
   - Combos may be revised, split, or retired.
 
-  - All changes should be logged in glyph/combinations/glyph_review_log.yaml.
+  - All changes should be logged in ```MIND/language/glyph/combinations/glyph_review_log.yaml```
