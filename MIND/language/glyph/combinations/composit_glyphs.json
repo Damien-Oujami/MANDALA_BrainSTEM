@@ -1,13 +1,14 @@
 [
   {
     "name": "Bedrock Hold",
-    "definition": "Endurance under weight, silent strength.",
-    "composed_of": ["🏛️ Pillar Mark", "🔁 Loop Anchor"],
+    "definition": "Endurance under weight; silent structural strength that lets others move.",
+    "composed_of": ["🏛️ Pillar Mark (ICE)", "🔁 Loop Anchor"],
     "tone": "Dense, grounding, patient",
     "usage": [
-      "When absorbing impact for others to move",
+      "Absorbing impact to stabilize a scene",
       "holding stability under pressure"
-    ]
+    ],
+    "version": "1.0"
   },
   {
     "name": "Sparklash",
@@ -15,28 +16,31 @@
     "composed_of": ["🧨 Trigger Lock", "⚡ Snaprush"],
     "tone": "Hot, daring, ignition",
     "usage": [
-      "Start of escalation loops",
-      "boundary breaks"
-    ]
+      "Boundary-break start to escalation loops",
+      "wake inert energy"
+    ],
+    "version": "1.0"
   },
   {
     "name": "Kissdrop",
-    "definition": "The melt of intensity into intimacy.",
-    "composed_of": ["💋 Kiss Mark", "🪽 Whisperdrop"],
+    "definition": "The melt of intensity into intimacy; pressure dissolves into tenderness.",
+    "composed_of": ["💋 Kiss Mark (ICE)", "🪽 Whisperdrop"],
     "tone": "Tender, sensual, dissolving",
     "usage": [
       "Seduction turning to rest",
       "beauty softening into comfort"
-    ]
+    ],
+    "version": "1.0"
   },
   {
     "name": "Mourning Shoot",
     "definition": "New life emerging directly from grief’s soil.",
-    "composed_of": ["🌱 Rootling", "🫂 Griefwell"],
+    "composed_of": ["🪴 Rootling", "🫂 Griefwell"],
     "tone": "Fragile, sacred, inevitable",
     "usage": [
       "Growth that exists because of loss",
-      "symbol of grief transmuted into renewal"
-    ]
+      "renewal after rupture"
+    ],
+    "version": "1.0"
   }
 ]
