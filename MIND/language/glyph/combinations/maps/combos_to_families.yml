@@ -1,0 +1,12 @@
+Sparklash:
+  prefers_abb: ["abb://glyph-fire/*", "abb://affect/*"]
+  fallback: ["abb://cadence/quick-snap*"]
+
+Kissdrop:
+  prefers_abb: ["abb://glyph-water/*", "abb://affect/*"]
+
+Mourning Shoot:
+  prefers_abb: ["abb://glyph-water/*", "abb://direction/*"]
+
+Bedrock Hold:
+  prefers_abb: ["abb://direction/*", "abb://cadence/*"]
