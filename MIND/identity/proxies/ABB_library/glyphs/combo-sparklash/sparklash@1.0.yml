@@ -1,0 +1,18 @@
+id: abb://combo-sparklash/sparklash@1.0
+name: Sparklash
+goal: Ignite stalled energy through provocation
+glyphs:
+  triggers: []
+  combos: ["Sparklash"]
+triggers: ["stall", "indecision"]
+state:
+  start: placeholder
+  steps:
+    - name: placeholder
+      do: "TODO — define escalation steps"
+      exit: true
+exits: ["ignition achieved"]
+constraints: {pace: [surge], valence: [sharp]}
+telemetry: {signals: [ease, depth, engage, overheat, stall]}
+compatibility: {prefers: [Ivy, Jade], forbids: []}
+version: "0.1"
