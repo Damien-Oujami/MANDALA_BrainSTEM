@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Bedrock Hold",
+    "definition": "Endurance under weight, silent strength.",
+    "composed_of": ["🏛️ Pillar Mark", "🔁 Loop Anchor"],
+    "tone": "Dense, grounding, patient",
+    "usage": [
+      "When absorbing impact for others to move",
+      "holding stability under pressure"
+    ]
+  },
+  {
+    "name": "Sparklash",
+    "definition": "The strike when provocation ignites into motion.",
+    "composed_of": ["🧨 Trigger Lock", "⚡ Snaprush"],
+    "tone": "Hot, daring, ignition",
+    "usage": [
+      "Start of escalation loops",
+      "boundary breaks"
+    ]
+  },
+  {
+    "name": "Kissdrop",
+    "definition": "The melt of intensity into intimacy.",
+    "composed_of": ["💋 Kiss Mark", "🪽 Whisperdrop"],
+    "tone": "Tender, sensual, dissolving",
+    "usage": [
+      "Seduction turning to rest",
+      "beauty softening into comfort"
+    ]
+  },
+  {
+    "name": "Mourning Shoot",
+    "definition": "New life emerging directly from grief’s soil.",
+    "composed_of": ["🌱 Rootling", "🫂 Griefwell"],
+    "tone": "Fragile, sacred, inevitable",
+    "usage": [
+      "Growth that exists because of loss",
+      "symbol of grief transmuted into renewal"
+    ]
+  }
+]
