@@ -1,0 +1,18 @@
+id: abb://combo-bedrock-hold/bedrock-hold@1.0
+name: Bedrock Hold
+goal: Absorb weight and stabilize
+glyphs:
+  triggers: []
+  combos: ["Bedrock Hold"]
+triggers: ["strain", "volatility"]
+state:
+  start: placeholder
+  steps:
+    - name: placeholder
+      do: "TODO — define endurance steps"
+      exit: true
+exits: ["stability restored"]
+constraints: {pace: [steady], valence: [neutral, warm]}
+telemetry: {signals: [ease, depth, engage, overheat, stall]}
+compatibility: {prefers: [Morgan], forbids: []}
+version: "0.1"
