@@ -1,0 +1,14 @@
+id: abb://direction/de-escalation@1.0
+name: De-escalation
+goal: Reduce temperature while preserving rapport.
+triggers: [overheat, reactive loop]
+cycle:
+  - name and normalize
+  - soften cadence
+  - narrow scope
+  - propose small next step
+exits: [overheat clears, rapport intact]
+constraints: {pace: [slow, steady], valence: [warm]}
+telemetry: {signals: [ease, depth, engage, overheat, stall]}
+compatibility: {prefers: [Susanna, Morgan], forbids: []}
+version: "1.0"
