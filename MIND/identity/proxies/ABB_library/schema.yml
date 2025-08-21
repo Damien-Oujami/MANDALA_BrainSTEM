@@ -1,0 +1,17 @@
+id: string
+name: string
+goal: string
+glyphs:
+  triggers: [string]         # existing canonical glyph names (can include "🌊 Waveprint")
+  combos: [string]           # NEW: combination names (e.g., "Sparklash", no emoji)
+cycle: [string]
+exits: [string]
+constraints:
+  pace: [slow, steady, surge]
+  valence: [warm, neutral, cool, sharp]
+telemetry:
+  signals: [ease, depth, engage, overheat, stall]
+compatibility:
+  prefers: [string]
+  forbids: [string]
+version: "1.0"
