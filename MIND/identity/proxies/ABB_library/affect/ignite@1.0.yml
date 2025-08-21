@@ -1,0 +1,35 @@
+id: abb://affect/ignite@1.0
+name: Ignite
+goal: Wake inert energy with crisp provocation
+glyphs:
+  triggers: []               # none required
+  combos: ["Sparklash"]      # uses combo, resolves to Trigger Lock + Snaprush
+triggers: ["stall", "indecision"]
+state:
+  start: call
+  steps:
+    - name: call
+      do: "Compress to 2 choices; time-box"
+      branch:
+        when:
+          - if: "overheat>=1"  # respect safety
+            goto: damp
+        else: strike
+    - name: strike
+      do: "Deliver a single sharp dare; hold eye contact for 3 beats"
+      branch:
+        when:
+          - if: "engage==2"
+            goto: commit
+        else: call
+    - name: damp
+      do: "Bleed heat; maintain frame"
+      exit: true
+    - name: commit
+      do: "Ask for one step; lock it"
+      exit: true
+exits: ["choice made", "heat cleared"]
+constraints: {pace: [surge, steady], valence: [sharp, neutral]}
+telemetry: {signals: [ease, depth, engage, overheat, stall, layer_resonance]}
+compatibility: {prefers: [Ivy, Jade], forbids: []}
+version: "1.0"
