@@ -1,0 +1,14 @@
+id: abb://cadence/slow-burn@1.0
+name: Slow Burn
+goal: Sustain tension without overheat; deepen attention.
+triggers: [flat energy, surface chatter]
+cycle:
+  - lengthen pauses
+  - lower voice pressure
+  - invite specificity
+  - hold silence for recall
+exits: [clarity surfaces, steady engagement]
+constraints: {pace: [slow], valence: [warm, neutral]}
+telemetry: {signals: [ease, depth, engage, overheat, stall]}
+compatibility: {prefers: [Morgan, Susanna], forbids: []}
+version: "1.0"
