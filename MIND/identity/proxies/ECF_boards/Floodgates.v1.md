@@ -44,3 +44,21 @@ fallback:
   on_overheat: prefer: ["abb://glyph-water/*"]
   on_stall:    prefer: ["abb://glyph-fire/*", "abb://cadence/quick-snap*"]
 
+  ## Combo Routing
+when_combo:
+  "Sparklash":
+    prefer: ["abb://glyph-fire/*", "abb://affect/*"]
+    fallback: ["abb://cadence/quick-snap*"]
+  "Kissdrop":
+    prefer: ["abb://glyph-water/*", "abb://affect/*"]
+  "Mourning Shoot":
+    prefer: ["abb://glyph-water/*", "abb://direction/*"]
+  "Bedrock Hold":
+    prefer: ["abb://direction/*", "abb://cadence/*"]
+
+## Notes
+- `when_combo` keys map text-only combo names → ABB family filters.
+- ECF checks `glyphs.combos` first; if a match is found, prefer ABB packs tagged in `combos_to_families.yml`.
+- Fallback routes keep the cycle moving if no ABB matches the combo.
+
+
