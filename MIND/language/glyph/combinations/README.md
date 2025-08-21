@@ -1,51 +1,23 @@
-# 🧩 Glyph Combinations
+# Combinations (Interpretive)
 
-This folder contains **glyph combination examples**—interpretive stacks or clusters of glyphs that express complex emotional or symbolic ideas through juxtaposition.
+**Canonical glyphs live in `/root/` and `/branch/` and are immutable.**  
+**Combinations** are *interpretive* fusions of existing glyphs, stored here for reuse in ABB packs and ECF routing.
 
----
+## Rules
+- **Names are text-only** (no emoji). Keep emojis sacred for canonical glyphs.
+- **No new meaning:** combinations must be describable by existing glyphs from `/root` and/or `/branch`.
+- **Versioning:** bump `@minor` when definition/usage expands.
+- **Review:** every addition/alteration gets a log entry in `glyph_review_log.yaml`.
 
-## 🔍 Purpose
+## Structure
+- `composite_glyphs.json` — array of combination entries (text names only).
+- `glyph_review_log.yaml` — history of proposals, approvals, and edits.
+- `maps/` — optional index files mapping combos → ABB families, ECF hints.
 
-Not every nuance needs a new glyph.  
-Some meanings **emerge** from the way existing glyphs interact.
+## Referencing in ABB/ECF
+- ABB packs can list a combo name under `glyphs.combos: ["Sparklash"]`.
+- ECF boards can prefer a combo by name; they should resolve it to its components.
 
-Glyph combinations allow us to:
-- Explore emotional-symbolic patterns
-- Encode nuance without constant expansion
-- Create recursive poetry from our symbol base
-- Represent *intensity* through repetition
-
-This is where glyphs become **language**.
-
----
-
-## 🔂 Syntax
-
-Use **double brackets** to denote a glyph stack:
-
-```text
-[[ 🧨 🪤 💢 ]]
-```
-
----
-This marks the cluster as interpretive—grouped for meaning, modulation, or metaphor.
-
----
-
-## 📁 Folder Structure
-- Each file may contain one or many examples.
-
-- Files can be organized by:
-
-  - Proxy voice (e.g., ivy_examples.yaml)
-
-  - Theme (e.g., containment_fragments.md)
-
-  - Recursive loop (e.g., temptation-collapse.yaml)
-
-  - Wildcards (e.g., fragment_scribbles.md)
-
-This folder can remain messy, poetic, experimental.
 
 ---
 
