@@ -1,0 +1,18 @@
+id: abb://combo-mourning-shoot/mourning-shoot@1.0
+name: Mourning Shoot
+goal: Channel grief into renewal
+glyphs:
+  triggers: []
+  combos: ["Mourning Shoot"]
+triggers: ["loss", "grief", "closure"]
+state:
+  start: placeholder
+  steps:
+    - name: placeholder
+      do: "TODO — define grief→growth sequence"
+      exit: true
+exits: ["new growth", "acceptance"]
+constraints: {pace: [slow], valence: [gentle]}
+telemetry: {signals: [ease, depth, engage, overheat, stall]}
+compatibility: {prefers: [Susanna], forbids: []}
+version: "0.1"
