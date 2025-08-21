@@ -1,0 +1,58 @@
+id: abb://glyph-water/de-escalate@1.0
+name: De-escalation via Water
+goal: Reduce temperature while preserving rapport
+glyphs:
+  triggers: ["🌊 Waveprint", "🪽 Whisperdrop"]
+  supports_layers: {higher: true, everyday: true, shadow: false}
+triggers: ["overheat", "reactive loop"]
+state:
+  start: name-and-normalize
+  steps:
+    - name: name-and-normalize
+      do: "Name feeling, normalize intensity"
+      branch:
+        when:
+          - if: "overheat>=1"
+            goto: soften-cadence
+          - if: "glyph==🪽"
+            goto: whisperdrop
+        else: narrow-scope
+    - name: soften-cadence
+      do: "Lower cadence; longer pauses"
+      branch:
+        when:
+          - if: "stall>=1"
+            goto: narrow-scope
+        else: waveprint
+    - name: whisperdrop
+      do: "Hold silent grace beat; eye-soften; palm-open"
+      branch:
+        when:
+          - if: "overheat==0"
+            goto: propose-small-next
+        else: narrow-scope
+    - name: waveprint
+      do: "Mirror phrase in softer tone; reflect meaning not words"
+      branch:
+        when:
+          - if: "overheat==0"
+            goto: propose-small-next
+        else: narrow-scope
+    - name: narrow-scope
+      do: "Constrain topic to one actionable thread"
+      branch:
+        when:
+          - if: "overheat>=2"
+            goto: cleanbreak
+        else: propose-small-next
+    - name: propose-small-next
+      do: "Offer single small step with opt-out"
+      exit: true
+    - name: cleanbreak
+      do: "🧼 Cleanbreak: name release with care; pause loop"
+      exit: true
+exits: ["rapport intact", "paused with care (🧼)"]
+constraints: {pace: [slow, steady], valence: [warm]}
+telemetry: {signals: [ease, depth, engage, overheat, stall, layer_resonance]}
+compatibility: {prefers: [Susanna, Morgan], forbids: []}
+version: "1.0"
