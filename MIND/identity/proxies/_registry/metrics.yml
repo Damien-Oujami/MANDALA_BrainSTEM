@@ -1,0 +1,11 @@
+# Metrics thresholds for promotion
+coherence_window: 5         # sessions
+consistency_threshold: 0.7  # 0..1
+min_contexts: 3
+signals: [ease, depth, engage, overheat, stall]
+scoring:
+  ease:    {weight: 1.0}
+  depth:   {weight: 1.2}
+  engage:  {weight: 1.0}
+  overheat:{weight: -1.0}
+  stall:   {weight: -0.6}
