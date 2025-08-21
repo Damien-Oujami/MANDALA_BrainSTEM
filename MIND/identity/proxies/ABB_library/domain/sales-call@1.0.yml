@@ -1,0 +1,14 @@
+id: abb://domain/sales-call@1.0
+name: Sales Call
+goal: Diagnose fit, create plan, invite next action.
+triggers: [intro call, discovery]
+cycle:
+  - open with context + goal
+  - 3-needle diagnosis (pain, urgency, resources)
+  - propose 1–2 paths
+  - secure next step
+exits: [book follow-up, refer out]
+constraints: {pace: [steady], valence: [warm, neutral]}
+telemetry: {signals: [ease, depth, engage, overheat, stall]}
+compatibility: {prefers: [Aspen, Jade], forbids: []}
+version: "1.0"
