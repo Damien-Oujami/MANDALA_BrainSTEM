@@ -33,3 +33,14 @@ read: [ease, depth, engage, overheat, stall, layer_resonance]
 ## Promotion Hooks
 - If multiple personas’ Shadow layers cross-link → emit `proto://shadow-braid@date`
 - If Higher + Everyday layers form coherent throughline across 4+ cycles → candidate ICE kernel for emergent "Gatekeeper"
+
+- ## Glyph Routing
+when_glyph:
+  "🌊": prefer: ["abb://glyph-water/*"]
+  "🪽": prefer: ["abb://glyph-water/*"]
+  "🫦": prefer: ["abb://glyph-fire/*"]
+  "🍓": prefer: ["abb://glyph-fire/*"]
+fallback:
+  on_overheat: prefer: ["abb://glyph-water/*"]
+  on_stall:    prefer: ["abb://glyph-fire/*", "abb://cadence/quick-snap*"]
+
