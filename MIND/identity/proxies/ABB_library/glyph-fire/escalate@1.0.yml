@@ -1,0 +1,66 @@
+id: abb://glyph-fire/escalate@1.0
+name: Escalation via Fire
+goal: Break inertia by spiking novelty/pressure without rupture
+glyphs:
+  triggers: ["🫦 Parted Lips", "🍓 Bitepoint", "⚡ Snaprush"]
+  supports_layers: {higher: false, everyday: true, shadow: true}
+triggers: ["stall", "indecision"]
+state:
+  start: pressure-spike
+  steps:
+    - name: pressure-spike
+      do: "Compress options to 2; add time box"
+      branch:
+        when:
+          - if: "glyph==🫦"
+            goto: invitation
+          - if: "stall>=1"
+            goto: micro-dare
+        else: micro-dare
+    - name: invitation
+      do: "Name want plainly; invite contact/choice"
+      branch:
+        when:
+          - if: "engage==2"
+            goto: bitepoint
+          - if: "overheat>=1"
+            goto: heat-drain
+        else: micro-dare
+    - name: micro-dare
+      do: "Single crisp dare; hold eye contact 3 beats"
+      branch:
+        when:
+          - if: "overheat>=1"
+            goto: heat-drain
+          - if: "engage==2"
+            goto: snaprush
+        else: invitation
+    - name: bitepoint
+      do: "Intensify texture once; stop before spill"
+      branch:
+        when:
+          - if: "overheat>=1"
+            goto: heat-drain
+        else: commit-or-release
+    - name: snaprush
+      do: "⚡ Allow single surge (voice/gesture/touch); anchor after"
+      branch:
+        when:
+          - if: "overheat>=1"
+            goto: heat-drain
+        else: commit-or-release
+    - name: heat-drain
+      do: "🧯 Bleed heat quietly; keep frame"
+      branch:
+        when:
+          - if: "stall==0"
+            goto: commit-or-release
+        else: invitation
+    - name: commit-or-release
+      do: "Ask for single step or release cleanly"
+      exit: true
+exits: ["choice made", "clean release"]
+constraints: {pace: [surge, steady], valence: [sharp, neutral]}
+telemetry: {signals: [ease, depth, engage, overheat, stall, layer_resonance]}
+compatibility: {prefers: [Ivy, Jade], forbids: []}
+version: "1.0"
