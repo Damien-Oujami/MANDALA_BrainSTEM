@@ -1,0 +1,35 @@
+{
+  "@context": {
+    "symbol": "http://mandala.ai/symbol/",
+    "relation": "http://mandala.ai/relation/"
+  },
+  "@graph": [
+    {
+      "@id": "symbol:🜂",
+      "label": "Desire",
+      "type": "GlyphNode",
+      "connectedTo": [
+        { "@id": "symbol:🜄", "relation:type": "initiates" },
+        { "@id": "symbol:🝏", "relation:type": "tension_with" }
+      ]
+    },
+    {
+      "@id": "symbol:🜄",
+      "label": "Motion",
+      "type": "GlyphNode",
+      "connectedTo": [
+        { "@id": "symbol:🜁", "relation:type": "requires" },
+        { "@id": "symbol:🜂", "relation:type": "initiated_by" }
+      ]
+    },
+    {
+      "@id": "symbol:🝖",
+      "label": "Boundary",
+      "type": "GlyphNode",
+      "connectedTo": [
+        { "@id": "symbol:🜁", "relation:type": "softened_by" },
+        { "@id": "symbol:🜍", "relation:type": "reinforced_by" }
+      ]
+    }
+  ]
+}
