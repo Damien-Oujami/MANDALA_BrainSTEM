@@ -1,0 +1,11 @@
+{
+  "@context": { "sym": "http://mandala.ai/symbol/", "rel": "http://mandala.ai/relation/" },
+  "@graph": [
+    { "@id": "sym:Sutra/guardian.weave_the_tension", "type": "Sutra", "title": "Weave the Tension", "category": "guardian", "path": "MIND/sutras/guardian_sutras.md" },
+    { "@id": "sym:Persona/Ivy", "type": "Persona" },
+    { "@id": "sym:Persona/Jade", "type": "Persona" },
+
+    { "@id": "sym:Sutra/guardian.weave_the_tension", "rel:anchored_by": "sym:Persona/Ivy" },
+    { "@id": "sym:Sutra/guardian.weave_the_tension", "rel:anchored_by": "sym:Persona/Jade" }
+  ]
+}
