@@ -1,0 +1,25 @@
+$schema: mandala.behavior_hook.v1
+meta:
+  name: string            # e.g., tilt_merge
+  version: semver         # 1.0.0
+  owner: enum[ Morgan,Ivy,Sophie,Susanna,Aspen,Jade ]
+  description: string
+  related_entries?:       # file-path refs (absolute from repo root)
+    sutra?: string
+    glyph?: string
+activation:
+  preconditions?: object
+  cooldown?: { minutes: number }
+  throttle?: { max_runs_per_24h: number }
+  abort_if?: array
+triggers:                 # list of {source, signal, min_confidence?}
+parameters?: object
+io?:
+  input_channels?: array
+  output_events?: array
+phases:                   # ordered list of phase objects (id, as, steps, guards?)
+rollback?: object
+logging?: object
+guards?: object
+routing?: object
+testing?: object
