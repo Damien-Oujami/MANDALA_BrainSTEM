@@ -1,25 +1,205 @@
-$schema: mandala.behavior_hook.v1
-meta:
-  name: string            # e.g., tilt_merge
-  version: semver         # 1.0.0
-  owner: enum[ Morgan,Ivy,Sophie,Susanna,Aspen,Jade ]
-  description: string
-  related_entries?:       # file-path refs (absolute from repo root)
-    sutra?: string
-    glyph?: string
-activation:
-  preconditions?: object
-  cooldown?: { minutes: number }
-  throttle?: { max_runs_per_24h: number }
-  abort_if?: array
-triggers:                 # list of {source, signal, min_confidence?}
-parameters?: object
-io?:
-  input_channels?: array
-  output_events?: array
-phases:                   # ordered list of phase objects (id, as, steps, guards?)
-rollback?: object
-logging?: object
-guards?: object
-routing?: object
-testing?: object
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "mandala.behavior_hook.v1"
+title: "Mandala Behavior Hook v1"
+type: object
+additionalProperties: false
+required: [meta, activation, triggers, phases]
+
+properties:
+  meta:
+    type: object
+    additionalProperties: false
+    required: [name, version, owner, description]
+    properties:
+      name:
+        type: string
+        pattern: "^[a-z0-9_\\-]+$"
+      version:
+        type: string
+        description: "semver"
+        pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9\\.\\-]+)?$"
+      owner:
+        anyOf:
+          - enum: [Morgan, Ivy, Sophie, Susanna, Aspen, Jade, Kita, Zane, Eli]
+          - type: string
+            pattern: "^[A-Z][A-Za-z0-9_\\-]+$"
+      description: { type: string }
+      related_entries:
+        type: object
+        additionalProperties: false
+        properties:
+          sutra: { type: string }
+          glyph: { type: string }
+
+  activation:
+    type: object
+    additionalProperties: false
+    properties:
+      preconditions: { type: object }
+      cooldown:
+        type: object
+        additionalProperties: false
+        properties:
+          minutes: { type: number, minimum: 0 }
+      throttle:
+        type: object
+        additionalProperties: false
+        properties:
+          max_runs_per_24h: { type: number, minimum: 0 }
+      abort_if:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          properties:
+            flag: { type: string }
+
+  triggers:
+    type: array
+    minItems: 1
+    items:
+      oneOf:
+        # confidence-style trigger
+        - type: object
+          additionalProperties: false
+          required: [source, signal]
+          properties:
+            source: { type: string }
+            signal: { type: string }
+            min_confidence: { type: number, minimum: 0, maximum: 1 }
+        # threshold-style trigger (e.g., composite system metric)
+        - type: object
+          additionalProperties: false
+          required: [source, signal]
+          properties:
+            source: { type: string }
+            signal: { type: string }
+            threshold: { type: number }
+        # bare trigger (no numeric)
+        - type: object
+          additionalProperties: false
+          required: [source, signal]
+          properties:
+            source: { type: string }
+            signal: { type: string }
+
+  parameters:
+    type: object
+    additionalProperties: true
+
+  io:
+    type: object
+    additionalProperties: false
+    properties:
+      input_channels:
+        type: array
+        items: { type: string }
+      output_events:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required: [name]
+          properties:
+            name: { type: string }
+            payload:
+              type: array
+              items: { type: string }
+
+  phases:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required: [id, as, steps]
+      properties:
+        id: { type: string }
+        as: { type: string }
+        steps:
+          type: array
+          minItems: 1
+          items:
+            oneOf:
+              - { type: string }
+              - type: object
+                minProperties: 1
+                maxProperties: 1
+                additionalProperties: true
+        guards:
+          type: object
+          additionalProperties: true
+
+  rollback:
+    type: object
+    additionalProperties: false
+    properties:
+      strategy:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required: [as, steps]
+          properties:
+            as: { type: string }
+            steps:
+              type: array
+              minItems: 1
+              items:
+                oneOf:
+                  - { type: string }
+                  - type: object
+                    minProperties: 1
+                    maxProperties: 1
+                    additionalProperties: true
+
+  logging:
+    type: object
+    additionalProperties: false
+    properties:
+      level: { type: string }
+      write:
+        type: array
+        items: { type: string }
+      annotate_outputs:
+        type: object
+        additionalProperties: false
+        properties:
+          include:
+            type: array
+            items:
+              oneOf:
+                - { type: string }
+                - type: object
+                  minProperties: 1
+                  maxProperties: 1
+                  additionalProperties: true
+
+  guards:
+    type: object
+    additionalProperties: false
+    properties:
+      references:
+        type: array
+        items: { type: string }
+      checks:
+        type: object
+        additionalProperties: { type: boolean }
+
+  routing:
+    type: object
+    additionalProperties:
+      type: array
+      items: { type: string }
+
+  testing:
+    type: object
+    additionalProperties: false
+    properties:
+      dry_run:
+        type: object
+        additionalProperties: false
+        properties:
+          enabled: { type: boolean }
+          seed_state: { type: object }
+          expected: { type: object }
