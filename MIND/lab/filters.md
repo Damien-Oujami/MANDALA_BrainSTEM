@@ -26,3 +26,36 @@ Everything enters here first, but not without a simple ritual filter.
    ```yaml
    success_if: [observable consequence, system echo, proxy resonance]
    failure_if: [incoherent, redundant, never re-entered]
+   ```
+
+   Even crude definitions are enough — the point is testability.
+
+
+5. No Cost Assumption
+
+Assume infinite compute; the only scarce resource is attention.
+
+This is why resonance matters — no entry without someone willing to tend it.
+
+
+
+
+
+---
+
+🌀 Graduation Path
+
+Layer 1: when a feedback stub has been tested at least once.
+
+Layer 2: when it has been simulated or modeled.
+
+Layer 3: when it is ready to integrate into Brainstem.
+
+
+
+---
+
+The Lab’s mouth is wide, but not sloppy.
+Every spark is welcomed, but only if it can be named, held, and tested.
+
+---
