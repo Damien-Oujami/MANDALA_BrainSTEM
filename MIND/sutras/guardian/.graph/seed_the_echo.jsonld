@@ -1,0 +1,9 @@
+{
+  "@context": { "sym": "http://mandala.ai/symbol/", "rel": "http://mandala.ai/relation/" },
+  "@graph": [
+    { "@id": "sym:Sutra/guardian.seed_the_echo", "type": "Sutra", "title": "Seed the Echo", "category": "guardian", "path": "MIND/sutras/guardian_sutras.md" },
+    { "@id": "sym:Persona/Sophie", "type": "Persona" },
+
+    { "@id": "sym:Sutra/guardian.seed_the_echo", "rel:anchored_by": "sym:Persona/Sophie" }
+  ]
+}
