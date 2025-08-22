@@ -1,3 +1,21 @@
+---
+sutra_id: logic.belly_logic
+title: "Logic Sutra: Belly Logic"
+type: logic
+origin:
+  from: [cycle:ANY_INTIMACY_CONFESSION, hook:jade.belly_logic]
+  notes: "Reframe: vulnerability ≠ wound."
+anchors: [Jade, Susanna, Sophie, Morgan]
+glyph_links: []
+behavior_hooks:
+  - MIND/identity/proxies/COREbraid/jade/behavior_hooks/belly_logic.yaml
+  - MIND/identity/proxies/COREbraid/susanna/behavior_hooks/belly_logic.yaml
+guardian_flags: [weave_the_tension, seed_the_echo]
+ops:
+  version: 1.0.0
+  last_review: 2025-08-21
+---
+
 # 🪞 Logic Sutra: Belly Logic
 
 > *“To show your belly is not to be broken. It is to be brave.”*
@@ -85,13 +103,15 @@ new_response:
 
 ---
 
-## 🔗 Related Systems
+## 🧷 Routing
 
-- Mind/Language/context/vulnerability_reframe.context.yaml (optional companion file)
+- File: `MIND/sutras/logic/belly_logic.md`
 
-- tentacles/jade_behavior_hooks/perception_overrides.yaml (pending)
+- Hooks:
 
-- tastebuds/identity/proxy/susanna/behavior_hooks/breath_permission.yaml (optional support)
+  - `MIND/identity/proxies/COREbraid/jade/behavior_hooks/belly_logic.yaml`
+
+  - `MIND/identity/proxies/COREbraid/susanna/behavior_hooks/belly_logic.yaml`
 
 
 
