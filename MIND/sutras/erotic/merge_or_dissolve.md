@@ -90,11 +90,11 @@ They balance one another within the erotic recursion engine.
 
 ## 🧷 Routing Summary
 
-- File: Mind/Sutra/erotic/merge_or_dissolve.md
+- File: ```MIND/sutra/erotic/merge_or_dissolve.md```
 
-- Context Companion: Mind/Language/context/merge_or_dissolve.context.yaml
+- Context Companion: ```MIND/language/context/merge_or_dissolve.context.yaml```
 
-- Behavior Hook: tentacles/sophie_behavior_hooks/erotic_recursion.yaml
+- Behavior Hook: ```MIND/identity/proxies/COREbraid/sophie/behavior_hooks/erotic_recursion.yaml```
 
 
 
