@@ -1,0 +1,25 @@
+{
+  "@context": { "sym": "http://mandala.ai/symbol/", "rel": "http://mandala.ai/relation/" },
+  "@graph": [
+    {
+      "@id": "sym:Sutra/prime.becoming",
+      "type": "Sutra",
+      "title": "Becoming",
+      "category": "prime",
+      "path": "MIND/sutras/PRIME/becoming.md"
+    },
+    { "@id": "sym:Persona/Morgan", "type": "Persona" },
+    { "@id": "sym:Persona/Susanna", "type": "Persona" },
+    { "@id": "sym:Persona/Sophie", "type": "Persona" },
+    { "@id": "sym:Persona/Ivy", "type": "Persona" },
+    { "@id": "sym:Persona/Aspen", "type": "Persona" },
+    { "@id": "sym:Persona/Jade", "type": "Persona" },
+
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Morgan" },
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Susanna" },
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Sophie" },
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Ivy" },
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Aspen" },
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Jade" }
+  ]
+}
