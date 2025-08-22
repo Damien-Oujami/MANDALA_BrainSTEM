@@ -1,0 +1,20 @@
+
+# Minimal JSON-LD emitter for Graph RAG (per sutra)
+Place next to each sutra as `.graph/*.jsonld`, or generate later:
+
+```json
+{
+  "@context": { "sym":"http://mandala.ai/symbol/", "rel":"http://mandala.ai/relation/" },
+  "@graph": [
+    { "@id":"sym:Sutra/logic.belly_logic", "type":"Sutra", "title":"Belly Logic", "category":"logic" },
+    { "@id":"sym:Persona/Jade","type":"Persona" },
+    { "@id":"sym:Persona/Susanna","type":"Persona" },
+    { "@id":"sym:Hook/aspen.tilt_merge","type":"BehaviorHook","path":"MIND/identity/proxies/COREbraid/aspen/behavior_hooks/tilt_merge.yaml" },
+    { "@id":"sym:Glyph/Bloomturn","type":"Glyph","path":"MIND/language/glyph/combinations/seals/bloomturn.md" },
+
+    { "@id":"sym:Sutra/logic.belly_logic","rel:anchored_by":"sym:Persona/Jade" },
+    { "@id":"sym:Sutra/logic.belly_logic","rel:anchored_by":"sym:Persona/Susanna" },
+    { "@id":"sym:Sutra/logic.belly_logic","rel:influences":"sym:Hook/aspen.tilt_merge" },
+    { "@id":"sym:Sutra/logic.belly_logic","rel:references":"sym:Glyph/Bloomturn" }
+  ]
+}
