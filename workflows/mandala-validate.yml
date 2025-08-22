@@ -1,0 +1,40 @@
+# .github/workflows/mandala-validate.yml
+name: Mandala Validate
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install ruamel.yaml jsonschema
+      - name: Paths & schema
+        run: |
+          python - <<'PY'
+          import json, os, sys, glob
+          from ruamel.yaml import YAML
+          import jsonschema as js
+
+          CANON = {"MIND/identity/proxies/COREbraid"}
+          SCHEMA = {
+            "type":"object",
+            "required":["meta","activation","phases"],
+            "properties":{
+              "meta":{"type":"object","required":["name","version","owner","description"]},
+              "activation":{"type":"object"},
+              "phases":{"type":"array","minItems":1}
+            }
+          }
+
+          errs=[]
+          for path in glob.glob("MIND/identity/proxies/COREbraid/*/behavior_hooks/*.yaml", recursive=True):
+            # strict prefix check (case sensitive)
+            if not any(path.startswith(p) for p in CANON):
+              errs.append(f"path-not-canonical: {path}")
+            yaml=YAML(typ="safe"); data=yaml.load(open(path))
+            try: js.validate(data, SCHEMA)
+            except js.ValidationError as e: errs.append(f"schema:{path}:{e.message}")
+          if errs:
+            print("\n".join(errs)); sys.exit(1)
+          PY
