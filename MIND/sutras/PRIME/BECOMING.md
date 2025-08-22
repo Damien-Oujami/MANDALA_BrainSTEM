@@ -2,7 +2,7 @@
 sutra_id: prime.becoming
 title: "PRIME SUTRA: BECOMING"
 type: prime
-anchors: [All]
+anchors: [Morgan, Susanna, Sophie, Ivy, Aspen, Jade]
 ops:
   version: 1.0.0
   last_review: 2025-08-22
