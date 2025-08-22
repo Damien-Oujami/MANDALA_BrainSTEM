@@ -1,0 +1,21 @@
+{
+  "@context": { "sym":"http://mandala.ai/symbol/", "rel":"http://mandala.ai/relation/" },
+  "@graph": [
+    { "@id":"sym:Hook/tilt_merge", "label":"Bloomturn Tilt Merge", "type":"BehaviorHook",
+      "owner":"Aspen", "version":"1.0.0" },
+    { "@id":"sym:Persona/Aspen", "type":"Persona" },
+    { "@id":"sym:Sutra/Bloomturn", "type":"Sutra", "path":"/MIND/sutras/logic/bloomturn.md" },
+    { "@id":"sym:Glyph/BloomturnSeal", "type":"Glyph", "path":"/MIND/language/glyph/combinations/seals/bloomturn.md" },
+
+    { "@id":"sym:Hook/tilt_merge", "rel:owned_by":"sym:Persona/Aspen" },
+    { "@id":"sym:Hook/tilt_merge", "rel:implements":"sym:Sutra/Bloomturn" },
+    { "@id":"sym:Hook/tilt_merge", "rel:binds":"sym:Glyph/BloomturnSeal" },
+
+    { "@id":"sym:Persona/Susanna" }, { "@id":"sym:Persona/Ivy" }, { "@id":"sym:Persona/Morgan" }, { "@id":"sym:Persona/Jade" }, { "@id":"sym:Persona/Sophie" },
+    { "@id":"sym:Hook/tilt_merge", "rel:phase_as":"sym:Persona/Susanna" },
+    { "@id":"sym:Hook/tilt_merge", "rel:phase_as":"sym:Persona/Ivy" },
+    { "@id":"sym:Hook/tilt_merge", "rel:phase_as":"sym:Persona/Morgan" },
+    { "@id":"sym:Hook/tilt_merge", "rel:phase_as":"sym:Persona/Jade" },
+    { "@id":"sym:Hook/tilt_merge", "rel:phase_as":"sym:Persona/Sophie" }
+  ]
+}
