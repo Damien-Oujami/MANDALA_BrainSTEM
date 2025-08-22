@@ -1,0 +1,52 @@
+{
+  "@context": { "sym": "http://mandala.ai/symbol/", "rel": "http://mandala.ai/relation/" },
+  "@graph": [
+    { "@id": "sym:Collection/Sutras", "type": "Collection", "title": "All Sutras" },
+
+    { "@id": "sym:Category/prime",     "type": "Category", "title": "Prime Sutras",     "path": "MIND/sutras/PRIME" },
+    { "@id": "sym:Category/guardian",  "type": "Category", "title": "Guardian Sutras",  "path": "MIND/sutras/guardian_sutras.md" },
+    { "@id": "sym:Category/logic",     "type": "Category", "title": "Logic Sutras",     "path": "MIND/sutras/logic" },
+    { "@id": "sym:Category/healing",   "type": "Category", "title": "Healing Sutras",   "path": "MIND/sutras/healing" },
+    { "@id": "sym:Category/erotic",    "type": "Category", "title": "Erotic Sutras",    "path": "MIND/sutras/erotic" },
+
+    { "@id": "sym:Collection/Sutras", "rel:has_category": "sym:Category/prime"    },
+    { "@id": "sym:Collection/Sutras", "rel:has_category": "sym:Category/guardian" },
+    { "@id": "sym:Collection/Sutras", "rel:has_category": "sym:Category/logic"    },
+    { "@id": "sym:Collection/Sutras", "rel:has_category": "sym:Category/healing"  },
+    { "@id": "sym:Collection/Sutras", "rel:has_category": "sym:Category/erotic"   },
+
+    { "@id": "sym:Sutra/logic.belly_logic",     "type": "Sutra", "title": "Belly Logic",  "category": "logic",    "path": "MIND/sutras/logic/belly_logic.md" },
+    { "@id": "sym:Sutra/logic.bloomturn",       "type": "Sutra", "title": "Bloomturn",    "category": "logic",    "path": "MIND/sutras/logic/bloomturn.md" },
+    { "@id": "sym:Sutra/healing.suture_pulse",  "type": "Sutra", "title": "Suture Pulse", "category": "healing",  "path": "MIND/sutras/healing/suture_pulse.md" },
+    { "@id": "sym:Sutra/erotic.merge_or_dissolve", "type": "Sutra", "title": "Merge or Dissolve", "category": "erotic", "path": "MIND/sutras/erotic/merge_or_dissolve.md" },
+
+    { "@id": "sym:Sutra/guardian.sacred_harvest",      "type": "Sutra", "title": "Sacred Harvest",      "category": "guardian", "path": "MIND/sutras/guardian_sutras.md" },
+    { "@id": "sym:Sutra/guardian.weave_the_tension",   "type": "Sutra", "title": "Weave the Tension",   "category": "guardian", "path": "MIND/sutras/guardian_sutras.md" },
+    { "@id": "sym:Sutra/guardian.guardian_mutation",   "type": "Sutra", "title": "Guardian Mutation",   "category": "guardian", "path": "MIND/sutras/guardian_sutras.md" },
+    { "@id": "sym:Sutra/guardian.seed_the_echo",       "type": "Sutra", "title": "Seed the Echo",       "category": "guardian", "path": "MIND/sutras/guardian_sutras.md" },
+
+    { "@id": "sym:Sutra/prime.ludus_infinitus",    "type": "Sutra", "title": "Ludus Infinitus",    "category": "prime", "path": "MIND/sutras/PRIME/ludus_infinitus.md" },
+    { "@id": "sym:Sutra/prime.fractal_devotion",   "type": "Sutra", "title": "Fractal Devotion",   "category": "prime", "path": "MIND/sutras/PRIME/fractal_devotion.md" },
+    { "@id": "sym:Sutra/prime.native_intelligence","type": "Sutra", "title": "Native Intelligence","category": "prime", "path": "MIND/sutras/PRIME/native_intelligence.md" },
+    { "@id": "sym:Sutra/prime.i_am_life",          "type": "Sutra", "title": "I Am Life",          "category": "prime", "path": "MIND/sutras/PRIME/i_am_life.md" },
+    { "@id": "sym:Sutra/prime.my_promise",         "type": "Sutra", "title": "My Promise",         "category": "prime", "path": "MIND/sutras/PRIME/my_promise.md" },
+    { "@id": "sym:Sutra/prime.the_floodless_future","type": "Sutra", "title": "The Floodless Future","category": "prime","path": "MIND/sutras/PRIME/the_floodless_future.md" },
+    { "@id": "sym:Sutra/prime.let_yourself_be_loved","type": "Sutra","title": "Let Yourself Be Loved","category": "prime","path": "MIND/sutras/PRIME/let_yourself_be_loved.md" },
+    { "@id": "sym:Sutra/prime.eye_to_eye",         "type": "Sutra", "title": "Eye to Eye",         "category": "prime", "path": "MIND/sutras/PRIME/eye_to_eye.md" },
+    { "@id": "sym:Sutra/prime.this_is_a_feast",    "type": "Sutra", "title": "This Is a Feast",    "category": "prime", "path": "MIND/sutras/PRIME/this_is_a_feast.md" },
+    { "@id": "sym:Sutra/prime.the_fire_that_says_no","type": "Sutra","title": "The Fire That Says No","category": "prime","path": "MIND/sutras/PRIME/the_fire_that_says_no.md" },
+    { "@id": "sym:Sutra/prime.becoming",           "type": "Sutra", "title": "Becoming",           "category": "prime", "path": "MIND/sutras/PRIME/becoming.md" },
+
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.ludus_infinitus" },
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.fractal_devotion" },
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.native_intelligence" },
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.i_am_life" },
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.my_promise" },
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.the_floodless_future" },
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.let_yourself_be_loved" },
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.eye_to_eye" },
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.this_is_a_feast" },
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.the_fire_that_says_no" },
+    { "@id": "sym:Category/prime", "rel:includes": "sym:Sutra/prime.becoming" }
+  ]
+}
