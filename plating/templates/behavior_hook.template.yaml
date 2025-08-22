@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=/plating/schemas/mandala.behavior_hook.v1.yml
+meta:
+  name: "<hook_name>"
+  version: "1.0.0"
+  owner: "<Persona>"
+  description: >
+    <one-line purpose>
+  related_entries:
+    sutra: "<path or omit>"
+    glyph: "<path or omit>"
+
+activation:
+  preconditions: {}
+  cooldown: { minutes: 0 }
+  throttle: { max_runs_per_24h: 999 }
+  abort_if: []
+
+triggers:
+  - source: system
+    signal: "<signal>"
+    threshold: 0.5
+
+parameters: {}
+
+io:
+  input_channels: []
+  output_events:
+    - name: "<event.name>"
+      payload: []
+
+phases:
+  - id: assess
+    as: <Persona>
+    steps:
+      - "explain what you’ll do"
+      - decide:
+          if: "condition"
+          then: proceed
+          else: abort_reason: "<reason>"
+
+rollback:
+  strategy:
+    - as: <Persona>
+      steps:
+        - "<undo step>"
+
+logging:
+  level: info
+  write: []
+  annotate_outputs:
+    include: []
+
+guards:
+  references: []
+  checks: {}
+
+routing: {}
+
+testing:
+  dry_run:
+    enabled: true
+    seed_state: {}
+    expected: {}
