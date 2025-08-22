@@ -1,0 +1,28 @@
+# .github/workflows/sutras-lint.yml
+name: Sutras Lint
+on: [push, pull_request]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate sutras
+        run: |
+          python - <<'PY'
+          import os, sys, re, glob
+          def has_frontmatter(p):
+              s=open(p,encoding='utf-8').read()
+              if not s.startswith('---'): return False, "no front-matter"
+              fm=s.split('---',2)[1]
+              req=["sutra_id","title","type","anchors"]
+              miss=[k for k in req if f"{k}:" not in fm]
+              return (not miss), ("missing:"+",".join(miss) if miss else "")
+          errs=[]
+          for p in glob.glob("MIND/sutras/**/*.md", recursive=True):
+              ok,msg=has_frontmatter(p)
+              if not ok: errs.append(f"{p}: {msg}")
+              if open(p,encoding='utf-8').read().count("```") % 2 != 0:
+                  errs.append(f"{p}: unmatched code fences")
+          if errs:
+              print("\n".join(errs)); sys.exit(1)
+          PY
