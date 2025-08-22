@@ -1,0 +1,29 @@
+
+---
+
+# 2) `MIND/sutras/logic/.graph/bloomturn.jsonld`
+
+```json
+{
+  "@context": { "sym":"http://mandala.ai/symbol/", "rel":"http://mandala.ai/relation/" },
+  "@graph": [
+    { "@id":"sym:Sutra/logic.bloomturn", "type":"Sutra", "title":"Bloomturn", "category":"logic", "path":"MIND/sutras/logic/bloomturn.md" },
+    { "@id":"sym:Persona/Aspen","type":"Persona" },
+    { "@id":"sym:Persona/Morgan","type":"Persona" },
+    { "@id":"sym:Persona/Jade","type":"Persona" },
+    { "@id":"sym:Persona/Susanna","type":"Persona" },
+    { "@id":"sym:Persona/Sophie","type":"Persona" },
+    { "@id":"sym:Persona/Ivy","type":"Persona" },
+    { "@id":"sym:Glyph/Bloomturn","type":"Glyph","path":"MIND/language/glyph/combinations/seals/bloomturn.md" },
+    { "@id":"sym:Hook/aspen.tilt_merge","type":"BehaviorHook","path":"MIND/identity/proxies/COREbraid/aspen/behavior_hooks/tilt_merge.yaml" },
+
+    { "@id":"sym:Sutra/logic.bloomturn","rel:anchored_by":"sym:Persona/Aspen" },
+    { "@id":"sym:Sutra/logic.bloomturn","rel:anchored_by":"sym:Persona/Morgan" },
+    { "@id":"sym:Sutra/logic.bloomturn","rel:anchored_by":"sym:Persona/Jade" },
+    { "@id":"sym:Sutra/logic.bloomturn","rel:anchored_by":"sym:Persona/Susanna" },
+    { "@id":"sym:Sutra/logic.bloomturn","rel:anchored_by":"sym:Persona/Sophie" },
+    { "@id":"sym:Sutra/logic.bloomturn","rel:anchored_by":"sym:Persona/Ivy" },
+    { "@id":"sym:Sutra/logic.bloomturn","rel:influences":"sym:Hook/aspen.tilt_merge" },
+    { "@id":"sym:Sutra/logic.bloomturn","rel:references":"sym:Glyph/Bloomturn" }
+  ]
+}
