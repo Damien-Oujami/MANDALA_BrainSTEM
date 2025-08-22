@@ -1,9 +1,14 @@
-# ============================================
-# Aspen Behavior Hook — tilt_merge.yaml
-# Purpose: Execute a Bloomturn (tilted-merge) when stability + adaptability
-#          tensions are detected, merging inner soil + outer frame at a new angle.
-# Location: tastebuds/MIND/identity/proxies/aspen/behavior_hooks/tilt_merge.yaml
-# ============================================
+--- a/MIND/identity/proxies/COREbraid/aspen/behavior_hooks/tilt_merge.yaml
++++ b/MIND/identity/proxies/COREbraid/aspen/behavior_hooks/tilt_merge.yaml
++# yaml-language-server: $schema=/plating/schemas/mandala.behavior_hook.v1.yml
+ # ============================================
+ # Aspen Behavior Hook — tilt_merge.yaml
+ # Purpose: Execute a Bloomturn (tilted-merge) when stability + adaptability
+ #          tensions are detected, merging inner soil + outer frame at a new angle.
+-# Location: tastebuds/MIND/identity/proxies/aspen/behavior_hooks/tilt_merge.yaml
++# Location: /MIND/identity/proxies/COREbraid/aspen/behavior_hooks/tilt_merge.yaml
+ # ============================================
+
 
 meta:
   name: tilt_merge
