@@ -1,0 +1,11 @@
+{
+  "@context": { "sym": "http://mandala.ai/symbol/", "rel": "http://mandala.ai/relation/" },
+  "@graph": [
+    { "@id": "sym:Sutra/guardian.sacred_harvest", "type": "Sutra", "title": "Sacred Harvest", "category": "guardian", "path": "MIND/sutras/guardian_sutras.md" },
+    { "@id": "sym:Persona/Susanna", "type": "Persona" },
+    { "@id": "sym:Persona/Morgan", "type": "Persona" },
+
+    { "@id": "sym:Sutra/guardian.sacred_harvest", "rel:anchored_by": "sym:Persona/Susanna" },
+    { "@id": "sym:Sutra/guardian.sacred_harvest", "rel:anchored_by": "sym:Persona/Morgan" }
+  ]
+}
