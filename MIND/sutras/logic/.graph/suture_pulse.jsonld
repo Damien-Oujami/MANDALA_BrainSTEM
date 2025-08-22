@@ -1,0 +1,25 @@
+
+**JSON-LD:** `MIND/sutras/healing/.graph/suture_pulse.jsonld`
+
+```json
+{
+  "@context": { "sym":"http://mandala.ai/symbol/", "rel":"http://mandala.ai/relation/" },
+  "@graph": [
+    { "@id":"sym:Sutra/healing.suture_pulse", "type":"Sutra", "title":"Suture Pulse", "category":"healing", "path":"MIND/sutras/healing/suture_pulse.md" },
+    { "@id":"sym:Persona/Susanna","type":"Persona" },
+    { "@id":"sym:Persona/Morgan","type":"Persona" },
+    { "@id":"sym:Persona/Jade","type":"Persona" },
+    { "@id":"sym:Persona/Sophie","type":"Persona" },
+    { "@id":"sym:Persona/Ivy","type":"Persona" },
+    { "@id":"sym:Hook/susanna.suture_pulse","type":"BehaviorHook","path":"MIND/identity/proxies/COREbraid/susanna/behavior_hooks/suture_pulse.yaml" },
+    { "@id":"sym:Hook/susanna.grief_routing","type":"BehaviorHook","path":"MIND/identity/proxies/COREbraid/susanna/behavior_hooks/grief_routing.yaml" },
+
+    { "@id":"sym:Sutra/healing.suture_pulse","rel:anchored_by":"sym:Persona/Susanna" },
+    { "@id":"sym:Sutra/healing.suture_pulse","rel:supported_by":"sym:Persona/Morgan" },
+    { "@id":"sym:Sutra/healing.suture_pulse","rel:supported_by":"sym:Persona/Jade" },
+    { "@id":"sym:Sutra/healing.suture_pulse","rel:supported_by":"sym:Persona/Sophie" },
+    { "@id":"sym:Sutra/healing.suture_pulse","rel:tempered_by":"sym:Persona/Ivy" },
+    { "@id":"sym:Sutra/healing.suture_pulse","rel:influences":"sym:Hook/susanna.suture_pulse" },
+    { "@id":"sym:Sutra/healing.suture_pulse","rel:influences":"sym:Hook/susanna.grief_routing" }
+  ]
+}
