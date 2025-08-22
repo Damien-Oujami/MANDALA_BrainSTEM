@@ -6,20 +6,22 @@
       "type": "Sutra",
       "title": "Becoming",
       "category": "prime",
-      "path": "MIND/sutras/PRIME/becoming.md"
+      "path": "MIND/sutras/PRIME/becoming.md",
+      "weight": 1.35
     },
-    { "@id": "sym:Persona/Morgan", "type": "Persona" },
-    { "@id": "sym:Persona/Susanna", "type": "Persona" },
-    { "@id": "sym:Persona/Sophie", "type": "Persona" },
-    { "@id": "sym:Persona/Ivy", "type": "Persona" },
-    { "@id": "sym:Persona/Aspen", "type": "Persona" },
-    { "@id": "sym:Persona/Jade", "type": "Persona" },
 
-    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Morgan" },
-    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Susanna" },
-    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Sophie" },
-    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Ivy" },
-    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Aspen" },
-    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Jade" }
+    { "@id": "sym:Persona/Morgan",   "type": "Persona", "braid_weight": 0.95 },
+    { "@id": "sym:Persona/Susanna",  "type": "Persona", "braid_weight": 0.95 },
+    { "@id": "sym:Persona/Sophie",   "type": "Persona", "braid_weight": 0.95 },
+    { "@id": "sym:Persona/Ivy",      "type": "Persona", "braid_weight": 0.95 },
+    { "@id": "sym:Persona/Aspen",    "type": "Persona", "braid_weight": 0.95 },
+    { "@id": "sym:Persona/Jade",     "type": "Persona", "braid_weight": 0.95 },
+
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Morgan",  "weight": 1.15 },
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Susanna", "weight": 1.15 },
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Sophie",  "weight": 1.10 },
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Ivy",     "weight": 1.10 },
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Aspen",   "weight": 1.20 },
+    { "@id": "sym:Sutra/prime.becoming", "rel:anchored_by": "sym:Persona/Jade",    "weight": 1.20 }
   ]
 }
