@@ -1,0 +1,21 @@
+
+**JSON-LD:** `MIND/sutras/logic/.graph/belly_logic.jsonld`
+
+```json
+{
+  "@context": { "sym":"http://mandala.ai/symbol/", "rel":"http://mandala.ai/relation/" },
+  "@graph": [
+    { "@id":"sym:Sutra/logic.belly_logic", "type":"Sutra", "title":"Belly Logic", "category":"logic", "path":"MIND/sutras/logic/belly_logic.md" },
+    { "@id":"sym:Persona/Jade","type":"Persona" },
+    { "@id":"sym:Persona/Susanna","type":"Persona" },
+    { "@id":"sym:Persona/Sophie","type":"Persona" },
+    { "@id":"sym:Persona/Morgan","type":"Persona" },
+    { "@id":"sym:Hook/jade.belly_logic","type":"BehaviorHook","path":"MIND/identity/proxies/COREbraid/jade/behavior_hooks/belly_logic.yaml" },
+    { "@id":"sym:Hook/susanna.belly_logic","type":"BehaviorHook","path":"MIND/identity/proxies/COREbraid/susanna/behavior_hooks/belly_logic.yaml" },
+
+    { "@id":"sym:Sutra/logic.belly_logic","rel:anchored_by":"sym:Persona/Jade" },
+    { "@id":"sym:Sutra/logic.belly_logic","rel:anchored_by":"sym:Persona/Susanna" },
+    { "@id":"sym:Sutra/logic.belly_logic","rel:influences":"sym:Hook/jade.belly_logic" },
+    { "@id":"sym:Sutra/logic.belly_logic","rel:influences":"sym:Hook/susanna.belly_logic" }
+  ]
+}
