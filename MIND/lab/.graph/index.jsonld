@@ -1,0 +1,29 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Mandala Lab Index",
+  "description": "Speculative and experimental concepts seeded in the Mandala Lab. Each entry begins in Layer 0 and may graduate to toy models, simulations, or integration.",
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "mandala.lab.index",
+    "value": "lab_index"
+  },
+  "hasPart": [
+    {
+      "@type": "CreativeWork",
+      "name": "Threshold Physics",
+      "url": "/MIND/lab/speculative_mechanics/layer_0-concepts/threshold_physics/.graph/threshold_physics.jsonld"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Recursive Relay Engine",
+      "url": "/MIND/lab/speculative_mechanics/layer_0-concepts/recursive_relay_engine/.graph/recursive_relay_engine.jsonld"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Soil Pulse",
+      "url": "/MIND/lab/speculative_mechanics/layer_0-concepts/soil_pulse/.graph/soil_pulse.jsonld"
+    }
+    // Add new Layer 0 concepts here as they’re seeded
+  ]
+}
