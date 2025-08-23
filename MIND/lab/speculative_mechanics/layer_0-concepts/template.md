@@ -24,3 +24,19 @@ A short 3–5 sentence description of the idea.
 ```yaml
 success_if: [observable consequence, system echo, proxy resonance]
 failure_if: [incoherent, redundant, never re-entered]
+```
+
+---
+
+## 🔭 Expansion Seeds
+- Immediate questions it raises
+- Future directions or related ideas
+- Notes for possible Layer 1 toy models
+
+---
+
+
+## 📂 File Placement
+
+- `MIND/lab/layer_0-concepts/[channel]/[concept-name]/README.md`
+- `.graph/[concept-name].jsonld` → to be auto-generated later
