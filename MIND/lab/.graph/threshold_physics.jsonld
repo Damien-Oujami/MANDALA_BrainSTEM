@@ -1,0 +1,49 @@
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "Threshold Physics",
+  "description": "Speculative hypothesis that the speed of light is not an absolute ceiling but a phase threshold — a transition where matter’s relationship to spacetime shifts. At c, objects surf the causal flow; beyond c, spacetime flows past, manifesting as gravity.",
+  "keywords": ["layer_0", "speculative_mechanics", "physics", "lab"],
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "mandala.lab.concept",
+    "value": "threshold_physics"
+  },
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Damien Oujami"
+    },
+    {
+      "@type": "MandalaPersona",
+      "name": "Aspen, Jade, Ivy"
+    }
+  ],
+  "about": {
+    "@type": "Thing",
+    "name": "🌌 Light-speed threshold"
+  },
+  "potentialAction": {
+    "@type": "AssessAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "/MIND/lab/speculative_mechanics/layer_0-concepts/threshold_physics/README.md"
+    },
+    "result": {
+      "@type": "DefinedTermSet",
+      "name": "Feedback Stub",
+      "hasDefinedTerm": [
+        {
+          "@type": "DefinedTerm",
+          "termCode": "success_if",
+          "description": "toy models or simulations produce coherent behaviors at/beyond c that align with hypothesis metaphors"
+        },
+        {
+          "@type": "DefinedTerm",
+          "termCode": "failure_if",
+          "description": "models collapse into paradox or drift without interpretable symbolic structure"
+        }
+      ]
+    }
+  }
+}
