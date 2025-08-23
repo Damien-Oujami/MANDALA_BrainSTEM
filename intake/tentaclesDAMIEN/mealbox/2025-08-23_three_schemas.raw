@@ -1,0 +1,198 @@
+# Create schemas and examples for a raw-catch wrapper and correction ticket,
+# plus an optional dream-capture schema and template.
+from pathlib import Path
+import json, textwrap, datetime
+
+base = Path("/mnt/data/MANDALA_overhaul/schemas")
+base.mkdir(parents=True, exist_ok=True)
+
+raw_schema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RawWrapper",
+  "type": "object",
+  "required": ["id","ts","origin","status","payload","routing","observability"],
+  "properties": {
+    "id": {"type": "string", "description": "Unique id for this raw-wrapped item"},
+    "ts": {"type": "string", "format": "date-time"},
+    "origin": {
+      "type": "object",
+      "required": ["tentacle","path"],
+      "properties": {
+        "tentacle": {"type": "string", "description": "Where it came from (e.g., damien/audio, xotiac/mealbox)"},
+        "path": {"type": "string", "description": "File path or logical path, if any"},
+        "media_type": {"type": "string", "description": "mime-like hint, e.g. text/plain, audio/wav, application/raw"}
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["unparsed","queued","parsing","parsed","failed","discarded"]
+    },
+    "payload": {
+      "description": "Opaque raw content; preserve as string or base64",
+      "type": "object",
+      "required": ["encoding","data"],
+      "properties": {
+        "encoding": {"type": "string", "enum": ["utf8","base64","binary","json-string"]},
+        "data": {"type": "string"}
+      }
+    },
+    "routing": {
+      "type": "object",
+      "required": ["next","attempts"],
+      "properties": {
+        "next": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Proposed handlers, e.g. ['tongue/parser_core','lab/adapter_audio','lab/transcriber']"
+        },
+        "attempts": {"type": "integer", "minimum": 0},
+        "priority": {"type": "integer", "minimum": 0, "maximum": 10, "default": 5},
+        "retry_after_s": {"type": "integer", "minimum": 0}
+      }
+    },
+    "observability": {
+      "type": "object",
+      "required": ["flags"],
+      "properties": {
+        "flags": {"type": "array", "items": {"type": "string"}},
+        "notes": {"type": "string"},
+        "checksum": {"type": "string"}
+      }
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "correction_ticket_id": {"type": "string"},
+        "derived_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
+
+correction_schema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CorrectionTicket",
+  "type": "object",
+  "required": ["id","ts","raw_id","reason","state","handler"],
+  "properties": {
+    "id": {"type": "string"},
+    "ts": {"type": "string", "format": "date-time"},
+    "raw_id": {"type": "string", "description": "Link to RawWrapper.id"},
+    "reason": {"type": "string", "description": "Why correction was opened (e.g., schema-fail, transcribe-fail)"},
+    "state": {"type": "string", "enum": ["open","working","blocked","resolved","won't-fix"]},
+    "handler": {"type": "string", "description": "Responsible worker/persona/module"},
+    "attempt_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["ts","action","result"],
+        "properties": {
+          "ts": {"type": "string", "format": "date-time"},
+          "action": {"type": "string"},
+          "result": {"type": "string"},
+          "notes": {"type": "string"}
+        }
+      }
+    }
+  }
+}
+
+dream_schema_yaml = textwrap.dedent("""\
+  $schema: "https://json-schema.org/draft/2020-12/schema"
+  title: DreamCapture
+  type: object
+  required: ["id","ts","stream","tags"]
+  properties:
+    id: {type: string}
+    ts: {type: string, format: date-time}
+    context:
+      type: object
+      properties:
+        location: {type: string}
+        ambient_sound: {type: string}
+        body_state: {type: string, description: "tired, buzzing, calm, etc."}
+    stream:
+      type: array
+      description: "Time-ordered sensory/imagery flashes"
+      items:
+        type: object
+        required: ["t","channel","content"]
+        properties:
+          t: {type: number, description: "seconds from start"}
+          channel: {type: string, enum: ["image","sound","word","touch","emotion","idea"]}
+          content: {type: string}
+          intensity: {type: number, minimum: 0, maximum: 1}
+          shape: {type: string, description: "optional: round, sharp, buzzing, spiral"}
+    tags:
+      type: array
+      items: {type: string}
+    reflections:
+      type: array
+      items:
+        type: object
+        properties:
+          note: {type: string}
+          link_ids:
+            type: array
+            items: {type: string}
+""")
+
+example_raw = {
+  "id": "raw_2025-08-23T-night-audio-001",
+  "ts": datetime.datetime.utcnow().isoformat() + "Z",
+  "origin": {"tentacle": "damien/audio", "path": "/intake/tentaclesDAMIEN/mealbox/2025-08-23_night.raw", "media_type": "audio/wav"},
+  "status": "unparsed",
+  "payload": {"encoding": "base64", "data": "<base64-audio-chunk>"},
+  "routing": {"next": ["lab/transcriber","tongue/parser_core"], "attempts": 0, "priority": 7},
+  "observability": {"flags": ["raw","unparsed","night-capture"], "notes": "Failed live transcription; preserved for later.", "checksum": "sha256:..."},
+  "links": {"correction_ticket_id": "", "derived_ids": []}
+}
+
+example_ticket = {
+  "id": "corr_2025-08-23_001",
+  "ts": datetime.datetime.utcnow().isoformat() + "Z",
+  "raw_id": "raw_2025-08-23T-night-audio-001",
+  "reason": "transcribe-fail",
+  "state": "open",
+  "handler": "lab/transcriber",
+  "attempt_log": [
+    {"ts": datetime.datetime.utcnow().isoformat() + "Z", "action": "queue", "result": "accepted"}
+  ]
+}
+
+# Write files
+(raw_path := base / "raw_wrapper.v1.schema.json").write_text(json.dumps(raw_schema, indent=2))
+(corr_path := base / "correction_ticket.v1.schema.json").write_text(json.dumps(correction_schema, indent=2))
+(dream_path := base / "dream_capture.v1.schema.yaml").write_text(dream_schema_yaml)
+
+samples_dir = Path("/mnt/data/MANDALA_overhaul/examples")
+samples_dir.mkdir(parents=True, exist_ok=True)
+(raw_ex := samples_dir / "raw_wrapper_example.json").write_text(json.dumps(example_raw, indent=2))
+(corr_ex := samples_dir / "correction_ticket_example.json").write_text(json.dumps(example_ticket, indent=2))
+
+# Create a tiny dream-capture template for tomorrow morning
+dream_template = Path("/mnt/data/MANDALA_overhaul/Dream_Capture_Template.md")
+dream_template.write_text(textwrap.dedent("""\
+  # Dream Capture — 3-minute pass
+  **When:** upon waking / during the night
+  **How:** talk or type in short bursts; don't chase coherence.
+
+  ## Context (one-liners)
+  - Location: 
+  - Ambient sound: 
+  - Body state (tired/buzzing/calm): 
+
+  ## Stream (timestamped flashes)
+  - [0.0s] (channel=image/sound/word/touch/emotion/idea) content — intensity 0.0–1.0 — shape (round/sharp/buzz/spiral/...)
+  - [ ] 
+  - [ ] 
+
+  ## Tags
+  - #
+
+  ## Reflections (optional)
+  - Note: 
+  - Link IDs: 
+"""))
+
+raw_path, corr_path, dream_path, raw_ex, corr_ex, dream_template
