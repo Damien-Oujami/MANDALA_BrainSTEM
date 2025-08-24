@@ -16,3 +16,17 @@ templates:
     tags: [identity, collapse, symbolic bloom]
     project: home
     proxy: susanna
+
+  - id: loop/template
+    name: Loop Template
+    structure: skeleton
+    tags: [template, loop]
+    project: scaffolding
+    proxy: system
+
+  - id: glyph/riff_template
+    name: Glyph Riff Template
+    structure: riff
+    tags: [template, glyph]
+    project: scaffolding
+    proxy: system

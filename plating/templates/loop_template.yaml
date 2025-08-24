@@ -1,0 +1,8 @@
+# 🌀 Loop Template
+name: "{{ name }}"
+description: "{{ description }}"
+stages:
+  - "{{ stage_1 }}"
+  - "{{ stage_2 }}"
+  - "{{ stage_3 }}"
+allow_mutation: true
