@@ -1,0 +1,93 @@
+# .allowlist.yaml
+# Machine-enforced security domain allowlist
+# Mirrors security/allowlist.md (human-readable rationale).
+# Only domains listed here are permitted for network access during builds.
+
+domains:
+  # 📦 Package Managers
+  - pypi.org
+  - pypa.io
+  - pythonhosted.org
+  - pypi.python.org
+  - npmjs.com
+  - npmjs.org
+  - nodejs.org
+  - yarnpkg.com
+  - crates.io
+  - rustup.rs
+  - golang.org
+  - go.dev
+  - pkg.go.dev
+  - goproxy.io
+  - sum.golang.org
+  - rubygems.org
+  - ruby-lang.org
+  - rubyforge.org
+  - rubyonrails.org
+  - rvm.io
+  - maven.org
+  - repo.maven.apache.org
+  - repo1.maven.org
+  - jcenter.bintray.com
+  - gradle.org
+  - services.gradle.org
+  - java.com
+  - java.net
+  - oracle.com
+  - swift.org
+  - haskell.org
+  - hackage.haskell.org
+  - packagist.org
+  - pub.dev
+
+  # 🐧 Linux Distros & Repos
+  - debian.org
+  - archive.ubuntu.com
+  - security.ubuntu.com
+  - deb.debian.org
+  - security.debian.org
+  - alpinelinux.org
+  - dl-cdn.alpinelinux.org
+  - fedoraproject.org
+  - centos.org
+  - archlinux.org
+  - launchpad.net
+  - ppa.launchpad.net
+
+  # 📦 Container Registries
+  - docker.com
+  - docker.io
+  - registry-1.docker.io
+  - index.docker.io
+  - ghcr.io
+  - gcr.io
+  - quay.io
+  - mcr.microsoft.com
+
+  # 🌐 Code Hosts
+  - github.com
+  - githubusercontent.com
+  - raw.githubusercontent.com
+  - objects.githubusercontent.com
+  - gitlab.com
+  - bitbucket.org
+  - apache.org
+  - sourceforge.net
+  - eclipse.org
+
+  # 🛠 Other Services
+  - hashicorp.com
+  - json-schema.org
+  - json.schemastore.org
+  - packagecloud.io
+  - bower.io
+
+  # 🧭 Project-Specific
+  - supabase.com
+  - supabase.co
+  - n8n.io
+  - vercel.com
+  - netlify.com
+  - cloudflare.com
+  - workers.dev
+  - r2.cloudflarestorage.com
