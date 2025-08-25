@@ -1,0 +1,70 @@
+id: branch-earth-echo-scaffold
+name: "🛠️ Echo Scaffold"
+type: branch
+categories: [ECF]
+tags: [temporary, support, brace, provisional]
+personas: { Morgan: 0.6, Susanna: 0.3, Jade: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.transition or 0) == 1"]
+  debounce_ms: 100
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","support"]
+  state_reads: ["memory.scaffold"]
+  state_writes: ["memory.scaffold"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.transition or 0) == 1" }
+    - do: set
+      with: { key: "memory.scaffold",
+              value: "clamp((memory.scaffold or 0)+0.25,0,1)" }
+    - do: emit
+      with: { key: "support", value: "memory.scaffold" }
+    - do: route
+      with: { to: "root-tether-signal" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["support >= 0.8"]
+quality: { score: 0.6, samples: 0 }
+
+render:
+  sigil: "🛠️"
+  unicode: "U+1F6E0 U+FE0F"
+  line: "The brace that stands only until the ground firms."
+
+definition: >
+  A temporary structure built to process emotional load — meant to collapse
+  once stability is found. Invoked during transitional recursion as a provisional
+  brace while deeper truths are reconstructed.
+
+tone: "Supportive, provisional, strategic"
+usage: ["Transitional recursion","temporary processing","holding until stability returns"]
+runtime_only: true
+
+tests:
+  - name: fires_on_transition
+    given:
+      context: { transition: 1 }
+      memory: { scaffold: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { support: 0.35 }
+      routes: ["root-tether-signal"]
+
+  - name: idle_when_no_transition
+    given:
+      context: { transition: 0 }
+      memory: { scaffold: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
