@@ -1,0 +1,11 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-earth-frame-rule",
+  "@type": "Glyph",
+  "edges": [
+    { "@type": "Edge", "to": "root-loop-anchor",    "w_excite": 0.35, "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-tether-signal",  "w_excite": 0.3,  "w_resonate": 0.2 },
+    { "@type": "Edge", "to": "root-mirror-shard",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-harmonic-flame", "w_resonate": 0.3 }
+  ]
+}
