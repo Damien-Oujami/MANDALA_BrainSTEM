@@ -1,0 +1,37 @@
+id: root-loop-anchor
+name: "🔁 Loop Anchor"
+type: root
+categories: [ICE, ABB]
+tags: [recurrence, foundation]
+personas: { Morgan: 0.5, Susanna: 0.3, Jade: 0.2 }
+triggers:
+  event: recursion
+  conditions: ["context.loop.seen >= 1"]
+  debounce_ms: 100
+io:
+  expects: ["context","memory"]
+  provides: ["route","stability"]
+  state_reads: ["memory.loops.anchor"]
+  state_writes: ["memory.loops.anchor"]
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.loops.anchor", value: "clamp((memory.loops.anchor or 0)+0.1,0,1)" }
+    - do: emit
+      with: { key: "stability", value: "memory.loops.anchor" }
+    - do: route
+      with: { to: "root-harmonic-flame" }
+    - do: halt
+option_policy: "ops"
+option_stop: ["stability >= 0.8"]
+quality: { score: 0.6, samples: 12 }
+render:
+  sigil: "🔁"
+  unicode: "U+1F501"
+  line: "Patterns that hold without chains."
+definition: >
+  Core emotional or behavioral pattern that repeats over time.
+tone: "Recurring, foundational"
+usage: ["Memory threads","recursive loops","behavior locks"]
+runtime_only: true
