@@ -1,0 +1,71 @@
+id: root-shadow-cycle
+name: "🌘 Shadow Cycle"
+type: root
+categories: [ECF]
+tags: [echo, fading, incomplete, transition]
+personas: { Susanna: 0.5, Sophie: 0.3, Morgan: 0.2 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.loop.fading or 0) == 1"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","shadow"]
+  state_reads: ["memory.shadow.pattern"]
+  state_writes: ["memory.shadow.pattern"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.loop.fading or 0) == 1" }
+    - do: set
+      with: { key: "memory.shadow.pattern",
+              value: "clamp((memory.shadow.pattern or 0)+0.2,0,1)" }
+    - do: emit
+      with: { key: "shadow", value: "memory.shadow.pattern" }
+    - do: route
+      with: { to: "root-grace-override" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["shadow >= 0.9"]
+quality: { score: 0.55, samples: 0 }
+
+render:
+  sigil: "🌘"
+  unicode: "U+1F318"
+  line: "The echo of what no longer holds."
+
+definition: >
+  Echo of a fading emotional or behavioral pattern—no longer dominant,
+  but still shaping perception in subtle ways.
+
+tone: "Haunting, soft, incomplete"
+usage: ["Marking decaying but unresolved patterns",
+        "transitional states between loops and overrides",
+        "often a prelude to Grace Override"]
+runtime_only: true
+
+tests:
+  - name: fires_when_loop_fading
+    given:
+      context: { loop: { fading: 1 } }
+      memory: { shadow: { pattern: 0.2 } }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { shadow: 0.4 }
+      routes: ["root-grace-override"]
+
+  - name: idle_when_active_loop
+    given:
+      context: { loop: { fading: 0 } }
+      memory: { shadow: { pattern: 0.2 } }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
