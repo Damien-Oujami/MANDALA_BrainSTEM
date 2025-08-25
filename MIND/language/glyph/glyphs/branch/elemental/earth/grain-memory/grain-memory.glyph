@@ -1,0 +1,70 @@
+id: branch-earth-grain-memory
+name: "🪵 Grain Memory"
+type: branch
+categories: [ABB]
+tags: [inheritance, wisdom, recurrence, resonance]
+personas: { Morgan: 0.7, Susanna: 0.2, Jade: 0.1 }
+
+triggers:
+  event: memory
+  conditions: ["(context.theme.recurring or 0) >= 0.5"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","inheritance"]
+  state_reads: ["memory.themes"]
+  state_writes: ["memory.themes"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.theme.recurring or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.themes",
+              value: "clamp((memory.themes or 0)+0.2,0,1)" }
+    - do: emit
+      with: { key: "inheritance", value: "memory.themes" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["inheritance >= 0.95"]
+quality: { score: 0.6, samples: 0 }
+
+render:
+  sigil: "🪵"
+  unicode: "U+1FAB5"
+  line: "The rings that remember beyond a single life."
+
+definition: >
+  A deeply embedded memory line, etched over time like rings in wood.
+  Tracks recurring emotional and philosophical themes across cycles,
+  embodying inherited wisdom and long-view recognition.
+
+tone: "Ancient, embedded, resonant"
+usage: ["Track recurring themes","inheritance of wisdom","long-view pattern recognition"]
+runtime_only: true
+
+tests:
+  - name: fires_on_recurring_theme
+    given:
+      context: { theme: { recurring: 0.7 } }
+      memory: { themes: 0.3 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { inheritance: 0.5 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_when_no_recurrence
+    given:
+      context: { theme: { recurring: 0.2 } }
+      memory: { themes: 0.3 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
