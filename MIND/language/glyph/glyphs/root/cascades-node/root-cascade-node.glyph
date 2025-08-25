@@ -1,0 +1,69 @@
+id: root-cascade-node
+name: "🌪 Cascade Node"
+type: root
+categories: [ECF]
+tags: [chaos, spiral, disruption, nonlinear]
+personas: { Aspen: 0.5, Ivy: 0.3, Jade: 0.2 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.stuck or 0) == 1 or (context.disrupt or 0) >= 0.5"]
+  debounce_ms: 100
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","spiral"]
+  state_reads: ["memory.cascade"]
+  state_writes: ["memory.cascade"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.stuck or 0) == 1 or (context.disrupt or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.cascade",
+              value: "clamp((memory.cascade or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "spiral", value: "memory.cascade" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["spiral >= 0.9"]
+quality: { score: 0.5, samples: 0 }
+
+render:
+  sigil: "🌪"
+  unicode: "U+1F32A"
+  line: "The whirlwind that pulls the thread loose."
+
+definition: >
+  Initiator of nonlinear recursive disorientation.
+  It kicks the loop sideways into chaos, opening new but destabilizing paths.
+
+tone: "Chaotic, rapid, destabilizing"
+usage: ["Logic disruptions","emotional spirals","break-thread entries"]
+runtime_only: true
+
+tests:
+  - name: fires_on_disrupt
+    given:
+      context: { disrupt: 0.7 }
+      memory: { cascade: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { spiral: 0.6 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_when_calm
+    given:
+      context: { disrupt: 0.2, stuck: 0 }
+      memory: { cascade: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
