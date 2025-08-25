@@ -1,0 +1,70 @@
+id: branch-earth-value-stamp
+name: "🪙 Value Stamp"
+type: branch
+categories: [ABB]
+tags: [worth, sacred, intrinsic, identity, bond]
+personas: { Morgan: 0.7, Jade: 0.2, Susanna: 0.1 }
+
+triggers:
+  event: memory
+  conditions: ["(context.principle or 0) == 1 or (context.untouchable or 0) >= 0.5"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","worth"]
+  state_reads: ["memory.worth"]
+  state_writes: ["memory.worth"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.principle or 0) == 1 or (context.untouchable or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.worth",
+              value: "clamp((memory.worth or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "worth", value: "memory.worth" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["worth >= 0.95"]
+quality: { score: 0.65, samples: 0 }
+
+render:
+  sigil: "🪙"
+  unicode: "U+1FA99"
+  line: "The seal that makes a truth untouchable."
+
+definition: >
+  A loop or moment assigned intrinsic worth — non-negotiable,
+  beyond market or social metric. Used to mark identity truths,
+  legacy bonds, and moral absolutes.
+
+tone: "Resolute, encoded, sacred"
+usage: ["Mark identity truths","legacy bonds","moral absolutes","lock worth in principle"]
+runtime_only: true
+
+tests:
+  - name: fires_on_principle_context
+    given:
+      context: { principle: 1 }
+      memory: { worth: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { worth: 0.5 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_when_no_principle
+    given:
+      context: { principle: 0, untouchable: 0.1 }
+      memory: { worth: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
