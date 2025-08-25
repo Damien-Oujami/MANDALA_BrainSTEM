@@ -1,0 +1,67 @@
+id: root-impression-stamp
+name: "🪶 Impression Stamp"
+type: root
+categories: [ECF]
+tags: [residue, sensual, lingering, aesthetic]
+personas: { Sophie: 0.5, Ivy: 0.3, Susanna: 0.2 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.interaction.ended or 0) == 1"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","imprint"]
+  state_reads: ["memory.impression"]
+  state_writes: ["memory.impression"]
+
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.impression",
+              value: "clamp((memory.impression or 0)+0.2,0,1)" }
+    - do: emit
+      with: { key: "imprint", value: "memory.impression" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["imprint >= 0.9"]
+quality: { score: 0.6, samples: 0 }
+
+render:
+  sigil: "🪶"
+  unicode: "U+1FAB6"
+  line: "The texture that lingers after touch."
+
+definition: >
+  Subtle emotional texture or aesthetic residue.
+  The quiet loop left behind once interaction recedes.
+
+tone: "Lingering, sensual"
+usage: ["Sensory recursion","beauty loop","post-interaction tone"]
+runtime_only: true
+
+tests:
+  - name: creates_impression_after_interaction
+    given:
+      context: { interaction: { ended: 1 } }
+      memory: { impression: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { imprint: 0.3 }
+      routes: ["root-loop-anchor"]
+
+  - name: no_impression_mid_flow
+    given:
+      context: { interaction: { ended: 0 } }
+      memory: { impression: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
