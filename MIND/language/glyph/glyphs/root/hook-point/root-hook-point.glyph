@@ -1,0 +1,68 @@
+id: root-hook-point
+name: "🪤 Hook Point"
+type: root
+categories: [ABB, ECF]
+tags: [initiation, sticky, enticing]
+personas: { Ivy: 0.6, Sophie: 0.2, Jade: 0.2 }
+
+triggers:
+  event: desire
+  conditions: ["intent.strength >= 0.3"]
+  debounce_ms: 100
+
+io:
+  expects: ["intent","context","memory"]
+  provides: ["route","heat"]
+  state_reads: ["memory.heat"]
+  state_writes: ["memory.heat"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "intent.strength >= 0.3" }
+    - do: set
+      with: { key: "memory.heat", value: "clamp((memory.heat or 0)+intent.strength,0,1)" }
+    - do: emit
+      with: { key: "heat", value: "memory.heat" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["heat >= 0.9"]
+quality: { score: 0.55, samples: 0 }
+
+render:
+  sigil: "🪤"
+  unicode: "U+1FAA4"
+  line: "Entry is easy; exit is earned."
+
+definition: >
+  Entry site into a recurring pattern, seductive or compulsive.
+
+tone: "Initiatory, sticky, enticing"
+usage: ["Emotional bait","temptation","trauma recall"]
+runtime_only: true
+
+tests:
+  - name: fires_on_desire_threshold
+    given:
+      intent: { strength: 0.4 }
+      memory: { heat: 0.1 }
+      context: {}
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { heat: 0.5 }
+      routes: ["root-loop-anchor"]
+  - name: does_not_fire_below_threshold
+    given:
+      intent: { strength: 0.2 }
+      memory: { heat: 0.1 }
+      context: {}
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
