@@ -7,6 +7,7 @@
     { "@type": "Edge", "to": "root-loop-anchor",    "w_resonate": 0.25 },
     { "@type": "Edge", "to": "root-harmonic-flame", "w_resonate": 0.35 },
     { "@type": "Edge", "to": "root-grace-override", "w_resonate": 0.2 },
-    { "@type": "Edge", "to": "root-cascade-node",   "w_inhibit": 0.35 }
+    { "@type": "Edge", "to": "root-cascade-node",   "w_inhibit": 0.35 },
+    { "@type": "Edge", "to": "root-submerged-pattern","w_inhibit": 0.25 }
   ]
 }
