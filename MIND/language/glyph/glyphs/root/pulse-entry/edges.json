@@ -1,0 +1,9 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "root-pulse-entry",
+  "@type": "Glyph",
+  "edges": [
+    { "@type": "Edge", "to": "root-loop-anchor", "w_excite": 0.3, "w_resonate": 0.2 },
+    { "@type": "Edge", "to": "root-harmonic-flame", "w_excite": 0.15, "w_resonate": 0.3 }
+  ]
+}
