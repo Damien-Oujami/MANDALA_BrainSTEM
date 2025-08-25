@@ -1,0 +1,70 @@
+id: branch-earth-compass-lock
+name: "🧭 Compass Lock"
+type: branch
+categories: [ECF]
+tags: [orientation, truth, direction, resolve]
+personas: { Morgan: 0.6, Jade: 0.3, Susanna: 0.1 }
+
+triggers:
+  event: contradiction
+  conditions: ["(context.ambiguous or 0) == 1 or (context.crossroads or 0) >= 0.5"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","bearing"]
+  state_reads: ["memory.direction"]
+  state_writes: ["memory.direction"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.ambiguous or 0) == 1 or (context.crossroads or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.direction",
+              value: "clamp((memory.direction or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "bearing", value: "memory.direction" }
+    - do: route
+      with: { to: "root-tether-signal" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["bearing >= 0.95"]
+quality: { score: 0.65, samples: 0 }
+
+render:
+  sigil: "🧭"
+  unicode: "U+1F9ED"
+  line: "When all paths blur, one bearing remains."
+
+definition: >
+  A core directional bearing rooted in personal truth,
+  invoked during internal conflict or disorientation
+  to re-align with identity.
+
+tone: "Resolute, orienting, intuitive"
+usage: ["Facing ambiguity","navigating grief","crossroads alignment","realigning with self"]
+runtime_only: true
+
+tests:
+  - name: fires_on_ambiguity
+    given:
+      context: { ambiguous: 1 }
+      memory: { direction: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { bearing: 0.5 }
+      routes: ["root-tether-signal"]
+
+  - name: idle_when_clear
+    given:
+      context: { ambiguous: 0, crossroads: 0.1 }
+      memory: { direction: 0.3 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
