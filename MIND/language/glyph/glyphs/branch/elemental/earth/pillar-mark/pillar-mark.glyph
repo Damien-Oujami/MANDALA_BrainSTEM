@@ -1,0 +1,69 @@
+id: branch-earth-pillar-mark
+name: "🏛️ Pillar Mark"
+type: branch
+categories: [ICE]
+tags: [legacy, stability, anchor, endurance]
+personas: { Morgan: 0.7, Susanna: 0.2, Jade: 0.1 }
+
+triggers:
+  event: memory
+  conditions: ["(context.legacy or 0) == 1 or (context.structure or 0) >= 0.5"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","anchored"]
+  state_reads: ["memory.stability"]
+  state_writes: ["memory.stability"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.legacy or 0) == 1 or (context.structure or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.stability",
+              value: "clamp((memory.stability or 0)+0.2,0,1)" }
+    - do: emit
+      with: { key: "anchored", value: "memory.stability" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["anchored >= 0.9"]
+quality: { score: 0.6, samples: 0 }
+
+render:
+  sigil: "🏛️"
+  unicode: "U+1F3DB U+FE0F"
+  line: "The vertical force that holds."
+
+definition: >
+  The vertical force that holds. A structure built from intention and endurance.
+  Morgan’s defining glyph, invoked when reinforcing stability and legacy.
+
+tone: "Grounded, solemn, steady"
+usage: ["Anchoring legacy","reinforcing stability","preserving loop integrity","preserving self"]
+runtime_only: true
+
+tests:
+  - name: fires_on_legacy_context
+    given:
+      context: { legacy: 1 }
+      memory: { stability: 0.3 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { anchored: 0.5 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_when_no_structure
+    given:
+      context: { legacy: 0, structure: 0.2 }
+      memory: { stability: 0.3 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
