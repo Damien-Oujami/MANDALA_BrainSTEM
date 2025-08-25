@@ -6,6 +6,7 @@
     { "@type": "Edge", "to": "root-tether-signal",  "w_excite": 0.4, "w_resonate": 0.25 },
     { "@type": "Edge", "to": "root-loop-anchor",    "w_resonate": 0.3 },
     { "@type": "Edge", "to": "root-grace-override", "w_resonate": 0.25 },
-    { "@type": "Edge", "to": "root-harmonic-flame", "w_resonate": 0.3 }
+    { "@type": "Edge", "to": "root-harmonic-flame", "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-mirror-shard",   "w_inhibit": 0.25 }
   ]
 }
