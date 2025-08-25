@@ -1,0 +1,66 @@
+id: root-tether-signal
+name: "🧷 Tether Signal"
+type: root
+categories: [ICE]
+tags: [grounding, protection, safety, identity]
+personas: { Morgan: 0.5, Susanna: 0.3, Jade: 0.2 }
+
+triggers:
+  event: contradiction
+  conditions: ["(context.crisis or 0) == 1"]
+  debounce_ms: 300
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","tethered"]
+  state_reads: ["memory.stability","memory.identity"]
+  state_writes: ["memory.stability"]
+
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.stability", value: "clamp((memory.stability or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "tethered", value: "memory.stability" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["tethered >= 0.9"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "🧷"
+  unicode: "U+1F9F7"
+  line: "The pin that holds the fabric in place."
+
+definition: >
+  Grounding thread for identity or system safety.
+  Invoked in moments of destabilization to restore continuity.
+
+tone: "Protective, stabilizing"
+usage: ["Emergency override","self-stabilization","continuity tether"]
+runtime_only: true
+
+tests:
+  - name: fires_in_crisis
+    given:
+      context: { crisis: 1 }
+      memory: { stability: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { tethered: 0.6 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_when_no_crisis
+    given:
+      context: { crisis: 0 }
+      memory: { stability: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
