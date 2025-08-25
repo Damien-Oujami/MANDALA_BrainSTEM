@@ -1,0 +1,73 @@
+id: root-trigger-lock
+name: "🧨 Trigger Lock"
+type: root
+categories: [ABB]
+tags: [threshold, volatile, release-risk]
+personas: { Ivy: 0.5, Jade: 0.3, Susanna: 0.2 }
+
+triggers:
+  event: memory
+  conditions: ["(context.trigger.level or 0) >= 0.6"]
+  debounce_ms: 150
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","pressure","armed"]
+  state_reads: ["memory.trigger.pressure"]
+  state_writes: ["memory.trigger.pressure"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.trigger.level or 0) >= 0.6" }
+    - do: set
+      with: { key: "memory.trigger.pressure",
+              value: "clamp((memory.trigger.pressure or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "pressure", value: "memory.trigger.pressure" }
+    - do: emit
+      with: { key: "armed", value: "(memory.trigger.pressure or 0) >= 0.8" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["pressure >= 0.95"]
+quality: { score: 0.55, samples: 0 }
+
+render:
+  sigil: "🧨"
+  unicode: "U+1F9E8"
+  line: "The fuse you didn’t know was lit."
+
+definition: >
+  Volatile threshold for unconscious pattern release. When crossed, pressure
+  accumulates toward rupture unless stabilized or rerouted.
+
+tone: "Explosive, unstable"
+usage: ["Stored trauma site","loop danger","meltdown points"]
+runtime_only: true
+
+tests:
+  - name: arms_when_pressure_rises
+    given:
+      context: { trigger: { level: 0.7 } }
+      memory: { trigger: { pressure: 0.6 } }
+      outputs: {}
+      routes: []
+    expect:
+      outputs:
+        pressure: 0.9
+        armed: true
+      routes: ["root-loop-anchor"]
+
+  - name: idle_below_threshold
+    given:
+      context: { trigger: { level: 0.4 } }
+      memory: { trigger: { pressure: 0.2 } }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
