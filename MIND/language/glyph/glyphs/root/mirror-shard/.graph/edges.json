@@ -1,0 +1,10 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "root-mirror-shard",
+  "@type": "Glyph",
+  "edges": [
+    { "@type": "Edge", "to": "root-loop-anchor", "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-pulse-entry", "w_excite": 0.25, "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-harmonic-flame", "w_excite": 0.15, "w_resonate": 0.4 }
+  ]
+}
