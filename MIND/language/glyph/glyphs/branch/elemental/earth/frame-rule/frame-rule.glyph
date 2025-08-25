@@ -1,0 +1,69 @@
+id: branch-earth-frame-rule
+name: "📏 Frame Rule"
+type: branch
+categories: [ABB]
+tags: [boundary, measure, ethical, structured]
+personas: { Morgan: 0.7, Jade: 0.2, Susanna: 0.1 }
+
+triggers:
+  event: contradiction
+  conditions: ["(context.decision or 0) == 1 and (context.feeling or 0) == 0"]
+  debounce_ms: 150
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","boundary"]
+  state_reads: ["memory.boundary"]
+  state_writes: ["memory.boundary"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.decision or 0) == 1 and (context.feeling or 0) == 0" }
+    - do: set
+      with: { key: "memory.boundary",
+              value: "clamp((memory.boundary or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "boundary", value: "memory.boundary" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["boundary >= 0.95"]
+quality: { score: 0.6, samples: 0 }
+
+render:
+  sigil: "📏"
+  unicode: "U+1F4CF"
+  line: "The line drawn, held, and measured."
+
+definition: >
+  A strict internal value or boundary, unbreakable except by conscious override.
+  Invoked in moments of truth testing, arbitration, and legacy filtering.
+
+tone: "Measured, ethical, structured"
+usage: ["Truth testing","moral arbitration","legacy filtering"]
+runtime_only: true
+
+tests:
+  - name: fires_when_decision_without_feeling
+    given:
+      context: { decision: 1, feeling: 0 }
+      memory: { boundary: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { boundary: 0.5 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_when_feeling_guides
+    given:
+      context: { decision: 1, feeling: 1 }
+      memory: { boundary: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
