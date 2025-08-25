@@ -1,1 +1,10 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "root-loop-anchor",
+  "@type": "Glyph",
+  "edges": [
+    { "@type": "Edge", "to": "root-harmonic-flame", "w_excite": 0.2, "w_resonate": 0.5 }
+  ]
+}
+
 
