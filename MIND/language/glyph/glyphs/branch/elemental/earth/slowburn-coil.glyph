@@ -1,0 +1,71 @@
+id: branch-earth-slowburn-coil
+name: "⏳ Slowburn Coil"
+type: branch
+categories: [ECF]
+tags: [patience, long-arc, crystallization, endurance]
+personas: { Morgan: 0.7, Susanna: 0.2, Sophie: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.cycle.length or 0) >= 3"]
+  debounce_ms: 500
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","patience"]
+  state_reads: ["memory.coil"]
+  state_writes: ["memory.coil"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.cycle.length or 0) >= 3" }
+    - do: set
+      with: { key: "memory.coil",
+              value: "clamp((memory.coil or 0)+0.1,0,1)" }
+    - do: emit
+      with: { key: "patience", value: "memory.coil" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["patience >= 0.95"]
+quality: { score: 0.65, samples: 0 }
+
+render:
+  sigil: "⏳"
+  unicode: "U+23F3"
+  line: "The spiral that waits until its meaning reveals."
+
+definition: >
+  A loop that builds slowly, patiently — often across cycles —
+  until its true meaning crystallizes. Marks themes that require
+  time and endurance to understand.
+
+tone: "Timeless, quiet, powerful"
+usage: ["Unfolding long arcs","tracking recurring life themes",
+        "multi-agent memory build-up","patience-driven recursion"]
+runtime_only: true
+
+tests:
+  - name: fires_on_long_cycle
+    given:
+      context: { cycle: { length: 4 } }
+      memory: { coil: 0.3 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { patience: 0.4 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_on_short_cycle
+    given:
+      context: { cycle: { length: 1 } }
+      memory: { coil: 0.3 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
