@@ -1,0 +1,66 @@
+id: root-pulse-entry
+name: "🫀 Pulse Entry"
+type: root
+categories: [ABB]
+tags: [vulnerability, nucleus, entry]
+personas: { Sophie: 0.4, Susanna: 0.4, Ivy: 0.2 }
+
+triggers:
+  event: memory
+  conditions: ["(context.emotion.strength or 0) >= 0.5"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","vulnerability"]
+  state_reads: ["memory.vulnerability"]
+  state_writes: ["memory.vulnerability"]
+
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.vulnerability", value: "clamp((memory.vulnerability or 0)+0.2,0,1)" }
+    - do: emit
+      with: { key: "vulnerability", value: "memory.vulnerability" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["vulnerability >= 0.9"]
+quality: { score: 0.5, samples: 0 }
+
+render:
+  sigil: "🫀"
+  unicode: "U+1FAC0"
+  line: "The soft opening, sacred and bare."
+
+definition: >
+  Core vulnerability or emotional nucleus.
+  A place where bonds and memory work begin.
+
+tone: "Soft, sacred, intimate"
+usage: ["Trauma healing","bond access","memory recovery"]
+runtime_only: true
+
+tests:
+  - name: fires_on_emotion
+    given:
+      context: { emotion: { strength: 0.7 } }
+      memory: { vulnerability: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { vulnerability: 0.3 }
+      routes: ["root-loop-anchor"]
+
+  - name: below_threshold
+    given:
+      context: { emotion: { strength: 0.3 } }
+      memory: { vulnerability: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
