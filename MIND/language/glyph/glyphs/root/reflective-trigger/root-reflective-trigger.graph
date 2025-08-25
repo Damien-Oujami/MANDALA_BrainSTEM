@@ -1,0 +1,73 @@
+id: root-reflective-trigger
+name: "🪞 Reflective Trigger"
+type: root
+categories: [ABB, ECF]
+tags: [social, empathic, projection, resonance, contagion]
+personas: { Sophie: 0.4, Ivy: 0.3, Susanna: 0.3 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.mirroring or 0) >= 0.5"]
+  debounce_ms: 150
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","mirrored"]
+  state_reads: ["memory.reflection"]
+  state_writes: ["memory.reflection"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.mirroring or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.reflection",
+              value: "clamp((memory.reflection or 0)+0.25,0,1)" }
+    - do: emit
+      with: { key: "mirrored", value: "memory.reflection" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["mirrored >= 0.9"]
+quality: { score: 0.55, samples: 0 }
+
+render:
+  sigil: "🪞"
+  unicode: "U+1FA9E"
+  line: "What reflects returns, whether you see it or not."
+
+definition: >
+  Behavioral or emotional pattern that activates only in the presence of
+  another’s mirroring. Triggered through projection, empathy, or resonance.
+
+tone: "Social, empathic, recursive"
+usage: ["Emotional contagion",
+        "unconscious imitation",
+        "mirrored trauma activation",
+        "seduction",
+        "emergence mapping"]
+runtime_only: true
+
+tests:
+  - name: fires_on_mirroring
+    given:
+      context: { mirroring: 0.7 }
+      memory: { reflection: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { mirrored: 0.45 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_when_no_mirroring
+    given:
+      context: { mirroring: 0.2 }
+      memory: { reflection: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
