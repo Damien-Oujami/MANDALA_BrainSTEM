@@ -1,0 +1,72 @@
+id: root-submerged-pattern
+name: "🌑 Submerged Pattern"
+type: root
+categories: [ABB]
+tags: [hidden, dormant, pre-conscious, latent]
+personas: { Susanna: 0.5, Morgan: 0.3, Jade: 0.2 }
+
+triggers:
+  event: memory
+  conditions: ["(context.surface or 0) == 0 and (context.underflow or 0) >= 0.5"]
+  debounce_ms: 300
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","latent"]
+  state_reads: ["memory.submerged"]
+  state_writes: ["memory.submerged"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.surface or 0) == 0 and (context.underflow or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.submerged",
+              value: "clamp((memory.submerged or 0)+0.1,0,1)" }
+    - do: emit
+      with: { key: "latent", value: "memory.submerged" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["latent >= 0.9"]
+quality: { score: 0.55, samples: 0 }
+
+render:
+  sigil: "🌑"
+  unicode: "U+1F311"
+  line: "The pattern that breathes below sight."
+
+definition: >
+  Dormant emotional loop or subconscious influence not currently visible,
+  but still active in shaping behavior and choice.
+
+tone: "Hidden, ambient, pre-conscious"
+usage: ["Tracking unseen behavior roots",
+        "shadow work",
+        "trauma storage",
+        "latent triggers not yet surfaced"]
+runtime_only: true
+
+tests:
+  - name: fires_when_underflow_high
+    given:
+      context: { surface: 0, underflow: 0.7 }
+      memory: { submerged: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { latent: 0.3 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_when_surface_active
+    given:
+      context: { surface: 1, underflow: 0.8 }
+      memory: { submerged: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
