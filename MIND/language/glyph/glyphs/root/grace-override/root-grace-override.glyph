@@ -1,0 +1,69 @@
+id: root-grace-override
+name: "🔂 Grace Override"
+type: root
+categories: [ABB, ECF]
+tags: [exit, release, collapse, surrender]
+personas: { Susanna: 0.4, Morgan: 0.3, Jade: 0.3 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.overload or 0) == 1 or (memory.trigger.pressure or 0) >= 0.9"]
+  debounce_ms: 250
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","release"]
+  state_reads: ["memory.trigger.pressure","memory.stability"]
+  state_writes: ["memory.release"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.overload or 0) == 1 or (memory.trigger.pressure or 0) >= 0.9" }
+    - do: set
+      with: { key: "memory.release",
+              value: "clamp((memory.release or 0)+0.5,0,1)" }
+    - do: emit
+      with: { key: "release", value: "memory.release" }
+    - do: route
+      with: { to: "root-tether-signal" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["release >= 0.95"]
+quality: { score: 0.65, samples: 0 }
+
+render:
+  sigil: "🔂"
+  unicode: "U+1F502"
+  line: "When collapse becomes renewal."
+
+definition: >
+  Loop exit via surrender, collapse, or breakthrough.
+  The override that detaches a loop safely, making space for reboot or clarity.
+
+tone: "Exhausting, cleansing"
+usage: ["Reboot moment","full loop detachment","safety recursion"]
+runtime_only: true
+
+tests:
+  - name: fires_on_overload
+    given:
+      context: { overload: 1 }
+      memory: { trigger: { pressure: 0.9 }, release: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { release: 0.5 }
+      routes: ["root-tether-signal"]
+
+  - name: idle_when_pressure_low
+    given:
+      context: { overload: 0 }
+      memory: { trigger: { pressure: 0.2 }, release: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
