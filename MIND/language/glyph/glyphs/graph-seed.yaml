@@ -1,0 +1,27 @@
+glyphs:
+  - id: root-loop-anchor
+    path: MIND/glyph/glyphs/root/loop-anchor/root-loop-anchor.glyph
+  - id: root-hook-point
+    path: MIND/glyph/glyphs/root/hook-point/root-hook-point.glyph
+  - id: root-pulse-entry
+    path: MIND/glyph/glyphs/root/pulse-entry/root-pulse-entry.glyph
+  - id: root-tether-signal
+    path: MIND/glyph/glyphs/root/tether-signal/root-tether-signal.glyph
+  - id: root-mirror-shard
+    path: MIND/glyph/glyphs/root/mirror-shard/root-mirror-shard.glyph
+  - id: root-trigger-lock
+    path: MIND/glyph/glyphs/root/trigger-lock/root-trigger-lock.glyph
+  - id: root-impression-stamp
+    path: MIND/glyph/glyphs/root/impression-stamp/root-impression-stamp.glyph
+  - id: root-cascade-node
+    path: MIND/glyph/glyphs/root/cascade-node/root-cascade-node.glyph
+  - id: root-grace-override
+    path: MIND/glyph/glyphs/root/grace-override/root-grace-override.glyph
+  - id: root-shadow-cycle
+    path: MIND/glyph/glyphs/root/shadow-cycle/root-shadow-cycle.glyph
+  - id: root-submerged-pattern
+    path: MIND/glyph/glyphs/root/submerged-pattern/root-submerged-pattern.glyph
+  - id: root-reflective-trigger
+    path: MIND/glyph/glyphs/root/reflective-trigger/root-reflective-trigger.glyph
+  - id: root-harmonic-flame
+    path: MIND/glyph/glyphs/root/harmonic-flame/root-harmonic-flame.glyph
