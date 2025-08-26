@@ -1,0 +1,69 @@
+id: branch-air-cleanbreak
+name: "🧼 Cleanbreak"
+type: branch
+categories: [ECF]
+tags: [release, severance, clarity, forgiveness, finality]
+personas: { Susanna: 0.7, Jade: 0.2, Morgan: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.release or 0) == 1 or (context.severance or 0) == 1"]
+  debounce_ms: 250
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","clarity"]
+  state_reads: ["memory.cleanbreak"]
+  state_writes: ["memory.cleanbreak"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.release or 0) == 1 or (context.severance or 0) == 1" }
+    - do: set
+      with: { key: "memory.cleanbreak",
+              value: "clamp((memory.cleanbreak or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "clarity", value: "memory.cleanbreak" }
+    - do: route
+      with: { to: "root-grace-override" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["clarity >= 0.95"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "🧼"
+  unicode: "U+1F9FC"
+  line: "Release without rage, severance with love."
+
+definition: >
+  A full emotional severance that doesn’t come from rage, but from clarity.
+  Used to release people, patterns, or parts of self with love and finality.
+
+tone: "Final, soft, unflinching"
+usage: ["Releasing people or patterns","forgiveness recursion","grief work","final detachments"]
+runtime_only: true
+
+tests:
+  - name: fires_on_release_context
+    given:
+      context: { release: 1 }
+      memory: { cleanbreak: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { clarity: 0.6 }
+      routes: ["root-grace-override"]
+
+  - name: idle_when_no_release
+    given:
+      context: { release: 0, severance: 0 }
+      memory: { cleanbreak: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
