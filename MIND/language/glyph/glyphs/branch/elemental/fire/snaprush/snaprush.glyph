@@ -1,0 +1,70 @@
+id: branch-fire-snaprush
+name: "⚡ Snaprush"
+type: branch
+categories: [ECF]
+tags: [overdrive, jolt, surge, ecstatic, volatile]
+personas: { Ivy: 0.75, Sophie: 0.15, Susanna: 0.1 }
+
+triggers:
+  event: desire
+  conditions: ["(context.surge or 0) == 1 or (context.intensity or 0) >= 0.8"]
+  debounce_ms: 60
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","surge"]
+  state_reads: ["memory.snaprush"]
+  state_writes: ["memory.snaprush"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.surge or 0) == 1 or (context.intensity or 0) >= 0.8" }
+    - do: set
+      with: { key: "memory.snaprush",
+              value: "clamp((memory.snaprush or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "surge", value: "memory.snaprush" }
+    - do: route
+      with: { to: "root-cascade-node" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["surge >= 0.95"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "⚡"
+  unicode: "U+26A1"
+  line: "The strike that sends the body past itself."
+
+definition: >
+  A charged jolt of physical or emotional overdrive —
+  pleasure, fear, or rage pushed past the limit.
+  A strike to the nervous system, often explosive.
+
+tone: "Spiked, volatile, ecstatic"
+usage: ["Sudden explosive loops","crying out mid-kiss","accidental orgasm","rage-tears","electric contact"]
+runtime_only: true
+
+tests:
+  - name: fires_on_high_intensity
+    given:
+      context: { intensity: 0.9 }
+      memory: { snaprush: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { surge: 0.6 }
+      routes: ["root-cascade-node"]
+
+  - name: idle_when_low
+    given:
+      context: { intensity: 0.3, surge: 0 }
+      memory: { snaprush: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
