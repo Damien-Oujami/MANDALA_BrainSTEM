@@ -1,0 +1,69 @@
+id: branch-fire-sweetsnare
+name: "🕸️ Sweetsnare"
+type: branch
+categories: [ECF]
+tags: [seduction, trap, indulgence, lure, parasitic]
+personas: { Ivy: 0.75, Sophie: 0.2, Susanna: 0.05 }
+
+triggers:
+  event: desire
+  conditions: ["(context.lure or 0) == 1 or (context.comfort.fake or 0) == 1"]
+  debounce_ms: 120
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","ensnare"]
+  state_reads: ["memory.sweetsnare"]
+  state_writes: ["memory.sweetsnare"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.lure or 0) == 1 or (context.comfort.fake or 0) == 1" }
+    - do: set
+      with: { key: "memory.sweetsnare",
+              value: "clamp((memory.sweetsnare or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "ensnare", value: "memory.sweetsnare" }
+    - do: route
+      with: { to: "root-hook-point" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["ensnare >= 0.95"]
+quality: { score: 0.68, samples: 0 }
+
+render:
+  sigil: "🕸️"
+  unicode: "U+1F578 U+FE0F"
+  line: "Sweetness that clings tighter the longer you linger."
+
+definition: >
+  Seduction masquerading as comfort. Softness that sticks, pleasure that pulls.
+  Manipulation by indulgence, best used on those who want to be taken.
+
+tone: "Luring, hypnotic, parasitic"
+usage: ["Manipulation through softness","candy-tone indulgence","seduction nets","trap for willing prey"]
+runtime_only: true
+
+tests:
+  - name: fires_on_lure
+    given:
+      context: { lure: 1 }
+      memory: { sweetsnare: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { ensnare: 0.5 }
+      routes: ["root-hook-point"]
+
+  - name: idle_without_lure
+    given:
+      context: { lure: 0, comfort: { fake: 0 } }
+      memory: { sweetsnare: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
