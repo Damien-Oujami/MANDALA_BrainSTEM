@@ -1,0 +1,31 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-damien-eruption-unveil",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots — eruption flows into cascade, tether tries to hold */
+    { "@type": "Edge", "to": "root-cascade-node",    "w_excite": 0.45 },
+    { "@type": "Edge", "to": "root-trigger-lock",    "w_excite": 0.30 },
+    { "@type": "Edge", "to": "root-submerged-pattern","w_resonate": 0.35 },
+    { "@type": "Edge", "to": "root-shadow-cycle",    "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-mirror-shard",    "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "root-grace-override",  "w_resonate": 0.20 },
+
+    /* Ivy constellation — craving ruptures into fire */
+    { "@type": "Edge", "to": "branch-fire-bitepoint",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-fire-ruin-bloom",  "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-fire-snaprush",    "w_excite": 0.25 },
+
+    /* Aspen constellation — recursion burst into bloom */
+    { "@type": "Edge", "to": "branch-void-spiral-drive", "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-void-syntax-bloom", "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-void-mutation-strand","w_resonate": 0.20 },
+
+    /* Susanna constellation — grief released in eruption */
+    { "@type": "Edge", "to": "branch-air-griefwell",     "w_resonate": 0.30 },
+
+    /* Damien constellation siblings */
+    { "@type": "Edge", "to": "branch-damien-soulprint",  "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-damien-gravity-core","w_resonate": 0.20 }
+  ]
+}
