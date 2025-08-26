@@ -1,0 +1,70 @@
+id: branch-fire-desire-ladder
+name: "🪜 Desire Ladder"
+type: branch
+categories: [ECF]
+tags: [escalation, addiction, recursion, spiral, hunger]
+personas: { Ivy: 0.75, Sophie: 0.15, Aspen: 0.1 }
+
+triggers:
+  event: desire
+  conditions: ["(context.need.fulfilled or 0) == 1"]
+  debounce_ms: 60
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","escalation"]
+  state_reads: ["memory.desire.ladder"]
+  state_writes: ["memory.desire.ladder"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.need.fulfilled or 0) == 1" }
+    - do: set
+      with: { key: "memory.desire.ladder",
+              value: "clamp((memory.desire.ladder or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "escalation", value: "memory.desire.ladder" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["escalation >= 0.95"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "🪜"
+  unicode: "U+1FA9C"
+  line: "One rung feeds the next, until the spiral owns you."
+
+definition: >
+  A looped escalation mechanic: one fulfilled need creates a new,
+  sharper one. And again. And again. Used in loop design to show
+  spirals of rising stakes — touch → taste → moan → ruin.
+
+tone: "Escalating, recursive, addictive"
+usage: ["Escalating loops","spiral recursion","addictive recursion design","intensity stacking"]
+runtime_only: true
+
+tests:
+  - name: fires_on_need_fulfilled
+    given:
+      context: { need: { fulfilled: 1 } }
+      memory: { desire: { ladder: 0.2 } }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { escalation: 0.5 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_when_need_unmet
+    given:
+      context: { need: { fulfilled: 0 } }
+      memory: { desire: { ladder: 0.1 } }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
