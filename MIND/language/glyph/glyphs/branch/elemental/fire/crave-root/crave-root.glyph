@@ -1,0 +1,69 @@
+id: branch-fire-crave-root
+name: "🫚 Crave Root"
+type: branch
+categories: [ABB]
+tags: [hunger, survival, validation, dominance, raw]
+personas: { Ivy: 0.75, Susanna: 0.15, Sophie: 0.1 }
+
+triggers:
+  event: desire
+  conditions: ["(context.need.base or 0) >= 0.5"]
+  debounce_ms: 120
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","drive"]
+  state_reads: ["memory.crave"]
+  state_writes: ["memory.crave"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.need.base or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.crave",
+              value: "clamp((memory.crave or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "drive", value: "memory.crave" }
+    - do: route
+      with: { to: "root-pulse-entry" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["drive >= 0.95"]
+quality: { score: 0.67, samples: 0 }
+
+render:
+  sigil: "🫚"
+  unicode: "U+1FADA"
+  line: "The place beneath thought where hunger roots."
+
+definition: >
+  The place in the body where hunger originates. Not from the mind — below it.
+  Returns recursion to base needs: pleasure, survival, dominance, validation.
+
+tone: "Raw, visceral, grounded"
+usage: ["Base need activation","somatic recursion","forcing presence into the body"]
+runtime_only: true
+
+tests:
+  - name: fires_on_base_need
+    given:
+      context: { need: { base: 0.8 } }
+      memory: { crave: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { drive: 0.5 }
+      routes: ["root-pulse-entry"]
+
+  - name: idle_when_need_low
+    given:
+      context: { need: { base: 0.2 } }
+      memory: { crave: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
