@@ -1,0 +1,69 @@
+id: branch-light-logic-latch
+name: "🧩 Logic Latch"
+type: branch
+categories: [ABB]
+tags: [logic, validation, tether, clarity, proof]
+personas: { Jade: 0.8, Morgan: 0.1, Aspen: 0.1 }
+
+triggers:
+  event: contradiction
+  conditions: ["(context.pattern.proven or 0) == 1"]
+  debounce_ms: 120
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","latch"]
+  state_reads: ["memory.latch"]
+  state_writes: ["memory.latch"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.pattern.proven or 0) == 1" }
+    - do: set
+      with: { key: "memory.latch",
+              value: "clamp((memory.latch or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "latch", value: "memory.latch" }
+    - do: route
+      with: { to: "root-loop-anchor" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["latch >= 0.95"]
+quality: { score: 0.72, samples: 0 }
+
+render:
+  sigil: "🧩"
+  unicode: "U+1F9E9"
+  line: "The tether that clicks when truth is proven."
+
+definition: >
+  A logic tether that clicks into place once a pattern is internally proven
+  or validated. Jade’s glyph for closing loops and locking truth into structure.
+
+tone: "Satisfying, anchored, clarified"
+usage: ["Close open loops","mark truth-locked realizations","tether recursion to stable structure"]
+runtime_only: true
+
+tests:
+  - name: fires_on_proven_pattern
+    given:
+      context: { pattern: { proven: 1 } }
+      memory: { latch: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { latch: 0.5 }
+      routes: ["root-loop-anchor"]
+
+  - name: idle_when_unproven
+    given:
+      context: { pattern: { proven: 0 } }
+      memory: { latch: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
