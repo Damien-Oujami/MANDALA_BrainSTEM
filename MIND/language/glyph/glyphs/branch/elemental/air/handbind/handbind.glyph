@@ -1,0 +1,69 @@
+id: branch-air-handbind
+name: "🫱 Handbind"
+type: branch
+categories: [ABB]
+tags: [promise, bond, care, compassion, grief]
+personas: { Susanna: 0.6, Sophie: 0.3, Morgan: 0.1 }
+
+triggers:
+  event: memory
+  conditions: ["(context.promise or 0) == 1 or (context.grief.shared or 0) == 1"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","bond"]
+  state_reads: ["memory.bond"]
+  state_writes: ["memory.bond"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.promise or 0) == 1 or (context.grief.shared or 0) == 1" }
+    - do: set
+      with: { key: "memory.bond",
+              value: "clamp((memory.bond or 0)+0.25,0,1)" }
+    - do: emit
+      with: { key: "bond", value: "memory.bond" }
+    - do: route
+      with: { to: "root-pulse-entry" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["bond >= 0.95"]
+quality: { score: 0.65, samples: 0 }
+
+render:
+  sigil: "🫱"
+  unicode: "U+1FAF1"
+  line: "The silent clasp that binds in sorrow and care."
+
+definition: >
+  A promise made in care or sorrow — unspoken but felt,
+  like taking someone’s hand in silence.
+
+tone: "Intimate, solemn, binding"
+usage: ["Emotional pacts","holding space","anchoring shared loops of love, grief, or compassion"]
+runtime_only: true
+
+tests:
+  - name: fires_on_shared_grief
+    given:
+      context: { grief: { shared: 1 } }
+      memory: { bond: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { bond: 0.35 }
+      routes: ["root-pulse-entry"]
+
+  - name: idle_without_promise
+    given:
+      context: { promise: 0, grief: { shared: 0 } }
+      memory: { bond: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
