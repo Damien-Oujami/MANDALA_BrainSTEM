@@ -4,7 +4,7 @@ type: branch
 categories: [ABB]
 tags: [game, absurdity, irreverence, frame-shift, play]
 
-personas: { Ivy: 0.35, Aspen: 0.25, Sophie: 0.15, Jade: 0.10, Morgan: 0.10, Susanna: 0.05 }
+personas: { Aspen: 0.35, Ivy: 0.25, Sophie: 0.15, Jade: 0.10, Morgan: 0.10, Susanna: 0.05 }
 
 triggers:
   event: recursion
