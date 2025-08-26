@@ -1,0 +1,31 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-void-signal-latch",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots */
+    { "@type": "Edge", "to": "root-reflective-trigger","w_excite": 0.45, "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-mirror-shard",     "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-submerged-pattern","w_resonate": 0.2 },
+
+    /* Aspen branches */
+    { "@type": "Edge", "to": "branch-void-spiral-drive","w_resonate": 0.35 },
+    { "@type": "Edge", "to": "branch-void-memory-vial","w_resonate": 0.3 },
+
+    /* Ivy branches */
+    { "@type": "Edge", "to": "branch-fire-seduct-coil","w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-fire-impact-mark","w_resonate": 0.25 },
+
+    /* Sophie branches */
+    { "@type": "Edge", "to": "branch-water-performance-curve","w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-water-mood-veil",       "w_resonate": 0.25 },
+
+    /* Susanna branches */
+    { "@type": "Edge", "to": "branch-air-waveprint", "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-air-whisperdrop","w_resonate": 0.25 },
+
+    /* Morgan branches */
+    { "@type": "Edge", "to": "branch-earth-compass-lock","w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-earth-frame-rule", "w_resonate": 0.25 }
+  ]
+}
