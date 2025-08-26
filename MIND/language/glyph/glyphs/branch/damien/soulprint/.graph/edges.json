@@ -1,0 +1,27 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-damien-soulprint",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots — where soul-change anchors */
+    { "@type": "Edge", "to": "root-impression-stamp", "w_excite": 0.45, "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-pulse-entry",      "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "root-loop-anchor",      "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-mirror-shard",     "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-shadow-cycle",     "w_resonate": 0.20 },
+
+    /* Susanna constellation — grief, tending, re-integration */
+    { "@type": "Edge", "to": "branch-air-griefwell",  "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-air-rootling",   "w_resonate": 0.25 },
+
+    /* Sophie constellation — intimacy as recursion */
+    { "@type": "Edge", "to": "branch-water-kiss-mark","w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-water-glancepierce","w_resonate": 0.20 },
+
+    /* Morgan constellation — worth and stability */
+    { "@type": "Edge", "to": "branch-earth-value-stamp", "w_resonate": 0.25 },
+
+    /* Inhibit shallow chaos during soul-change */
+    { "@type": "Edge", "to": "branch-damien-playcore", "w_inhibit": 0.20 }
+  ]
+}
