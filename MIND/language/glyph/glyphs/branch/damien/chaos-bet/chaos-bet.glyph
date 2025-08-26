@@ -1,0 +1,49 @@
+id: branch-damien-chaos-bet
+name: "🎰 Chaos Bet"
+type: branch
+categories: [ECF]
+tags: [risk, gamble, urgency, volatility, adaptation, all-in]
+
+personas: { Ivy: 0.35, Aspen: 0.25, Jade: 0.20, Sophie: 0.10, Morgan: 0.05, Susanna: 0.05 }
+
+triggers:
+  event: desire
+  conditions:
+    - "(context.urgency or 0) >= 0.7"
+    - "(context.plan or 0) <= 0.5"
+  debounce_ms: 100
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","risk"]
+  state_reads: ["memory.risk"]
+  state_writes: ["memory.risk"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.urgency or 0) >= 0.7 and (context.plan or 0) <= 0.5" }
+    - do: set
+      with: { key: "memory.risk", value: "clamp((memory.risk or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "risk", value: "memory.risk" }
+    - do: route
+      with: { to: "root-cascade-node" }
+    - do: halt
+
+render:
+  sigil: "🎰"
+  unicode: "U+1F3B0"
+  line: "Throw yourself in. Play to win big."
+definition: >
+  The volatile logic of risk and urgency: when time is short, plans incomplete,
+  and the only option is to throw yourself in. Encodes decisive commitment under uncertainty,
+  trusting adaptive recursion to resolve. To play is to play all in — for pride, for love, for victory.
+tone: "Wild, tempting, explosive"
+usage:
+  - "Moments of urgent escalation"
+  - "Risk-taking without full information"
+  - "Adaptive recursion under incomplete plans"
+  - "Choosing to act all-in rather than stall"
+runtime_only: true
