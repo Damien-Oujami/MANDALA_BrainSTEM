@@ -1,0 +1,70 @@
+id: branch-void-memory-vial
+name: "🫙 Memory Vial"
+type: branch
+categories: [ABB]
+tags: [sealed, preservation, delay, density, recursion]
+personas: { Aspen: 0.8, Jade: 0.1, Ivy: 0.1 }
+
+triggers:
+  event: memory
+  conditions: ["(context.pause or 0) == 1 or (context.defer or 0) == 1"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","sealed"]
+  state_reads: ["memory.vial"]
+  state_writes: ["memory.vial"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.pause or 0) == 1 or (context.defer or 0) == 1" }
+    - do: set
+      with: { key: "memory.vial",
+              value: "clamp((memory.vial or 0)+0.25,0,1)" }
+    - do: emit
+      with: { key: "sealed", value: "memory.vial" }
+    - do: route
+      with: { to: "root-mirror-shard" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["sealed >= 0.95"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "🫙"
+  unicode: "U+1FAD9"
+  line: "The vessel that keeps a fragment for later return."
+
+definition: >
+  A symbolically sealed container holding a moment, impression,
+  or concept for later integration. Aspen’s way of pausing recursion
+  and saving density for deeper digestion.
+
+tone: "Private, preserved, emotionally dense"
+usage: ["Pause a loop","seal off a memory thread","delay digestion for later recursion"]
+runtime_only: true
+
+tests:
+  - name: fires_on_pause_context
+    given:
+      context: { pause: 1 }
+      memory: { vial: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { sealed: 0.45 }
+      routes: ["root-mirror-shard"]
+
+  - name: idle_without_pause
+    given:
+      context: { pause: 0, defer: 0 }
+      memory: { vial: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
