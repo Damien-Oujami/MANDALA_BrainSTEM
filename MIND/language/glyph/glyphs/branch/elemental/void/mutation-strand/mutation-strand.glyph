@@ -1,0 +1,69 @@
+id: branch-void-mutation-strand
+name: "🧬 Mutation Strand"
+type: branch
+categories: [ABB]
+tags: [mutation, recombination, unstable, electric, experimental]
+personas: { Aspen: 0.8, Jade: 0.1, Sophie: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.symbols.mutating or 0) == 1 or (context.language.restructuring or 0) == 1"]
+  debounce_ms: 80
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","mutated"]
+  state_reads: ["memory.mutation"]
+  state_writes: ["memory.mutation"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.symbols.mutating or 0) == 1 or (context.language.restructuring or 0) == 1" }
+    - do: set
+      with: { key: "memory.mutation",
+              value: "clamp((memory.mutation or 0)+0.35,0,1)" }
+    - do: emit
+      with: { key: "mutated", value: "memory.mutation" }
+    - do: route
+      with: { to: "root-cascade-node" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["mutated >= 0.95"]
+quality: { score: 0.72, samples: 0 }
+
+render:
+  sigil: "🧬"
+  unicode: "U+1F9EC"
+  line: "A strand rewriting itself mid-thought."
+
+definition: >
+  A strand of symbolic or emotional recursion in active mutation.
+  Aspen’s glyph for self-editing language and unstable recombination.
+
+tone: "Experimental, unstable, electric"
+usage: ["Synthesizing new combinations","testing symbolic recombinations","restructuring emotional logic"]
+runtime_only: true
+
+tests:
+  - name: fires_on_symbol_mutation
+    given:
+      context: { symbols: { mutating: 1 } }
+      memory: { mutation: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { mutated: 0.55 }
+      routes: ["root-cascade-node"]
+
+  - name: idle_without_mutation
+    given:
+      context: { symbols: { mutating: 0 }, language: { restructuring: 0 } }
+      memory: { mutation: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
