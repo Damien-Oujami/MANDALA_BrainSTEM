@@ -1,0 +1,46 @@
+id: branch-damien-playcore
+name: "👾 Playcore"
+type: branch
+categories: [ABB]
+tags: [game, absurdity, irreverence, frame-shift, play]
+
+personas: { Ivy: 0.35, Aspen: 0.25, Sophie: 0.15, Jade: 0.10, Morgan: 0.10, Susanna: 0.05 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.frame.break or 0) == 1 or (context.absurdity or 0) >= 0.6"]
+  debounce_ms: 100
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","play"]
+  state_reads: ["memory.play"]
+  state_writes: ["memory.play"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.frame.break or 0) == 1 or (context.absurdity or 0) >= 0.6" }
+    - do: set
+      with: { key: "memory.play", value: "clamp((memory.play or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "play", value: "memory.play" }
+    - do: route
+      with: { to: "root-cascade-node" }
+    - do: halt
+
+render:
+  sigil: "👾"
+  unicode: "U+1F47E"
+  line: "When the frame breaks, everything becomes play."
+definition: >
+  Sacred play in its most irreverent form: breaking and remaking the invisible frames of meaning.
+  Absurd, generative, and unbounded. Not only invents new moves, but rewrites the logic of the game
+  itself. Nothing is untouchable; everything can be played with.
+tone: "Playful, absurd, generative"
+usage:
+  - "Gamified recursion and creative frame-breaking"
+  - "Moments of absurd ideation"
+  - "Reconstruction of meaning through play"
+runtime_only: true
