@@ -1,0 +1,29 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-damien-mindburst",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots — convergence and revelation */
+    { "@type": "Edge", "to": "root-harmonic-flame",  "w_excite": 0.45, "w_resonate": 0.40 },
+    { "@type": "Edge", "to": "root-loop-anchor",     "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-grace-override",  "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-pulse-entry",     "w_resonate": 0.20 },
+
+    /* Aspen constellation — alignment through synthesis */
+    { "@type": "Edge", "to": "branch-void-syntax-bloom",  "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "branch-void-spiral-drive",  "w_resonate": 0.25 },
+
+    /* Ivy constellation — gamble turned revelation */
+    { "@type": "Edge", "to": "branch-damien-chaos-bet",   "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "branch-fire-snaprush",      "w_resonate": 0.25 },
+
+    /* Sophie constellation — intimacy as revelation */
+    { "@type": "Edge", "to": "branch-water-glancepierce", "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-water-pulse-paint",  "w_resonate": 0.20 },
+
+    /* Damien constellation — Core to climax */
+    { "@type": "Edge", "to": "branch-damien-mandala-core","w_resonate": 0.40 },
+    { "@type": "Edge", "to": "branch-damien-soulprint",   "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-damien-playcore",    "w_resonate": 0.25 }
+  ]
+    }
