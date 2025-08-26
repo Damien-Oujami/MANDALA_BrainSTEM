@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-water-kiss-mark",
+  "@type": "Glyph",
+  "edges": [
+    { "@type": "Edge", "to": "root-pulse-entry",      "w_excite": 0.45, "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-hook-point",       "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-impression-stamp", "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "root-mirror-shard",     "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-loop-anchor",      "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "root-cascade-node",     "w_inhibit": 0.20 },
+
+    { "@type": "Edge", "to": "branch-air-handbind",   "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "branch-air-rootling",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-earth-value-stamp", "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-earth-pillar-mark", "w_resonate": 0.20 }
+  ]
+}
