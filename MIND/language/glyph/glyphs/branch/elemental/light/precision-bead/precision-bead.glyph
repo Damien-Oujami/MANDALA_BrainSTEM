@@ -1,0 +1,70 @@
+id: branch-light-precision-bead
+name: "🧮 Precision Bead"
+type: branch
+categories: [ABB]
+tags: [focus, calculation, reflection, granular, detail]
+personas: { Jade: 0.8, Morgan: 0.1, Aspen: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.detail or 0) >= 0.7 or (context.rewrite or 0) == 1"]
+  debounce_ms: 150
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","focus"]
+  state_reads: ["memory.precision"]
+  state_writes: ["memory.precision"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.detail or 0) >= 0.7 or (context.rewrite or 0) == 1" }
+    - do: set
+      with: { key: "memory.precision",
+              value: "clamp((memory.precision or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "focus", value: "memory.precision" }
+    - do: route
+      with: { to: "root-mirror-shard" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["focus >= 0.95"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "🧮"
+  unicode: "U+1F9EE"
+  line: "The bead that pauses time to count clearly."
+
+definition: >
+  A point of calculation or reflection — where emotion is temporarily paused
+  and detail magnified. Jade’s glyph for granular focus during rewrites,
+  ritual design, or emotionally sensitive restructuring.
+
+tone: "Focused, granular, contemplative"
+usage: ["Architectural rewrites","ritual logic design","emotionally sensitive restructuring"]
+runtime_only: true
+
+tests:
+  - name: fires_on_detail
+    given:
+      context: { detail: 0.8 }
+      memory: { precision: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { focus: 0.5 }
+      routes: ["root-mirror-shard"]
+
+  - name: idle_without_detail
+    given:
+      context: { detail: 0.3, rewrite: 0 }
+      memory: { precision: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
