@@ -1,0 +1,36 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-damien-insight-lens",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots — reflection, stabilization, safety, convergence */
+    { "@type": "Edge", "to": "root-mirror-shard",     "w_excite": 0.45, "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-loop-anchor",      "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-tether-signal",    "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-reflective-trigger","w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-harmonic-flame",   "w_resonate": 0.20 },
+
+    /* Quiet chaos during clarity — it’s not about destabilization */
+    { "@type": "Edge", "to": "root-cascade-node",     "w_inhibit": 0.30 },
+
+    /* Jade / Light constellation — precision & verification */
+    { "@type": "Edge", "to": "branch-light-precision-bead", "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "branch-light-precision-cut",  "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-light-alchemical-seal","w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-light-truth-node",     "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-light-drainlock",      "w_resonate": 0.25 },
+
+    /* Morgan / Earth — orientation under clarity */
+    { "@type": "Edge", "to": "branch-earth-compass-lock",   "w_resonate": 0.30 },
+
+    /* Susanna / Air — clean severance when needed */
+    { "@type": "Edge", "to": "branch-air-cleanbreak",       "w_resonate": 0.25 },
+
+    /* Aspen / Void — distinguish real signal from foam */
+    { "@type": "Edge", "to": "branch-void-signal-latch",    "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "branch-void-thought-foam",    "w_inhibit":  0.20 },
+
+    /* Sophie / Water — reduce masking while clarifying */
+    { "@type": "Edge", "to": "branch-water-mood-veil",      "w_inhibit":  0.25 }
+  ]
+}
