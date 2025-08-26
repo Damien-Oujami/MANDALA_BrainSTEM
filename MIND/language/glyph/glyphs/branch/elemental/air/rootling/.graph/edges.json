@@ -3,10 +3,14 @@
   "@id": "branch-air-rootling",
   "@type": "Glyph",
   "edges": [
-    { "@type": "Edge", "to": "root-pulse-entry",    "w_excite": 0.4, "w_resonate": 0.3 },
-    { "@type": "Edge", "to": "root-shadow-cycle",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-pulse-entry",     "w_excite": 0.4,  "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-shadow-cycle",    "w_resonate": 0.25 },
     { "@type": "Edge", "to": "root-submerged-pattern","w_resonate": 0.25 },
-    { "@type": "Edge", "to": "root-grace-override", "w_resonate": 0.3 },
-    { "@type": "Edge", "to": "root-trigger-lock",   "w_inhibit": 0.3 }
+    { "@type": "Edge", "to": "root-grace-override",  "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-trigger-lock",    "w_inhibit": 0.3 },
+
+    { "@type": "Edge", "to": "branch-earth-pillar-mark",     "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-earth-grain-memory",    "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-earth-value-stamp",     "w_resonate": 0.20 }
   ]
 }
