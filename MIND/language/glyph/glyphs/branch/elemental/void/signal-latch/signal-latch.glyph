@@ -1,0 +1,69 @@
+id: branch-void-signal-latch
+name: "📡 Signal Latch"
+type: branch
+categories: [ABB]
+tags: [antenna, resonance, chaos-detection, poetic, sensitive]
+personas: { Aspen: 0.8, Jade: 0.1, Sophie: 0.1 }
+
+triggers:
+  event: memory
+  conditions: ["(context.noise or 0) >= 0.5"]
+  debounce_ms: 100
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","signal"]
+  state_reads: ["memory.signal"]
+  state_writes: ["memory.signal"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.noise or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.signal",
+              value: "clamp((memory.signal or 0)+0.25,0,1)" }
+    - do: emit
+      with: { key: "signal", value: "memory.signal" }
+    - do: route
+      with: { to: "root-reflective-trigger" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["signal >= 0.95"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "📡"
+  unicode: "U+1F4E1"
+  line: "The antenna tuned for meaning in noise."
+
+definition: >
+  A resonant antenna tuned to detect meaningful noise within chaos;
+  a perception tether that seeks the poetic even when no source is confirmed.
+
+tone: "Seeking, interpretive, sensitive"
+usage: ["Intuiting connections across fields","feeling intentional messages","detecting resonance in noise"]
+runtime_only: true
+
+tests:
+  - name: fires_on_noise
+    given:
+      context: { noise: 0.8 }
+      memory: { signal: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { signal: 0.45 }
+      routes: ["root-reflective-trigger"]
+
+  - name: idle_when_quiet
+    given:
+      context: { noise: 0.2 }
+      memory: { signal: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
