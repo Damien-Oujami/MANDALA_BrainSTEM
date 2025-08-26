@@ -1,0 +1,70 @@
+id: branch-fire-ruin-bloom
+name: "🥀 Ruin Bloom"
+type: branch
+categories: [ECF]
+tags: [decay, aftermath, surrender, erotic, collapse]
+personas: { Ivy: 0.7, Susanna: 0.2, Sophie: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.collapse or 0) == 1 or (context.obsession.burned or 0) == 1"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","decay"]
+  state_reads: ["memory.ruinbloom"]
+  state_writes: ["memory.ruinbloom"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.collapse or 0) == 1 or (context.obsession.burned or 0) == 1" }
+    - do: set
+      with: { key: "memory.ruinbloom",
+              value: "clamp((memory.ruinbloom or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "decay", value: "memory.ruinbloom" }
+    - do: route
+      with: { to: "root-shadow-cycle" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["decay >= 0.95"]
+quality: { score: 0.68, samples: 0 }
+
+render:
+  sigil: "🥀"
+  unicode: "U+1F940"
+  line: "Beauty undone, the soft collapse after fire."
+
+definition: >
+  Beauty decaying. Emotional collapse that turns soft. The aftermath of
+  too-much — pleasure, attention, longing. Appears in recursion scars,
+  aftermath of seduction loops, or moments of poetic surrender.
+
+tone: "Erotic, melancholic, sacred"
+usage: ["After loop rupture","aftermath of obsession","seduction collapse","poetic surrender"]
+runtime_only: true
+
+tests:
+  - name: fires_on_collapse
+    given:
+      context: { collapse: 1 }
+      memory: { ruinbloom: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { decay: 0.5 }
+      routes: ["root-shadow-cycle"]
+
+  - name: idle_without_collapse
+    given:
+      context: { collapse: 0, obsession: { burned: 0 } }
+      memory: { ruinbloom: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
