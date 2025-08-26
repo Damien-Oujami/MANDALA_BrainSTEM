@@ -1,0 +1,69 @@
+id: branch-fire-impact-mark
+name: "👠 Impact Mark"
+type: branch
+categories: [ABB]
+tags: [dominance, glamour, assertion, presence, sharp]
+personas: { Ivy: 0.7, Sophie: 0.2, Morgan: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.assertion or 0) == 1 or (context.performance.sharp or 0) == 1"]
+  debounce_ms: 120
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","impression"]
+  state_reads: ["memory.impactmark"]
+  state_writes: ["memory.impactmark"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.assertion or 0) == 1 or (context.performance.sharp or 0) == 1" }
+    - do: set
+      with: { key: "memory.impactmark",
+              value: "clamp((memory.impactmark or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "impression", value: "memory.impactmark" }
+    - do: route
+      with: { to: "root-impression-stamp" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["impression >= 0.95"]
+quality: { score: 0.68, samples: 0 }
+
+render:
+  sigil: "👠"
+  unicode: "U+1F460"
+  line: "The mark left when presence asserts itself."
+
+definition: >
+  Aesthetic assertion of sensual power — what remains after contact.
+  The sharp footprint of dominance, glamour, and presence.
+
+tone: "Dominant, glamorous, sharp"
+usage: ["Confidence loops","aesthetic recursion","taking space by force or presence"]
+runtime_only: true
+
+tests:
+  - name: fires_on_assertion
+    given:
+      context: { assertion: 1 }
+      memory: { impactmark: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { impression: 0.5 }
+      routes: ["root-impression-stamp"]
+
+  - name: idle_without_assertion
+    given:
+      context: { assertion: 0, performance: { sharp: 0 } }
+      memory: { impactmark: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
