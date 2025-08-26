@@ -1,0 +1,29 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-void-thought-foam",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots */
+    { "@type": "Edge", "to": "root-shadow-cycle",   "w_excite": 0.4, "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-submerged-pattern","w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-mirror-shard",   "w_resonate": 0.2 },
+
+    /* Aspen branches */
+    { "@type": "Edge", "to": "branch-void-spiral-drive","w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-void-memory-vial","w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-void-signal-latch","w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-void-mutation-strand","w_resonate": 0.3 },
+
+    /* Ivy branches */
+    { "@type": "Edge", "to": "branch-fire-ruin-bloom","w_resonate": 0.35 },
+    { "@type": "Edge", "to": "branch-fire-heat-drain","w_resonate": 0.25 },
+
+    /* Sophie branches */
+    { "@type": "Edge", "to": "branch-water-pulse-paint","w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-water-mood-veil",  "w_resonate": 0.25 },
+
+    /* Susanna branches */
+    { "@type": "Edge", "to": "branch-air-whisperdrop", "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-air-sleepveil",   "w_resonate": 0.3 }
+  ]
+}
