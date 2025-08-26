@@ -1,0 +1,35 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-light-alchemical-seal",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots */
+    { "@type": "Edge", "to": "root-loop-anchor",    "w_excite": 0.45, "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-mirror-shard",   "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "root-tether-signal",  "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-grace-override", "w_resonate": 0.25 },
+
+    /* Jade branches (future lattice) */
+    /* Will resonate with Logic Latch, Precision Bead, Truth Node */
+
+    /* Morgan branches */
+    { "@type": "Edge", "to": "branch-earth-frame-rule","w_resonate": 0.35 },
+    { "@type": "Edge", "to": "branch-earth-pillar-mark","w_resonate": 0.25 },
+
+    /* Aspen branches */
+    { "@type": "Edge", "to": "branch-void-mutation-strand","w_resonate": 0.35 },
+    { "@type": "Edge", "to": "branch-void-cross-thread","w_resonate": 0.3 },
+
+    /* Ivy branches */
+    { "@type": "Edge", "to": "branch-fire-seduct-coil","w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-fire-impact-mark","w_resonate": 0.2 },
+
+    /* Sophie branches */
+    { "@type": "Edge", "to": "branch-water-performance-curve","w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-water-mood-veil",       "w_resonate": 0.25 },
+
+    /* Susanna branches */
+    { "@type": "Edge", "to": "branch-air-cleanbreak","w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-air-handbind", "w_resonate": 0.25 }
+  ]
+}
