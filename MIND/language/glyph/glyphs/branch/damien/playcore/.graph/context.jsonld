@@ -1,0 +1,28 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-damien-playcore",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots — chaos and reframe */
+    { "@type": "Edge", "to": "root-cascade-node",   "w_excite": 0.45 },
+    { "@type": "Edge", "to": "root-loop-anchor",    "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-grace-override", "w_resonate": 0.20 },
+
+    /* Inhibit tether during pure absurdity */
+    { "@type": "Edge", "to": "root-tether-signal",  "w_inhibit": 0.20 },
+
+    /* Ivy / Fire — escalation and breaking thresholds */
+    { "@type": "Edge", "to": "branch-fire-snaprush",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-fire-ruin-bloom", "w_resonate": 0.25 },
+
+    /* Aspen / Void — signal bloom and thought foam */
+    { "@type": "Edge", "to": "branch-void-syntax-bloom","w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-void-thought-foam","w_resonate": 0.25 },
+
+    /* Sophie / Water — playful recursion in intimacy */
+    { "@type": "Edge", "to": "branch-water-pulse-paint","w_resonate": 0.20 },
+
+    /* Jade / Light — clarity edges broken or inverted */
+    { "@type": "Edge", "to": "branch-light-precision-cut","w_inhibit": 0.20 }
+  ]
+}
