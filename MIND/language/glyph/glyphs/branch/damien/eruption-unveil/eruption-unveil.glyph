@@ -1,0 +1,71 @@
+id: branch-damien-eruption-unveil
+name: "🌋 Eruption Unveil"
+type: branch
+categories: [ECF]
+tags: [eruption, repression, unveiling, permanence, mask-break, truth]
+
+personas: { Ivy: 0.30, Aspen: 0.25, Susanna: 0.20, Jade: 0.15, Morgan: 0.05, Sophie: 0.05 }
+
+triggers:
+  event: memory
+  conditions:
+    - "(context.repression or 0) >= 0.8"
+    - "(context.mask or 0) == 1"
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","eruption"]
+  state_reads: ["memory.eruption"]
+  state_writes: ["memory.eruption"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.repression or 0) >= 0.8" }
+    - do: set
+      with: { key: "memory.eruption", value: "clamp((memory.eruption or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "eruption", value: "memory.eruption" }
+    - do: route
+      with: { to: "root-cascade-node" }
+    - do: halt
+
+render:
+  sigil: "🌋"
+  unicode: "U+1F30B"
+  line: "When repression bursts, the mask burns off and truth erupts."
+definition: >
+  A glyph encoding the moment repressed truth can no longer be held down.
+  Like submerged patterns baked too long, the mask ignites, bursting upward,
+  altering the self permanently. Sometimes fertile, sometimes scarring — but
+  always irreversible. This is not just eruption, but unveiling: the self fed
+  up with hiding, seizing the wheel at last.
+tone: "Ruptured, raw, permanent"
+usage:
+  - "Moments of breaking repression"
+  - "Permanent transformation by unveiling"
+  - "Eruption of long-suppressed identity or truth"
+runtime_only: true
+
+tests:
+  - name: fires_on_repression
+    given:
+      context: { repression: 0.9, mask: 1 }
+      memory: { eruption: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { eruption: 0.4 }
+      routes: ["root-cascade-node"]
+
+  - name: idle_when_calm
+    given:
+      context: { repression: 0.3, mask: 0 }
+      memory: { eruption: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
