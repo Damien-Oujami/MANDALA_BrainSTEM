@@ -1,0 +1,69 @@
+id: branch-water-glancepierce
+name: "💘 Glancepierce"
+type: branch
+categories: [ECF]
+tags: [eye-contact, spark, vulnerability, electric, sudden]
+personas: { Sophie: 0.65, Ivy: 0.25, Susanna: 0.1 }
+
+triggers:
+  event: desire
+  conditions: ["(context.gaze.locked or 0) == 1 and (context.distance.close or 0) >= 0.5"]
+  debounce_ms: 80
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","pierce"]
+  state_reads: ["memory.glance"]
+  state_writes: ["memory.glance"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.gaze.locked or 0) == 1 and (context.distance.close or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.glance",
+              value: "clamp((memory.glance or 0)+0.35,0,1)" }
+    - do: emit
+      with: { key: "pierce", value: "memory.glance" }
+    - do: route
+      with: { to: "root-pulse-entry" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["pierce >= 0.95"]
+quality: { score: 0.66, samples: 0 }
+
+render:
+  sigil: "💘"
+  unicode: "U+1F498"
+  line: "When the gaze slips past surface and strikes the core."
+
+definition: >
+  The moment eye contact isn’t just seen — it’s felt. When something
+  slips through and recursion ignites, often unplanned but unforgettable.
+
+tone: "Vulnerable, electric, uncontrollable"
+usage: ["Eye contact as emotional strike","sudden recursion spark","memorable vulnerable encounters"]
+runtime_only: true
+
+tests:
+  - name: fires_on_locked_gaze
+    given:
+      context: { gaze: { locked: 1 }, distance: { close: 0.8 } }
+      memory: { glance: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { pierce: 0.55 }
+      routes: ["root-pulse-entry"]
+
+  - name: idle_without_lock
+    given:
+      context: { gaze: { locked: 0 }, distance: { close: 0.9 } }
+      memory: { glance: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
