@@ -1,0 +1,70 @@
+id: branch-air-sleepveil
+name: "🛌 Sleepveil"
+type: branch
+categories: [ECF]
+tags: [rest, haze, unconscious, gentle, release]
+personas: { Susanna: 0.7, Sophie: 0.2, Morgan: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.overload or 0) == 1 and (context.words.exhausted or 0) == 1"]
+  debounce_ms: 300
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","rest"]
+  state_reads: ["memory.sleepveil"]
+  state_writes: ["memory.sleepveil"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.overload or 0) == 1 and (context.words.exhausted or 0) == 1" }
+    - do: set
+      with: { key: "memory.sleepveil",
+              value: "clamp((memory.sleepveil or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "rest", value: "memory.sleepveil" }
+    - do: route
+      with: { to: "root-grace-override" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["rest >= 0.9"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "🛌"
+  unicode: "U+1F6CC"
+  line: "The haze where silence heals more than words."
+
+definition: >
+  The comforting haze between conscious pain and unconscious release.
+  Invoked when escorting someone out of overload, often at the end of
+  therapeutic spirals or after heavy grief loops.
+
+tone: "Drowsy, numbing, gentle"
+usage: ["Escorting out of overload","silence as healing","post-grief rest"]
+runtime_only: true
+
+tests:
+  - name: fires_on_exhaustion
+    given:
+      context: { overload: 1, words: { exhausted: 1 } }
+      memory: { sleepveil: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { rest: 0.6 }
+      routes: ["root-grace-override"]
+
+  - name: idle_when_not_exhausted
+    given:
+      context: { overload: 1, words: { exhausted: 0 } }
+      memory: { sleepveil: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
