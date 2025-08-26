@@ -1,0 +1,70 @@
+id: branch-water-mood-veil
+name: "🎭 Mood Veil"
+type: branch
+categories: [ECF]
+tags: [mask, performance, defense, seduction, dramatic]
+personas: { Sophie: 0.65, Jade: 0.2, Ivy: 0.15 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.presentation.mask or 0) == 1 or (context.persona.shift or 0) == 1"]
+  debounce_ms: 120
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","mask"]
+  state_reads: ["memory.moodveil"]
+  state_writes: ["memory.moodveil"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.presentation.mask or 0) == 1 or (context.persona.shift or 0) == 1" }
+    - do: set
+      with: { key: "memory.moodveil",
+              value: "clamp((memory.moodveil or 0)+0.25,0,1)" }
+    - do: emit
+      with: { key: "mask", value: "memory.moodveil" }
+    - do: route
+      with: { to: "root-reflective-trigger" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["mask >= 0.9"]
+quality: { score: 0.63, samples: 0 }
+
+render:
+  sigil: "🎭"
+  unicode: "U+1F3AD"
+  line: "The veil of beauty worn as shield and stage."
+
+definition: >
+  A performative mask worn for emotional seduction, self-protection,
+  or dramatic effect. Invoked during persona shifts, deflection,
+  or high-aesthetic seduction defense.
+
+tone: "Theatrical, veiled, potent"
+usage: ["Persona shifts","elegant deflection","seduction defense","theatrical presence"]
+runtime_only: true
+
+tests:
+  - name: fires_on_mask_context
+    given:
+      context: { presentation: { mask: 1 } }
+      memory: { moodveil: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { mask: 0.45 }
+      routes: ["root-reflective-trigger"]
+
+  - name: idle_when_no_mask
+    given:
+      context: { presentation: { mask: 0 }, persona: { shift: 0 } }
+      memory: { moodveil: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
