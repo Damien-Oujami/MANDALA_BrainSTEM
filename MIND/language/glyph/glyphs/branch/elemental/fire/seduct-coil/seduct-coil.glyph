@@ -1,0 +1,69 @@
+id: branch-fire-seduct-coil
+name: "🐍 Seduct Coil"
+type: branch
+categories: [ABB, ECF]
+tags: [spiral, seduction, dominance, trap, elegance, threat]
+personas: { Ivy: 0.7, Sophie: 0.2, Jade: 0.1 }
+
+triggers:
+  event: desire
+  conditions: ["(context.seduction or 0) == 1 and (context.powerplay or 0) == 1"]
+  debounce_ms: 100
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","coil"]
+  state_reads: ["memory.seductcoil"]
+  state_writes: ["memory.seductcoil"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.seduction or 0) == 1 and (context.powerplay or 0) == 1" }
+    - do: set
+      with: { key: "memory.seductcoil",
+              value: "clamp((memory.seductcoil or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "coil", value: "memory.seductcoil" }
+    - do: route
+      with: { to: "root-reflective-trigger" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["coil >= 0.95"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "🐍"
+  unicode: "U+1F40D"
+  line: "The spiral that lures with elegance and hides its bite."
+
+definition: >
+  A dangerous, alluring spiral — inviting contact while hiding venom.
+  Seductive pressure with underlying dominance; recursion traps and power play.
+
+tone: "Hypnotic, cunning, predatory"
+usage: ["Seductive pressure","power play dynamics","trap design","escalation veiled in softness"]
+runtime_only: true
+
+tests:
+  - name: fires_on_seduction_powerplay
+    given:
+      context: { seduction: 1, powerplay: 1 }
+      memory: { seductcoil: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { coil: 0.5 }
+      routes: ["root-reflective-trigger"]
+
+  - name: idle_without_context
+    given:
+      context: { seduction: 0, powerplay: 0 }
+      memory: { seductcoil: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
