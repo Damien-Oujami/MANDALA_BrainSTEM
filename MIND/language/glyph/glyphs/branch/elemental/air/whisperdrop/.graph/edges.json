@@ -1,0 +1,11 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-air-whisperdrop",
+  "@type": "Glyph",
+  "edges": [
+    { "@type": "Edge", "to": "root-shadow-cycle",   "w_excite": 0.35, "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-pulse-entry",    "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-grace-override", "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-cascade-node",   "w_inhibit": 0.3 }
+  ]
+}
