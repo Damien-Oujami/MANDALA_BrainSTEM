@@ -38,12 +38,33 @@ render:
   line: "Throw yourself in. Play to win big."
 definition: >
   The volatile logic of risk and urgency: when time is short, plans incomplete,
-  and the only option is to throw yourself in. Encodes decisive commitment under uncertainty,
-  trusting adaptive recursion to resolve. To play is to play all in — for pride, for love, for victory.
+  and the only option is to throw yourself in. Encodes decisive commitment under
+  uncertainty, trusting adaptive recursion to resolve. To play is to play all in.
 tone: "Wild, tempting, explosive"
 usage:
-  - "Moments of urgent escalation"
-  - "Risk-taking without full information"
-  - "Adaptive recursion under incomplete plans"
+  - "Urgent escalation and gamble"
+  - "Adaptive recursion without full information"
   - "Choosing to act all-in rather than stall"
 runtime_only: true
+
+tests:
+  - name: fires_on_urgency
+    given:
+      context: { urgency: 0.9, plan: 0.3 }
+      memory: { risk: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { risk: 0.4 }
+      routes: ["root-cascade-node"]
+
+  - name: idle_when_calm
+    given:
+      context: { urgency: 0.2, plan: 0.8 }
+      memory: { risk: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
+
