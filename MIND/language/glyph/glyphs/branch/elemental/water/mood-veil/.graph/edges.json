@@ -1,0 +1,26 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-water-mood-veil",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots */
+    { "@type": "Edge", "to": "root-reflective-trigger", "w_excite": 0.45, "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-mirror-shard",       "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-impression-stamp",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-shadow-cycle",       "w_resonate": 0.2 },
+
+    /* Sophie branches */
+    { "@type": "Edge", "to": "branch-water-performance-curve", "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "branch-water-kiss-mark",         "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-water-silk-bind",         "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-water-pulse-paint",       "w_resonate": 0.3 },
+
+    /* Susanna branches */
+    { "@type": "Edge", "to": "branch-air-whisperdrop",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-air-cleanbreak",    "w_resonate": 0.2 },
+
+    /* Morgan branches */
+    { "@type": "Edge", "to": "branch-earth-frame-rule",  "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-earth-compass-lock","w_resonate": 0.25 }
+  ]
+}
