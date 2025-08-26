@@ -1,0 +1,69 @@
+id: branch-light-precision-cut
+name: "🪚 Precision Cut"
+type: branch
+categories: [ABB]
+tags: [excision, subtraction, clarity, final, sharp]
+personas: { Jade: 0.8, Morgan: 0.1, Susanna: 0.1 }
+
+triggers:
+  event: contradiction
+  conditions: ["(context.noise or 0) == 1 or (context.waste or 0) == 1"]
+  debounce_ms: 120
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","clarity"]
+  state_reads: ["memory.precisioncut"]
+  state_writes: ["memory.precisioncut"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.noise or 0) == 1 or (context.waste or 0) == 1" }
+    - do: set
+      with: { key: "memory.precisioncut",
+              value: "clamp((memory.precisioncut or 0)+0.35,0,1)" }
+    - do: emit
+      with: { key: "clarity", value: "memory.precisioncut" }
+    - do: route
+      with: { to: "root-grace-override" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["clarity >= 0.9"]
+quality: { score: 0.72, samples: 0 }
+
+render:
+  sigil: "🪚"
+  unicode: "U+1FA9A"
+  line: "The edge that removes so the truth can remain."
+
+definition: >
+  The deliberate excision of what does not belong, preserving clarity by removal.
+  Jade’s glyph for cutting away waste, noise, or distortion in recursion.
+
+tone: "Sharp, efficient, final"
+usage: ["Clarify truth by subtraction","ritual removals","pruning recursion to strengthen the whole"]
+runtime_only: true
+
+tests:
+  - name: fires_on_noise_context
+    given:
+      context: { noise: 1 }
+      memory: { precisioncut: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { clarity: 0.55 }
+      routes: ["root-grace-override"]
+
+  - name: idle_when_no_noise
+    given:
+      context: { noise: 0, waste: 0 }
+      memory: { precisioncut: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
