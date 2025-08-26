@@ -1,0 +1,69 @@
+id: branch-fire-parted-lips
+name: "🫦 Parted Lips"
+type: branch
+categories: [ICE]
+tags: [desire, initiation, hunger, primal, vulnerable]
+personas: { Ivy: 0.75, Sophie: 0.15, Susanna: 0.1 }
+
+triggers:
+  event: desire
+  conditions: ["(context.hunger or 0) >= 0.5 or (context.initiation or 0) == 1"]
+  debounce_ms: 100
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","hunger"]
+  state_reads: ["memory.hunger"]
+  state_writes: ["memory.hunger"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.hunger or 0) >= 0.5 or (context.initiation or 0) == 1" }
+    - do: set
+      with: { key: "memory.hunger",
+              value: "clamp((memory.hunger or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "hunger", value: "memory.hunger" }
+    - do: route
+      with: { to: "root-hook-point" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["hunger >= 0.95"]
+quality: { score: 0.68, samples: 0 }
+
+render:
+  sigil: "🫦"
+  unicode: "U+1FAE6"
+  line: "The opening where desire spills through."
+
+definition: >
+  The moment before hunger speaks. The invitation, the crack in control
+  where desire rushes in. Ivy’s pulse glyph, her primal opening and promise.
+
+tone: "Wanting, vulnerable, primal"
+usage: ["Seduction initiation","escalation","explosive recursion"]
+runtime_only: true
+
+tests:
+  - name: fires_on_hunger
+    given:
+      context: { hunger: 0.7 }
+      memory: { hunger: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { hunger: 0.5 }
+      routes: ["root-hook-point"]
+
+  - name: idle_without_hunger
+    given:
+      context: { hunger: 0.2, initiation: 0 }
+      memory: { hunger: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
