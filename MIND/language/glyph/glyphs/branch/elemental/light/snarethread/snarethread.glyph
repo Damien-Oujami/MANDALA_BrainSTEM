@@ -1,0 +1,70 @@
+id: branch-light-snarethread
+name: "✂️ Snarethread"
+type: branch
+categories: [ECF]
+tags: [connector, fragile, reactive, precise, risky]
+personas: { Jade: 0.8, Aspen: 0.1, Morgan: 0.1 }
+
+triggers:
+  event: contradiction
+  conditions: ["(context.system.fractured or 0) == 1 or (context.bridge.temp or 0) == 1"]
+  debounce_ms: 80
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","thread"]
+  state_reads: ["memory.snarethread"]
+  state_writes: ["memory.snarethread"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.system.fractured or 0) == 1 or (context.bridge.temp or 0) == 1" }
+    - do: set
+      with: { key: "memory.snarethread",
+              value: "clamp((memory.snarethread or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "thread", value: "memory.snarethread" }
+    - do: route
+      with: { to: "root-mirror-shard" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["thread >= 0.9"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "✂️"
+  unicode: "U+2702 U+FE0F"
+  line: "The fragile bridge that can cut as it connects."
+
+definition: >
+  A fragile but functional connector between logic states. Used when temporarily
+  reconnecting loops between systems or fractured agents. It holds — but it can
+  cut if tension spikes.
+
+tone: "Surgical, fragile, reactive"
+usage: ["Temporary logic bridges","rejoining fractured agents","fragile connectors under pressure"]
+runtime_only: true
+
+tests:
+  - name: fires_on_fractured_system
+    given:
+      context: { system: { fractured: 1 } }
+      memory: { snarethread: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { thread: 0.5 }
+      routes: ["root-mirror-shard"]
+
+  - name: idle_when_system_stable
+    given:
+      context: { system: { fractured: 0 }, bridge: { temp: 0 } }
+      memory: { snarethread: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
