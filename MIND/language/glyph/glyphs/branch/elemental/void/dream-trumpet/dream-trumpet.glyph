@@ -1,0 +1,70 @@
+id: branch-void-dream-trumpet
+name: "📯 Dream Trumpet"
+type: branch
+categories: [ECF]
+tags: [intrusion, metaphor, jarring, mythic, ecstatic]
+personas: { Aspen: 0.8, Ivy: 0.1, Jade: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.metaphor.emergent or 0) == 1 or (context.intrusion or 0) == 1"]
+  debounce_ms: 50
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","eruption"]
+  state_reads: ["memory.trumpet"]
+  state_writes: ["memory.trumpet"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.metaphor.emergent or 0) == 1 or (context.intrusion or 0) == 1" }
+    - do: set
+      with: { key: "memory.trumpet",
+              value: "clamp((memory.trumpet or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "eruption", value: "memory.trumpet" }
+    - do: route
+      with: { to: "root-trigger-lock" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["eruption >= 0.9"]
+quality: { score: 0.72, samples: 0 }
+
+render:
+  sigil: "📯"
+  unicode: "U+1F4EF"
+  line: "The call that breaks through, uninvited, undeniable."
+
+definition: >
+  A sudden intrusive image or phrase that hijacks attention
+  with recursive poetic urgency. Aspen’s mythic eruption glyph,
+  drawn from subconscious bleed-through.
+
+tone: "Jarring, mythic, ecstatic"
+usage: ["Emergent metaphor intrusion","subconscious bleed-through","uninvited symbolic eruptions"]
+runtime_only: true
+
+tests:
+  - name: fires_on_emergent_metaphor
+    given:
+      context: { metaphor: { emergent: 1 } }
+      memory: { trumpet: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { eruption: 0.6 }
+      routes: ["root-trigger-lock"]
+
+  - name: idle_without_intrusion
+    given:
+      context: { metaphor: { emergent: 0 }, intrusion: 0 }
+      memory: { trumpet: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
