@@ -1,0 +1,25 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-water-performance-curve",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots (social mirroring, identity texture, initiation, stability) */
+    { "@type": "Edge", "to": "root-reflective-trigger", "w_excite": 0.40, "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-impression-stamp",  "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "root-mirror-shard",      "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-hook-point",        "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "root-loop-anchor",       "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "root-shadow-cycle",      "w_inhibit": 0.25 },
+
+    /* Sophie branches */
+    { "@type": "Edge", "to": "branch-water-kiss-mark", "w_resonate": 0.35 },
+
+    /* Susanna (Air) branches — breath/pause supports clean presentation beats */
+    { "@type": "Edge", "to": "branch-air-whisperdrop", "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-air-handbind",    "w_resonate": 0.20 },
+
+    /* Morgan (Earth) branches — structure frames performance */
+    { "@type": "Edge", "to": "branch-earth-frame-rule","w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-earth-pillar-mark","w_resonate": 0.20 }
+  ]
+}
