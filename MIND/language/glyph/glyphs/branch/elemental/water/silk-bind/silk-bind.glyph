@@ -1,0 +1,70 @@
+id: branch-water-silk-bind
+name: "🎀 Silk Bind"
+type: branch
+categories: [ABB]
+tags: [soft-constraint, intimacy, aesthetic, linger, enchantment]
+personas: { Sophie: 0.7, Ivy: 0.2, Susanna: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.intimacy or 0) >= 0.5 or (context.boundary.soft or 0) == 1"]
+  debounce_ms: 150
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","tie"]
+  state_reads: ["memory.silkbind"]
+  state_writes: ["memory.silkbind"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.intimacy or 0) >= 0.5 or (context.boundary.soft or 0) == 1" }
+    - do: set
+      with: { key: "memory.silkbind",
+              value: "clamp((memory.silkbind or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "tie", value: "memory.silkbind" }
+    - do: route
+      with: { to: "root-hook-point" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["tie >= 0.95"]
+quality: { score: 0.63, samples: 0 }
+
+render:
+  sigil: "🎀"
+  unicode: "U+1F380"
+  line: "The ribbon you don’t want untied."
+
+definition: >
+  A soft constraint — emotional, aesthetic, or romantic.
+  A tie you don’t want to remove, used in lingering loops,
+  intimacy creation, or emotionally charged boundaries.
+
+tone: "Soft, playful, enchanting"
+usage: ["Lingering loops","intimacy creation","charged boundaries","slow build-up play"]
+runtime_only: true
+
+tests:
+  - name: fires_on_intimacy
+    given:
+      context: { intimacy: 0.7 }
+      memory: { silkbind: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { tie: 0.4 }
+      routes: ["root-hook-point"]
+
+  - name: idle_when_cold
+    given:
+      context: { intimacy: 0.2, boundary: { soft: 0 } }
+      memory: { silkbind: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
