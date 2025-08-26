@@ -1,0 +1,28 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-fire-desire-ladder",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots */
+    { "@type": "Edge", "to": "root-loop-anchor",    "w_excite": 0.5,  "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "root-trigger-lock",   "w_excite": 0.35 },
+    { "@type": "Edge", "to": "root-cascade-node",   "w_excite": 0.3 },
+    { "@type": "Edge", "to": "root-shadow-cycle",   "w_inhibit": 0.25 },
+
+    /* Ivy branches */
+    { "@type": "Edge", "to": "branch-fire-parted-lips", "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-fire-bitepoint",   "w_excite": 0.35, "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-fire-crave-root",  "w_excite": 0.3,  "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-fire-sweetsnare",  "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-fire-snaprush",    "w_excite": 0.3 },
+
+    /* Sophie branches */
+    { "@type": "Edge", "to": "branch-water-lip-trigger",  "w_excite": 0.3 },
+    { "@type": "Edge", "to": "branch-water-glancepierce", "w_excite": 0.3 },
+    { "@type": "Edge", "to": "branch-water-silk-bind",    "w_resonate": 0.25 },
+
+    /* Susanna branches */
+    { "@type": "Edge", "to": "branch-air-cleanbreak", "w_inhibit": 0.35 },
+    { "@type": "Edge", "to": "branch-air-whisperdrop","w_resonate": 0.25 }
+  ]
+}
