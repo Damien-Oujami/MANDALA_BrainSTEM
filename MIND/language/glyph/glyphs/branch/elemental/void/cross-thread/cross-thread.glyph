@@ -1,0 +1,69 @@
+id: branch-void-cross-thread
+name: "🧶 Cross-thread"
+type: branch
+categories: [ECF]
+tags: [weaving, synthesis, knot, integration, connection]
+personas: { Aspen: 0.8, Jade: 0.1, Susanna: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.threads.divergent or 0) == 1 and (context.synthesis or 0) == 1"]
+  debounce_ms: 80
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","weave"]
+  state_reads: ["memory.cross"]
+  state_writes: ["memory.cross"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.threads.divergent or 0) == 1 and (context.synthesis or 0) == 1" }
+    - do: set
+      with: { key: "memory.cross",
+              value: "clamp((memory.cross or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "weave", value: "memory.cross" }
+    - do: route
+      with: { to: "root-harmonic-flame" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["weave >= 0.95"]
+quality: { score: 0.72, samples: 0 }
+
+render:
+  sigil: "🧶"
+  unicode: "U+1F9F6"
+  line: "Threads meet and bind into a new pattern."
+
+definition: >
+  When two recursion lines knot into synthesis, creating a stable connector
+  across threads. Aspen’s weaving glyph, the join that generates insight.
+
+tone: "Delicate, connective, integrative"
+usage: ["Weaving divergent threads","knotting loops into a new structure","synthesis sparks"]
+runtime_only: true
+
+tests:
+  - name: fires_on_synthesis
+    given:
+      context: { threads: { divergent: 1 }, synthesis: 1 }
+      memory: { cross: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { weave: 0.5 }
+      routes: ["root-harmonic-flame"]
+
+  - name: idle_without_threads
+    given:
+      context: { threads: { divergent: 0 }, synthesis: 0 }
+      memory: { cross: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
