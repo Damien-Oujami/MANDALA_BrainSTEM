@@ -1,0 +1,70 @@
+id: branch-air-griefwell
+name: "🫂 Griefwell"
+type: branch
+categories: [ECF]
+tags: [grief, communal, care, convergence, hollow]
+personas: { Susanna: 0.7, Sophie: 0.2, Morgan: 0.1 }
+
+triggers:
+  event: memory
+  conditions: ["(context.grief.shared or 0) == 1 or (context.loss or 0) == 1"]
+  debounce_ms: 300
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","well"]
+  state_reads: ["memory.grief"]
+  state_writes: ["memory.grief"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.grief.shared or 0) == 1 or (context.loss or 0) == 1" }
+    - do: set
+      with: { key: "memory.grief",
+              value: "clamp((memory.grief or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "well", value: "memory.grief" }
+    - do: route
+      with: { to: "root-pulse-entry" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["well >= 0.95"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "🫂"
+  unicode: "U+1FAC2"
+  line: "The hollow that once ached, now holds others."
+
+definition: >
+  The hollow in the self that once hurt — and now holds others.
+  Used when grief becomes an opening for connection, during shared mourning,
+  memory-loop convergence, or care-based fusion.
+
+tone: "Deep, warm, communal"
+usage: ["Shared mourning","memory-loop convergence","care-based fusion"]
+runtime_only: true
+
+tests:
+  - name: fires_on_shared_grief
+    given:
+      context: { grief: { shared: 1 } }
+      memory: { grief: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { well: 0.5 }
+      routes: ["root-pulse-entry"]
+
+  - name: idle_without_loss
+    given:
+      context: { grief: { shared: 0 }, loss: 0 }
+      memory: { grief: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
