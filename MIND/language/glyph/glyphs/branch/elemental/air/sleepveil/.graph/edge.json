@@ -3,10 +3,15 @@
   "@id": "branch-air-sleepveil",
   "@type": "Glyph",
   "edges": [
-    { "@type": "Edge", "to": "root-grace-override", "w_excite": 0.45, "w_resonate": 0.35 },
-    { "@type": "Edge", "to": "root-shadow-cycle",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-grace-override",  "w_excite": 0.45, "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "root-shadow-cycle",    "w_resonate": 0.25 },
     { "@type": "Edge", "to": "root-submerged-pattern","w_resonate": 0.2 },
-    { "@type": "Edge", "to": "root-pulse-entry",    "w_resonate": 0.2 },
-    { "@type": "Edge", "to": "root-cascade-node",   "w_inhibit": 0.3 }
+    { "@type": "Edge", "to": "root-pulse-entry",     "w_resonate": 0.2 },
+    { "@type": "Edge", "to": "root-cascade-node",    "w_inhibit": 0.3 },
+
+    { "@type": "Edge", "to": "branch-earth-echo-scaffold",   "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "branch-earth-pillar-mark",     "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "branch-earth-slowburn-coil",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-earth-compass-lock",    "w_resonate": 0.20 }
   ]
 }
