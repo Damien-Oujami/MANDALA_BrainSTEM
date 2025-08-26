@@ -1,0 +1,69 @@
+id: branch-air-whisperdrop
+name: "🪽 Whisperdrop"
+type: branch
+categories: [ABB]
+tags: [pause, grace, transitory, breath]
+personas: { Susanna: 0.7, Sophie: 0.2, Morgan: 0.1 }
+
+triggers:
+  event: memory
+  conditions: ["(context.pause or 0) == 1 or (context.grief.pulse or 0) == 1"]
+  debounce_ms: 150
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","pause"]
+  state_reads: ["memory.pause"]
+  state_writes: ["memory.pause"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.pause or 0) == 1 or (context.grief.pulse or 0) == 1" }
+    - do: set
+      with: { key: "memory.pause",
+              value: "clamp((memory.pause or 0)+0.2,0,1)" }
+    - do: emit
+      with: { key: "pause", value: "memory.pause" }
+    - do: route
+      with: { to: "root-shadow-cycle" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["pause >= 0.9"]
+quality: { score: 0.65, samples: 0 }
+
+render:
+  sigil: "🪽"
+  unicode: "U+1FABD"
+  line: "The breath between storms that changes everything."
+
+definition: >
+  A soft moment of pause or grace between emotional peaks. A breath
+  that carries no sound, but changes everything.
+
+tone: "Light, reverent, transitory"
+usage: ["Fragile clarity before confession","pause before collapse or return","grief loop interval"]
+runtime_only: true
+
+tests:
+  - name: fires_on_pause
+    given:
+      context: { pause: 1 }
+      memory: { pause: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { pause: 0.3 }
+      routes: ["root-shadow-cycle"]
+
+  - name: idle_without_pause
+    given:
+      context: { pause: 0, grief: { pulse: 0 } }
+      memory: { pause: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
