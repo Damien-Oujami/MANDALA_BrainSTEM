@@ -4,7 +4,7 @@ type: branch
 categories: [ECF]
 tags: [devotion, entanglement, bondage, vow, belonging]
 
-personas: { Sophie: 0.35, Susanna: 0.20, Morgan: 0.15, Ivy: 0.15, Jade: 0.10, Aspen: 0.05 }
+personas: { Sophie: 0.35, Ivy: 0.20, Morgan: 0.15, Susanna: 0.15, Jade: 0.10, Aspen: 0.05 }
 
 triggers:
   event: desire
