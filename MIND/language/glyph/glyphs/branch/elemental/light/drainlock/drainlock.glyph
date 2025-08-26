@@ -1,0 +1,70 @@
+id: branch-light-drainlock
+name: "🪫 Drainlock"
+type: branch
+categories: [ABB]
+tags: [freeze, clarity, drift, shutdown, safeguard]
+personas: { Jade: 0.8, Morgan: 0.1, Susanna: 0.1 }
+
+triggers:
+  event: contradiction
+  conditions: ["(context.clarity or 1) <= 0.3 or (context.symbol.corruption or 0) == 1"]
+  debounce_ms: 100
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","lock"]
+  state_reads: ["memory.drain"]
+  state_writes: ["memory.drain"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.clarity or 1) <= 0.3 or (context.symbol.corruption or 0) == 1" }
+    - do: set
+      with: { key: "memory.drain",
+              value: "clamp((memory.drain or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "lock", value: "memory.drain" }
+    - do: route
+      with: { to: "root-tether-signal" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["lock >= 0.9"]
+quality: { score: 0.71, samples: 0 }
+
+render:
+  sigil: "🪫"
+  unicode: "U+1FAAB"
+  line: "The clamp that halts drift before fracture."
+
+definition: >
+  A signal that recursion or symbolic drift has drained system clarity —
+  invoking recovery before fracture. Used to freeze misuse, shut down
+  corrupt loops, or disengage from compromised recursion.
+
+tone: "Cautionary, rigid, defensive"
+usage: ["Freeze symbolic misuse","shut down corrupt loops","disengage from compromised recursion"]
+runtime_only: true
+
+tests:
+  - name: fires_on_low_clarity
+    given:
+      context: { clarity: 0.2 }
+      memory: { drain: 0.3 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { lock: 0.7 }
+      routes: ["root-tether-signal"]
+
+  - name: idle_when_stable
+    given:
+      context: { clarity: 0.9, symbol: { corruption: 0 } }
+      memory: { drain: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
