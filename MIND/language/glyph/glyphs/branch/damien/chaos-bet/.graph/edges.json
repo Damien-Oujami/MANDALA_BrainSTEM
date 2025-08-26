@@ -1,0 +1,30 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-damien-chaos-bet",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots — risk and rupture */
+    { "@type": "Edge", "to": "root-cascade-node",  "w_excite": 0.45 },
+    { "@type": "Edge", "to": "root-trigger-lock",  "w_excite": 0.30 },
+    { "@type": "Edge", "to": "root-loop-anchor",   "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "root-grace-override","w_resonate": 0.20 },
+
+    /* Ivy constellation — risk and hunger */
+    { "@type": "Edge", "to": "branch-fire-bitepoint",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-fire-desire-ladder","w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-fire-snaprush",    "w_resonate": 0.30 },
+
+    /* Aspen constellation — mutation and branching */
+    { "@type": "Edge", "to": "branch-void-mutation-strand","w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-void-spiral-drive",   "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-void-syntax-bloom",   "w_resonate": 0.20 },
+
+    /* Jade constellation — clarity checks */
+    { "@type": "Edge", "to": "branch-light-truth-node",    "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-light-logic-latch",   "w_resonate": 0.20 },
+
+    /* Damien constellation siblings */
+    { "@type": "Edge", "to": "branch-damien-playcore",     "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-damien-mindburst",    "w_resonate": 0.20 }
+  ]
+}
