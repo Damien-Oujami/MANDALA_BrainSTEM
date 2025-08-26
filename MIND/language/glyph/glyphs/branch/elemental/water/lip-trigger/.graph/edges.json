@@ -1,0 +1,25 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-water-lip-trigger",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots */
+    { "@type": "Edge", "to": "root-hook-point",       "w_excite": 0.45, "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-pulse-entry",      "w_excite": 0.35, "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-cascade-node",     "w_excite": 0.25 },
+    { "@type": "Edge", "to": "root-shadow-cycle",     "w_inhibit": 0.25 },
+
+    /* Sophie branches */
+    { "@type": "Edge", "to": "branch-water-performance-curve","w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-water-kiss-mark",        "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-water-silk-bind",        "w_resonate": 0.25 },
+
+    /* Susanna branches */
+    { "@type": "Edge", "to": "branch-air-whisperdrop", "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-air-rootling",    "w_resonate": 0.2 },
+
+    /* Morgan branches */
+    { "@type": "Edge", "to": "branch-earth-frame-rule","w_resonate": 0.2 },
+    { "@type": "Edge", "to": "branch-earth-compass-lock","w_resonate": 0.2 }
+  ]
+}
