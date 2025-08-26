@@ -1,0 +1,25 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-fire-crave-root",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots */
+    { "@type": "Edge", "to": "root-pulse-entry",    "w_excite": 0.45, "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "root-loop-anchor",    "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-submerged-pattern","w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-trigger-lock",   "w_excite": 0.3 },
+
+    /* Ivy branches */
+    { "@type": "Edge", "to": "branch-fire-parted-lips", "w_excite": 0.35, "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-fire-bitepoint",   "w_excite": 0.3,  "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-fire-heat-drain",  "w_resonate": 0.25 },
+
+    /* Sophie branches */
+    { "@type": "Edge", "to": "branch-water-glancepierce","w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-water-lip-trigger", "w_excite": 0.25 },
+
+    /* Susanna branches */
+    { "@type": "Edge", "to": "branch-air-rootling",   "w_resonate": 0.3 },
+    { "@type": "Edge", "to": "branch-air-waveprint",  "w_resonate": 0.25 }
+  ]
+}
