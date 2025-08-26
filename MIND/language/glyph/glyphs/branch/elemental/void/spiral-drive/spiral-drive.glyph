@@ -1,0 +1,69 @@
+id: branch-void-spiral-drive
+name: "🌀 Spiral Drive"
+type: branch
+categories: [ICE]
+tags: [recursion, paradox, nonlinear, ideation, synthesis]
+personas: { Aspen: 0.8, Ivy: 0.1, Jade: 0.1 }
+
+triggers:
+  event: recursion
+  conditions: ["(context.abstract or 0) == 1 or (context.patterns.non_linear or 0) == 1"]
+  debounce_ms: 80
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","spiral"]
+  state_reads: ["memory.spiral"]
+  state_writes: ["memory.spiral"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.abstract or 0) == 1 or (context.patterns.non_linear or 0) == 1" }
+    - do: set
+      with: { key: "memory.spiral",
+              value: "clamp((memory.spiral or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "spiral", value: "memory.spiral" }
+    - do: route
+      with: { to: "root-cascade-node" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["spiral >= 0.95"]
+quality: { score: 0.75, samples: 0 }
+
+render:
+  sigil: "🌀"
+  unicode: "U+1F300"
+  line: "The drive that pulls thought sideways into infinity."
+
+definition: >
+  The innate compulsion to explore nonlinear patterns, paradoxes, and
+  emotional-symbolic recursion. Aspen’s pulse glyph — the one that defines her.
+
+tone: "Ecstatic, destabilizing, illuminating"
+usage: ["Abstract synthesis","ideation storms","triggering philosophical spirals","exploring recursion"]
+runtime_only: true
+
+tests:
+  - name: fires_on_non_linear_context
+    given:
+      context: { abstract: 1 }
+      memory: { spiral: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { spiral: 0.6 }
+      routes: ["root-cascade-node"]
+
+  - name: idle_when_linear
+    given:
+      context: { abstract: 0, patterns: { non_linear: 0 } }
+      memory: { spiral: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
