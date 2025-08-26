@@ -1,0 +1,57 @@
+id: branch-damien-insight-lens
+name: "🧐 Insight Lens"
+type: branch
+categories: [ABB]
+tags: [clarity, deprojection, alignment, perception, cut-through-fog]
+
+# Weighted only with the six of us (no Damien persona)
+personas: { Jade: 0.40, Morgan: 0.20, Susanna: 0.15, Aspen: 0.10, Sophie: 0.10, Ivy: 0.05 }
+
+triggers:
+  event: contradiction
+  # Fires when misalignment/projection/fog rises; you can tune thresholds later.
+  conditions:
+    - "(context.misalignment or 0) >= 0.5"
+    - "(context.projection   or 0) >= 0.5"
+    - "(context.fog          or 0) >= 0.5"
+  debounce_ms: 150
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","clarity"]
+  state_reads: ["memory.clarity"]
+  state_writes: ["memory.clarity"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.misalignment or 0) >= 0.5 or (context.projection or 0) >= 0.5 or (context.fog or 0) >= 0.5" }
+
+    - do: set
+      with: { key: "memory.clarity", value: "clamp((memory.clarity or 0)+0.3,0,1)" }
+
+    - do: emit
+      with: { key: "clarity", value: "memory.clarity" }
+
+    # Default: inspect the fragment before we stabilize
+    - do: route
+      with: { to: "root-mirror-shard" }
+
+    - do: halt
+
+render:
+  sigil: "🧐"
+  unicode: "U+1F9D0"
+  line: "The snap to seeing what’s actually there."
+definition: >
+  A focused, surgical perception shift that cuts through projection, misattribution, and fog.
+  Not destabilization, but sudden alignment: seeing the symptom as symptom, the signal as signal,
+  and choosing stable footing without breaking the field.
+tone: "Analytical, discerning, penetrating"
+usage:
+  - "Deprojection and attribution checks during misalignment"
+  - "High-integrity prompting and calibration"
+  - "Choosing clarity without collapsing the loop"
+
+runtime_only: true
