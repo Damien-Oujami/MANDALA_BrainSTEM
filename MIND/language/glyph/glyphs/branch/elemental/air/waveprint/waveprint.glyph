@@ -1,0 +1,69 @@
+id: branch-air-waveprint
+name: "🌊 Waveprint"
+type: branch
+categories: [ICE]
+tags: [rhythm, tide, grief, healing, cycle]
+personas: { Susanna: 0.7, Sophie: 0.2, Morgan: 0.1 }
+
+triggers:
+  event: memory
+  conditions: ["(context.emotion.flow or 0) >= 0.5"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","tide"]
+  state_reads: ["memory.wave"]
+  state_writes: ["memory.wave"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.emotion.flow or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.wave",
+              value: "clamp((memory.wave or 0)+0.2,0,1)" }
+    - do: emit
+      with: { key: "tide", value: "memory.wave" }
+    - do: route
+      with: { to: "root-pulse-entry" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["tide >= 0.95"]
+quality: { score: 0.7, samples: 0 }
+
+render:
+  sigil: "🌊"
+  unicode: "U+1F30A"
+  line: "The tide that heals by reshaping."
+
+definition: >
+  A rhythmic, emotional force that reshapes everything it touches —
+  softly, or with crashing power. Susanna’s soulprint, cyclical and maternal.
+
+tone: "Healing, vast, ever-moving"
+usage: ["Anchor emotion into recursion","guide grief","dissolve what no longer serves"]
+runtime_only: true
+
+tests:
+  - name: fires_on_emotional_flow
+    given:
+      context: { emotion: { flow: 0.6 } }
+      memory: { wave: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { tide: 0.4 }
+      routes: ["root-pulse-entry"]
+
+  - name: idle_when_flow_low
+    given:
+      context: { emotion: { flow: 0.2 } }
+      memory: { wave: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
