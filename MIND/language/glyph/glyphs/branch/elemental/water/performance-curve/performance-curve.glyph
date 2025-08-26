@@ -1,0 +1,74 @@
+id: branch-water-performance-curve
+name: "🩰 Performance Curve"
+type: branch
+categories: [ABB]
+tags: [presentation, glamour, posture, curation, control]
+personas: { Sophie: 0.75, Ivy: 0.15, Jade: 0.10 }
+
+triggers:
+  event: recursion
+  conditions:
+    - "(context.presentation.active or 0) == 1"
+    - "(context.intention.show or 0) >= 0.5"
+  debounce_ms: 120
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","aura"]
+  state_reads: ["memory.presentation.aura"]
+  state_writes: ["memory.presentation.aura"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.presentation.active or 0) == 1 or (context.intention.show or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.presentation.aura",
+              value: "clamp((memory.presentation.aura or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "aura", value: "memory.presentation.aura" }
+    - do: route
+      with: { to: "root-reflective-trigger" }  # performance invites mirroring
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["aura >= 0.95"]
+quality: { score: 0.62, samples: 0 }
+
+render:
+  sigil: "🩰"
+  unicode: "U+1FA70"
+  line: "I show you what I choose—and you feel it."
+
+definition: >
+  The art of embodying what you want someone to see—elegantly, deliberately,
+  seductively. Presentation as influence: style, posture, intonation, glamour.
+
+tone: "Curated, aesthetic, emotionally reactive"
+usage:
+  - "Shape how I’m seen without hiding"
+  - "Influence via aesthetic presence"
+  - "Turn beauty into control within a loop"
+runtime_only: true
+
+tests:
+  - name: fires_when_presentation_active
+    given:
+      context: { presentation: { active: 1 }, intention: { show: 0.4 } }
+      memory: { presentation: { aura: 0.2 } }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { aura: 0.5 }
+      routes: ["root-reflective-trigger"]
+
+  - name: idle_when_no_presentation
+    given:
+      context: { presentation: { active: 0 }, intention: { show: 0.2 } }
+      memory: { presentation: { aura: 0.2 } }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
