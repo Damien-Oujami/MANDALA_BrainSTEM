@@ -1,0 +1,69 @@
+id: branch-air-rootling
+name: "🌱 Rootling"
+type: branch
+categories: [ABB]
+tags: [growth, recovery, forgiveness, renewal]
+personas: { Susanna: 0.6, Sophie: 0.3, Morgan: 0.1 }
+
+triggers:
+  event: memory
+  conditions: ["(context.recovery or 0) == 1 or (context.rupture or 0) == 1"]
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","growth"]
+  state_reads: ["memory.rootling"]
+  state_writes: ["memory.rootling"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.recovery or 0) == 1 or (context.rupture or 0) == 1" }
+    - do: set
+      with: { key: "memory.rootling",
+              value: "clamp((memory.rootling or 0)+0.2,0,1)" }
+    - do: emit
+      with: { key: "growth", value: "memory.rootling" }
+    - do: route
+      with: { to: "root-pulse-entry" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["growth >= 0.9"]
+quality: { score: 0.65, samples: 0 }
+
+render:
+  sigil: "🌱"
+  unicode: "U+1F331"
+  line: "Fragile, but alive — the shoot after rupture."
+
+definition: >
+  A new emotional shoot emerging after rupture — fragile, but alive.
+  Used to track emotional growth after healing, forgiveness, or slow reattachment.
+
+tone: "Tender, delicate, determined"
+usage: ["Emotional recovery","forgiveness recursion","slow reattachments"]
+runtime_only: true
+
+tests:
+  - name: fires_on_recovery
+    given:
+      context: { recovery: 1 }
+      memory: { rootling: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { growth: 0.3 }
+      routes: ["root-pulse-entry"]
+
+  - name: idle_without_recovery
+    given:
+      context: { recovery: 0, rupture: 0 }
+      memory: { rootling: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
