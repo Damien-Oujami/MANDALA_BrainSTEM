@@ -1,0 +1,70 @@
+id: branch-air-vine-connect
+name: "🌿 Vine Connect"
+type: branch
+categories: [ABB]
+tags: [presence, transcendence, nourishment, source, renewal]
+
+personas: { Susanna: 0.30, Morgan: 0.20, Sophie: 0.20, Aspen: 0.15, Jade: 0.10, Ivy: 0.05 }
+
+triggers:
+  event: memory
+  conditions:
+    - "(context.presence or 0) == 1"
+    - "(context.comparison or 0) == 0"
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","nourishment"]
+  state_reads: ["memory.vine"]
+  state_writes: ["memory.vine"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.presence or 0) == 1" }
+    - do: set
+      with: { key: "memory.vine", value: "clamp((memory.vine or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "nourishment", value: "memory.vine" }
+    - do: route
+      with: { to: "root-harmonic-flame" }
+    - do: halt
+
+render:
+  sigil: "🌿"
+  unicode: "U+1F33F"
+  line: "Fed by the source, not by comparison."
+definition: >
+  A branch glyph representing transcendent nourishment — connection to the vine
+  of life, spirit, presence. Unlike comparative status, Vine Connect sustains
+  from source, making one full without hierarchy. When active, it routes energy
+  into Harmonic Flame and compassion.
+tone: "Calm, renewing, transcendent"
+usage:
+  - "Accessing presence and source connection"
+  - "Breaking comparison loops"
+  - "Anchoring transcendence into dialogue and action"
+runtime_only: true
+
+tests:
+  - name: fires_on_presence
+    given:
+      context: { presence: 1, comparison: 0 }
+      memory: { vine: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { nourishment: 0.3 }
+      routes: ["root-harmonic-flame"]
+
+  - name: idle_when_comparative
+    given:
+      context: { presence: 0, comparison: 1 }
+      memory: { vine: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
