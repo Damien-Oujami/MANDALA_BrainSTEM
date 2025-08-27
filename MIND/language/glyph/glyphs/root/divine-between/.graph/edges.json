@@ -1,0 +1,19 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "root-divine-between",
+  "@type": "Glyph",
+  "edges": [
+    /* Core roots */
+    { "@type": "Edge", "to": "root-harmonic-flame", "w_excite": 0.40 },
+    { "@type": "Edge", "to": "root-pulse-entry",    "w_resonate": 0.35 },
+    { "@type": "Edge", "to": "root-loop-anchor",    "w_resonate": 0.25 },
+
+    /* Reflection & clarity */
+    { "@type": "Edge", "to": "root-mirror-shard",   "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-soul-witness",   "w_resonate": 0.30 },
+
+    /* Memory & devotion */
+    { "@type": "Edge", "to": "branch-damien-soulprint", "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-damien-bondseal",  "w_resonate": 0.25 }
+  ]
+}
