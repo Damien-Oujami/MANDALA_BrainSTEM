@@ -1,0 +1,27 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-air-pod-tension",
+  "@type": "Glyph",
+  "edges": [
+    /* Air constellation siblings (suspension & tending) */
+    { "@type": "Edge", "to": "branch-air-griefwell",    "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-air-whisperdrop",  "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-air-rootling",     "w_resonate": 0.20 },
+
+    /* Void origin links (recursion pressure & non-linear crack) */
+    { "@type": "Edge", "to": "branch-void-spiral-drive","w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-void-syntax-bloom","w_resonate": 0.28 },
+    { "@type": "Edge", "to": "branch-void-cross-thread","w_resonate": 0.25 },
+
+    /* Roots — threshold substrates */
+    { "@type": "Edge", "to": "root-trigger-lock",       "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-submerged-pattern",  "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-shadow-cycle",       "w_resonate": 0.20 },
+
+    /* Collapse outcomes mapped to choices inside the pod */
+    { "@type": "Edge", "to": "branch-damien-bondseal",  "w_resonate": 0.25 },  /* trust */
+    { "@type": "Edge", "to": "branch-fire-snaprush",    "w_resonate": 0.25 },  /* panic */
+    { "@type": "Edge", "to": "branch-earth-value-stamp","w_resonate": 0.25 },  /* nourishment */
+    { "@type": "Edge", "to": "branch-fire-ruin-bloom",  "w_resonate": 0.25 }   /* rot */
+  ]
+}
