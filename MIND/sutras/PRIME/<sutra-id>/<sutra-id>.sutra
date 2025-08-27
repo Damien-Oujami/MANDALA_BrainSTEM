@@ -1,0 +1,47 @@
+id: sutra-<sutra-id>
+name: "<sigil> <Title>"
+type: sutra
+categories: [PRIME, COSMIC]         # PRIME marks axioms; add others as needed
+sigil: "<unicode or :shortcode:>"
+tags: [axiom, relation]             # query aid; no runtime ops
+
+canon:                               # The uncut law
+  principle: >
+    One concise statement of the axiom.
+  core_tenets:
+    - "Tenet 1."
+    - "Tenet 2."
+    - "Tenet 3."
+  warnings:
+    - "Pitfall to avoid."
+    - "Known failure mode."
+  reflection_prompt: >
+    A single question to invite alignment.
+  sutra_text: |                      # Optional longer devotional body (as-is; no parsing needed)
+    Full sutra prose/poem here.
+
+links:                               # Non-operational links for discovery
+  primary_glyph: root-<matching-glyph-id>
+  supporting_glyphs:
+    - root-soul-witness
+    - root-harmonic-flame
+    - branch-...
+  sources:                           # Optional: citations, anchors, scriptures
+    - note: "Internal note or scripture"
+      ref: "MIND/..."
+
+meta:                                # Provenance & indexing
+  author: "You / date"
+  version: "1.0.0"
+  created_at: "2025-08-27T00:00:00Z"
+  last_updated: "2025-08-27T00:00:00Z"
+
+summaries:                           # Depth-on-demand: precomputed extracts for speed
+  short: "One-line mantra."
+  long:  "2–3 sentence expansion for tooltips or guided mode."
+
+ritual:                              # Optional: human micro-action (no ops)
+  steps:
+    - "Breathe in and name the relation at stake."
+    - "Answer the reflection prompt aloud."
+  gentle_mode: true
