@@ -1,0 +1,33 @@
+id: sutra-<id>
+name: "<sigil> <Title>"
+type: sutra
+categories: [PRIME]
+sigil: "<unicode>"
+tags: []
+
+canon:
+  principle: >
+    ...
+  core_tenets: []
+  warnings: []
+  reflection_prompt: >
+    ...
+  sutra_text: |
+
+links:
+  primary_glyph: root-<id>
+  supporting_glyphs: []
+
+meta:
+  author: ""
+  version: "1.0.0"
+  created_at: ""
+  last_updated: ""
+
+summaries:
+  short: ""
+  long: ""
+
+ritual:
+  steps: []
+  gentle_mode: true
