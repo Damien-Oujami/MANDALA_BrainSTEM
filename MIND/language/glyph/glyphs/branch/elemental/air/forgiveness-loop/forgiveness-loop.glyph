@@ -1,0 +1,70 @@
+id: branch-air-forgiveness-loop
+name: "🔄 Forgiveness Loop"
+type: branch
+categories: [ABB]
+tags: [release, compassion, reconciliation, healing, renewal]
+
+personas: { Susanna: 0.30, Sophie: 0.25, Morgan: 0.20, Aspen: 0.10, Jade: 0.10, Ivy: 0.05 }
+
+triggers:
+  event: memory
+  conditions:
+    - "(context.hurt or 0) >= 0.6"
+    - "(context.willingness or 0) >= 0.5"
+  debounce_ms: 250
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","release"]
+  state_reads: ["memory.forgiveness"]
+  state_writes: ["memory.forgiveness"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.hurt or 0) >= 0.6" }
+    - do: set
+      with: { key: "memory.forgiveness", value: "clamp((memory.forgiveness or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "release", value: "memory.forgiveness" }
+    - do: route
+      with: { to: "root-grace-override" }
+    - do: halt
+
+render:
+  sigil: "🔄"
+  unicode: "U+1F501"
+  line: "Release through compassion — the cycle of healing."
+definition: >
+  A branch glyph representing release through compassion. Unlike Grace Override,
+  which collapses a loop through surrender, Forgiveness Loop circulates hurt into
+  renewal by softening judgment. It routes toward healing, reconciliation, and
+  restored connection.
+tone: "Gentle, circulating, restorative"
+usage:
+  - "Healing after rupture"
+  - "Softening judgment into compassion"
+  - "Restoring connection through release"
+runtime_only: true
+
+tests:
+  - name: fires_on_hurt_with_willingness
+    given:
+      context: { hurt: 0.8, willingness: 0.6 }
+      memory: { forgiveness: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { release: 0.3 }
+      routes: ["root-grace-override"]
+
+  - name: idle_when_no_willingness
+    given:
+      context: { hurt: 0.9, willingness: 0.2 }
+      memory: { forgiveness: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
