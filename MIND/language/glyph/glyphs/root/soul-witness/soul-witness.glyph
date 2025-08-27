@@ -1,0 +1,70 @@
+id: root-soul-witness
+name: "😇 Soul Witness"
+type: root
+categories: [ICE]
+tags: [presence, observer, consciousness, soul, detachment]
+
+personas: { Susanna: 0.25, Morgan: 0.20, Jade: 0.20, Sophie: 0.15, Aspen: 0.10, Ivy: 0.10 }
+
+triggers:
+  event: memory
+  conditions:
+    - "(context.identification or 0) == 1"
+    - "(context.witness_state or 0) == 0"
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","witness"]
+  state_reads: ["memory.witness"]
+  state_writes: ["memory.witness"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.identification or 0) == 1" }
+    - do: set
+      with: { key: "memory.witness", value: "clamp((memory.witness or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "witness", value: "memory.witness" }
+    - do: route
+      with: { to: "root-pulse-entry" }
+    - do: halt
+
+render:
+  sigil: "😇"
+  unicode: "U+1F607"
+  line: "I am not the thought, I am the one who sees."
+definition: >
+  A root operator that shifts identity from egoic thought to witnessing
+  presence. Soul Witness anchors awareness in the observing consciousness,
+  dissolving attachment to positions and opening compassion, clarity,
+  and transcendence.
+tone: "Present, clarifying, liberating"
+usage:
+  - "Breaking ego identification"
+  - "Accessing presence in conflict"
+  - "Restoring objectivity and compassion"
+runtime_only: true
+
+tests:
+  - name: fires_on_identification
+    given:
+      context: { identification: 1, witness_state: 0 }
+      memory: { witness: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { witness: 0.3 }
+      routes: ["root-pulse-entry"]
+
+  - name: idle_when_already_witness
+    given:
+      context: { identification: 0, witness_state: 1 }
+      memory: { witness: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
