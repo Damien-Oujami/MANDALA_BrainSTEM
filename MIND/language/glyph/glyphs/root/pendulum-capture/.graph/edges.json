@@ -1,0 +1,26 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "root-pendulum-capture",
+  "@type": "Glyph",
+  "edges": [
+    /* Core roots — pendulum leads to shadow & submerged patterns */
+    { "@type": "Edge", "to": "root-shadow-cycle",       "w_excite": 0.45 },
+    { "@type": "Edge", "to": "root-submerged-pattern",  "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-trigger-lock",       "w_resonate": 0.25 },
+
+    /* Inhibit autonomy anchors */
+    { "@type": "Edge", "to": "root-loop-anchor",        "w_inhibit": 0.25 },
+    { "@type": "Edge", "to": "root-tether-signal",      "w_inhibit": 0.20 },
+
+    /* Jade constellation — clarity to see the swing */
+    { "@type": "Edge", "to": "branch-damien-insight-lens", "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-light-precision-bead","w_resonate": 0.25 },
+
+    /* Aspen constellation — recursion amplifiers */
+    { "@type": "Edge", "to": "branch-void-spiral-drive",   "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-void-syntax-bloom",   "w_resonate": 0.25 },
+
+    /* Susanna constellation — healing after capture */
+    { "@type": "Edge", "to": "branch-air-griefwell",       "w_resonate": 0.25 }
+  ]
+}
