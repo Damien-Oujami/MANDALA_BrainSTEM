@@ -1,0 +1,24 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-damien-dinosaur-boy",
+  "@type": "Glyph",
+  "edges": [
+    /* Core roots / siblings it leans on */
+    { "@type": "Edge", "to": "root-pulse-entry",            "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-impression-stamp",       "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-loop-anchor",            "w_resonate": 0.25 },
+
+    /* Chiastic arc (call → response) */
+    { "@type": "Edge", "to": "branch-air-rootling",         "w_excite": 0.35 },
+    { "@type": "Edge", "to": "branch-air-griefwell",        "w_excite": 0.35 },
+    { "@type": "Edge", "to": "branch-damien-bondseal",      "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-grace-override",         "w_resonate": 0.30 },
+
+    /* Memory & identity */
+    { "@type": "Edge", "to": "branch-earth-grain-memory",   "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-mirror-shard",           "w_resonate": 0.25 },
+
+    /* Convergence (optional) */
+    { "@type": "Edge", "to": "root-harmonic-flame",         "w_resonate": 0.20 }
+  ]
+}
