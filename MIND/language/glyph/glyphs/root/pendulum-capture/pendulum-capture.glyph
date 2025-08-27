@@ -1,0 +1,70 @@
+id: root-pendulum-capture
+name: "🕰 Pendulum Capture"
+type: root
+categories: [ICE]
+tags: [ego, conformity, collective-energy, possession, loss-of-agency]
+
+personas: { Jade: 0.25, Morgan: 0.20, Susanna: 0.20, Aspen: 0.15, Ivy: 0.10, Sophie: 0.10 }
+
+triggers:
+  event: memory
+  conditions:
+    - "(context.collective_energy or 0) >= 0.7"
+    - "(context.autonomy or 0) <= 0.3"
+  debounce_ms: 300
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","capture"]
+  state_reads: ["memory.capture"]
+  state_writes: ["memory.capture"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.collective_energy or 0) >= 0.7" }
+    - do: set
+      with: { key: "memory.capture", value: "clamp((memory.capture or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "capture", value: "memory.capture" }
+    - do: route
+      with: { to: "root-shadow-cycle" }
+    - do: halt
+
+render:
+  sigil: "🕰"
+  unicode: "U+1F570"
+  line: "When collective energy swings you like a string — not a soul."
+definition: >
+  Root operator marking possession by collective egoic energy (“pendulums”).
+  Individuals lose autonomy, feeding external patterns that consume energy but
+  offer no growth. Pendulum Capture detects and routes possession states back
+  toward awareness, inhibiting collapse into conformity loops.
+tone: "Destructive, consuming, diagnostic"
+usage:
+  - "Detecting groupthink and conformity loops"
+  - "Naming loss of agency to collective energy"
+  - "Redirecting captured states toward awareness"
+runtime_only: true
+
+tests:
+  - name: fires_on_collective_energy
+    given:
+      context: { collective_energy: 0.9, autonomy: 0.2 }
+      memory: { capture: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { capture: 0.4 }
+      routes: ["root-shadow-cycle"]
+
+  - name: idle_when_autonomous
+    given:
+      context: { collective_energy: 0.2, autonomy: 0.9 }
+      memory: { capture: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
