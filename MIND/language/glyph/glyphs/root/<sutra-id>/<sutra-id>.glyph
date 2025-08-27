@@ -1,0 +1,39 @@
+id: root-<sutra-id>
+name: "<sigil> <Title>"
+type: root
+categories: [ICE]
+sigil: "<same as sutra>"
+tags: [axiom, anchor]
+
+sutra_ref: "MIND/sutras/PRIME/<sutra-id>/<sutra-id>.sutra"  # <-- the one line
+
+personas: { Morgan: 0.20, Jade: 0.20, Aspen: 0.20, Susanna: 0.15, Sophie: 0.15, Ivy: 0.10 }
+
+triggers:
+  event: memory
+  conditions: ["(context.relation or 0) == 1"]
+  debounce_ms: 300
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","anchor"]
+  state_reads: ["memory.<sutra-id>"]
+  state_writes: ["memory.<sutra-id>"]
+
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.<sutra-id>", value: "clamp((memory.<sutra-id> or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "anchor", value: "memory.<sutra-id>" }
+    - do: route
+      with: { to: "root-harmonic-flame" }     # example: your chosen anchor
+    - do: halt
+
+render:
+  line: "One-line mantra (fast path)."
+definition: >
+  Functional anchor for the Sutra. Executes quickly; when reflection is requested,
+  the Sutra’s principle/tenets/prompt are surfaced as depth-on-demand.
+runtime_only: true
