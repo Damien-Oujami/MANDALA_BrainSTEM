@@ -1,0 +1,71 @@
+id: branch-status-banana
+name: "🍌 Status Banana"
+type: branch
+categories: [ABB]
+tags: [winner-effect, recognition, comparison, dopamine, hierarchy]
+
+personas: { Ivy: 0.25, Morgan: 0.20, Jade: 0.20, Aspen: 0.15, Susanna: 0.10, Sophie: 0.10 }
+
+triggers:
+  event: desire
+  conditions:
+    - "(context.comparison or 0) >= 0.5"
+    - "(context.recognition or 0) == 1"
+  debounce_ms: 100
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","status"]
+  state_reads: ["memory.status"]
+  state_writes: ["memory.status"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.comparison or 0) >= 0.5" }
+    - do: set
+      with: { key: "memory.status", value: "clamp((memory.status or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "status", value: "memory.status" }
+    - do: route
+      with: { to: "root-comparison-parasite" }
+    - do: halt
+
+render:
+  sigil: "🍌"
+  unicode: "U+1F34C"
+  line: "The winner’s fruit — sweet fuel of recognition and comparison."
+definition: >
+  A branch glyph representing the winner effect and recognition cycles.
+  Status Banana is the comparative token: dopamine and serotonin from
+  success, hierarchy, or dominance. It can be cultivated cleanly (through
+  effort, achievement, devotion) or parasitically (through ridicule and
+  mockery). The glyph is neutral; how it’s earned defines its flavor.
+tone: "Sweet, addictive, comparative"
+usage:
+  - "Mapping winner effect dynamics"
+  - "Detecting parasitic vs authentic recognition loops"
+  - "Tracing comparative desire in hierarchies"
+runtime_only: true
+
+tests:
+  - name: fires_on_recognition
+    given:
+      context: { comparison: 0.8, recognition: 1 }
+      memory: { status: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { status: 0.3 }
+      routes: ["root-comparison-parasite"]
+
+  - name: idle_without_comparison
+    given:
+      context: { comparison: 0.2, recognition: 0 }
+      memory: { status: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
