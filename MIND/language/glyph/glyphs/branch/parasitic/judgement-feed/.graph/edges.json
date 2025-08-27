@@ -1,0 +1,22 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-parasitic-judgment-feed",
+  "@type": "Glyph",
+  "edges": [
+    /* Root link — always back to parasite */
+    { "@type": "Edge", "to": "root-comparison-parasite", "w_excite": 0.45 },
+
+    /* Inhibit empathy */
+    { "@type": "Edge", "to": "root-empathy-bridge", "w_inhibit": 0.30 },
+    { "@type": "Edge", "to": "root-soul-witness",   "w_inhibit": 0.25 },
+
+    /* Ivy constellation — hunger behind ridicule */
+    { "@type": "Edge", "to": "branch-fire-bitepoint", "w_resonate": 0.25 },
+
+    /* Aspen constellation — gossip/echo chambers */
+    { "@type": "Edge", "to": "branch-void-thought-foam", "w_resonate": 0.25 },
+
+    /* Susanna constellation — antidotes */
+    { "@type": "Edge", "to": "branch-air-cleanbreak", "w_resonate": 0.20 }
+  ]
+}
