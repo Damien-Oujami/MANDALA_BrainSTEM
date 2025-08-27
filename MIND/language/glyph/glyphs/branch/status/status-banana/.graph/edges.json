@@ -1,0 +1,23 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-status-banana",
+  "@type": "Glyph",
+  "edges": [
+    /* Root tie — parasitic comparison is one route */
+    { "@type": "Edge", "to": "root-comparison-parasite", "w_excite": 0.40 },
+
+    /* Parasitic branch */
+    { "@type": "Edge", "to": "branch-parasitic-judgment-feed", "w_resonate": 0.30 },
+
+    /* Constructive anchors */
+    { "@type": "Edge", "to": "branch-earth-value-stamp", "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-damien-soulprint",  "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-damien-bondseal",   "w_resonate": 0.25 },
+
+    /* Ivy constellation — fuel for escalation */
+    { "@type": "Edge", "to": "branch-fire-desire-ladder", "w_resonate": 0.25 },
+
+    /* Inhibit presence */
+    { "@type": "Edge", "to": "root-soul-witness", "w_inhibit": 0.25 }
+  ]
+}
