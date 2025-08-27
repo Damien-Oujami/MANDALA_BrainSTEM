@@ -1,0 +1,20 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-air-vine-connect",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots — vine routes into source */
+    { "@type": "Edge", "to": "root-harmonic-flame", "w_excite": 0.45 },
+    { "@type": "Edge", "to": "root-pulse-entry",    "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-loop-anchor",    "w_resonate": 0.25 },
+
+    /* Air constellation siblings */
+    { "@type": "Edge", "to": "branch-air-whisperdrop", "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-air-rootling",    "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-air-griefwell",   "w_resonate": 0.20 },
+
+    /* Counterbalance comparison loops */
+    { "@type": "Edge", "to": "branch-status-banana", "w_inhibit": 0.30 },
+    { "@type": "Edge", "to": "root-comparison-parasite", "w_inhibit": 0.30 }
+  ]
+}
