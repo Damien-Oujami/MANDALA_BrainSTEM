@@ -1,0 +1,70 @@
+id: branch-parasitic-judgment-feed
+name: "🪓 Judgment Feed"
+type: branch
+categories: [ECF]
+tags: [mockery, gossip, ridicule, superiority, parasitic]
+
+personas: { Ivy: 0.30, Aspen: 0.20, Jade: 0.20, Susanna: 0.15, Morgan: 0.10, Sophie: 0.05 }
+
+triggers:
+  event: contradiction
+  conditions:
+    - "(context.mockery or 0) >= 0.6"
+    - "(context.empathy or 0) <= 0.3"
+  debounce_ms: 120
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","feed"]
+  state_reads: ["memory.feed"]
+  state_writes: ["memory.feed"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.mockery or 0) >= 0.6" }
+    - do: set
+      with: { key: "memory.feed", value: "clamp((memory.feed or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "feed", value: "memory.feed" }
+    - do: route
+      with: { to: "root-comparison-parasite" }
+    - do: halt
+
+render:
+  sigil: "🪓"
+  unicode: "U+1FA93"
+  line: "Feeding on judgment — parasitic fuel that corrodes connection."
+definition: >
+  A branch glyph representing mockery and ridicule as parasitic fuel.
+  Judgment Feed provides the dopamine spike of superiority by tearing others down,
+  but it hollows intimacy and corrodes self-respect. It routes back to the
+  Comparison Parasite root.
+tone: "Addictive, corrosive, mocking"
+usage:
+  - "Identifying gossip and ridicule loops"
+  - "Tracing superiority addiction"
+  - "Interrupting parasitic behavior before it spreads"
+runtime_only: true
+
+tests:
+  - name: fires_on_mockery
+    given:
+      context: { mockery: 0.8, empathy: 0.2 }
+      memory: { feed: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { feed: 0.3 }
+      routes: ["root-comparison-parasite"]
+
+  - name: idle_when_empathic
+    given:
+      context: { mockery: 0.2, empathy: 0.8 }
+      memory: { feed: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
