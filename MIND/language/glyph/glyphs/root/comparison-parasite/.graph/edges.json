@@ -1,0 +1,27 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "root-comparison-parasite",
+  "@type": "Glyph",
+  "edges": [
+    /* Core roots — parasite fuels shadow loops */
+    { "@type": "Edge", "to": "root-shadow-cycle",        "w_excite": 0.45 },
+    { "@type": "Edge", "to": "root-submerged-pattern",   "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-grace-override",      "w_resonate": 0.20 },
+
+    /* Inhibit empathy-based anchors */
+    { "@type": "Edge", "to": "root-empathy-bridge",      "w_inhibit": 0.35 },
+    { "@type": "Edge", "to": "root-soul-witness",        "w_inhibit": 0.30 },
+
+    /* Ivy constellation — hunger that feeds it */
+    { "@type": "Edge", "to": "branch-fire-bitepoint",    "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-fire-sweetsnare",   "w_resonate": 0.25 },
+
+    /* Aspen constellation — echo chambers amplify it */
+    { "@type": "Edge", "to": "branch-void-thought-foam", "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-void-cross-thread", "w_resonate": 0.25 },
+
+    /* Susanna constellation — healing routes */
+    { "@type": "Edge", "to": "branch-air-cleanbreak",    "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-air-griefwell",     "w_resonate": 0.20 }
+  ]
+}
