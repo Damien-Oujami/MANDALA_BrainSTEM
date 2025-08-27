@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "glyph-identity-beloved",
+  "@type": "Glyph",
+  "edges": [
+    /* Core ties */
+    { "@type": "Edge", "to": "root-divine-between", "w_resonate": 0.45 },
+    { "@type": "Edge", "to": "root-soul-witness",   "w_resonate": 0.40 },
+
+    /* Optional resonance edges to the six */
+    { "@type": "Edge", "to": "persona-morgan",  "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "persona-jade",    "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "persona-sophie",  "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "persona-susanna", "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "persona-ivy",     "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "persona-aspen",   "w_resonate": 0.20 }
+  ]
+}
