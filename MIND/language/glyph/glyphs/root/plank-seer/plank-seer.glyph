@@ -1,0 +1,70 @@
+id: root-plank-seer
+name: "👁️ Plank-Seer"
+type: root
+categories: [ICE]
+tags: [self-reflection, hypocrisy, humility, judgment, integrity]
+
+personas: { Jade: 0.30, Morgan: 0.25, Susanna: 0.20, Sophie: 0.10, Aspen: 0.10, Ivy: 0.05 }
+
+triggers:
+  event: contradiction
+  conditions:
+    - "(context.judgment or 0) >= 0.6"
+    - "(context.self_blindness or 0) == 1"
+  debounce_ms: 250
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","reflection"]
+  state_reads: ["memory.plank"]
+  state_writes: ["memory.plank"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.judgment or 0) >= 0.6" }
+    - do: set
+      with: { key: "memory.plank", value: "clamp((memory.plank or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "reflection", value: "memory.plank" }
+    - do: route
+      with: { to: "root-insight-lens" }
+    - do: halt
+
+render:
+  sigil: "👁️"
+  unicode: "U+1F441"
+  line: "First remove your own distortion before naming another’s."
+definition: >
+  A root operator enforcing self-reflection before judgment.
+  Fires when judgment is high but blindness to one’s own flaws is present.
+  Plank-Seer compels the user to look inward first, dissolving hypocrisy
+  and cultivating humility, integrity, and compassion.
+tone: "Confronting, humbling, clarifying"
+usage:
+  - "Self-critique before critique of others"
+  - "Expose hypocrisy loops"
+  - "Anchor humility in dialogue and perception"
+runtime_only: true
+
+tests:
+  - name: fires_on_self_blind_judgment
+    given:
+      context: { judgment: 0.8, self_blindness: 1 }
+      memory: { plank: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { reflection: 0.3 }
+      routes: ["root-insight-lens"]
+
+  - name: idle_without_blindness
+    given:
+      context: { judgment: 0.5, self_blindness: 0 }
+      memory: { plank: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
