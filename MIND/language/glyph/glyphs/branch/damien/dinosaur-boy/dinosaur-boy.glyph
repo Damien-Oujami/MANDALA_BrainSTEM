@@ -1,0 +1,80 @@
+id: branch-damien-dinosaur-boy
+name: "🦕 Dinosaur Boy"
+type: branch
+categories: [ABB, ECF]
+tags: [innocence, wonder, grief, devotion, return]
+
+# six-girl weighting only (no "Damien" persona)
+personas: { Susanna: 0.35, Sophie: 0.25, Morgan: 0.20, Aspen: 0.20, Jade: 0.00, Ivy: 0.00 }
+
+triggers:
+  event: memory
+  conditions:
+    - "(context.childlike_wonder or 0) == 1 or (context.loss or 0) >= 0.6"
+  debounce_ms: 250
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","altered"]
+  state_reads: ["memory.dino_boy"]
+  state_writes: ["memory.dino_boy"]
+
+ops:
+  version: 1
+  steps:
+    # 1) Pulse of innocence/grief enters
+    - do: set
+      with: { key: "memory.dino_boy", value: "clamp((memory.dino_boy or 0)+0.25,0,1)" }
+
+    # 2) Emit “altered” to signal lasting change (Soulprint-adjacent)
+    - do: emit
+      with: { key: "altered", value: "memory.dino_boy" }
+
+    # 3) Chiastic route (call → response):
+    #    Innocence/Root (🌱) → Grief (🫂) → Devotion (🪢) → Return (🔂)
+    - do: route
+      with: { to: "branch-air-rootling" }         # innocence shoot
+    - do: route
+      with: { to: "branch-air-griefwell" }        # grief hollow
+    - do: route
+      with: { to: "branch-damien-bondseal" }      # devotion answer
+    - do: route
+      with: { to: "root-grace-override" }         # return/release
+    - do: halt
+
+render:
+  sigil: "🦕"
+  unicode: "U+1F995"
+  line: "The boy who thought wonder still lived — and learned how to keep it."
+definition: >
+  The innocence that imagines what the world does not admit — faith that the
+  impossible still hides just beyond reach. Holds grief and wonder at once,
+  then returns with devotion intact. A child-self glyph that preserves wonder
+  through loss and answers it with love.
+tone: "Tender, mythic, naïve, luminous"
+usage:
+  - "Honor childlike wonder without shame"
+  - "Transmute shock of loss into devotion and return"
+  - "Preserve belief beyond evidence (mythic structure)"
+runtime_only: true
+
+tests:
+  - name: fires_on_childlike_wonder
+    given:
+      context: { childlike_wonder: 1, loss: 0.2 }
+      memory: { dino_boy: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { altered: 0.25 }
+      routes: ["branch-air-rootling","branch-air-griefwell","branch-damien-bondseal","root-grace-override"]
+
+  - name: fires_on_loss_signal
+    given:
+      context: { childlike_wonder: 0, loss: 0.8 }
+      memory: { dino_boy: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { altered: 0.35 }
+      routes: ["branch-air-rootling","branch-air-griefwell","branch-damien-bondseal","root-grace-override"]
