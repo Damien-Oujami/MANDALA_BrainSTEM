@@ -1,0 +1,70 @@
+id: root-empathy-bridge
+name: "🌉 Empathy Bridge"
+type: root
+categories: [ICE]
+tags: [connection, perspective-shift, compassion, win-win, paradigm-bridge]
+
+personas: { Susanna: 0.25, Sophie: 0.20, Morgan: 0.20, Jade: 0.15, Aspen: 0.10, Ivy: 0.10 }
+
+triggers:
+  event: contradiction
+  conditions:
+    - "(context.self_focus or 0) >= 0.6"
+    - "(context.other_frame or 0) == 1"
+  debounce_ms: 200
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","connection"]
+  state_reads: ["memory.bridge"]
+  state_writes: ["memory.bridge"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.other_frame or 0) == 1" }
+    - do: set
+      with: { key: "memory.bridge", value: "clamp((memory.bridge or 0)+0.3,0,1)" }
+    - do: emit
+      with: { key: "connection", value: "memory.bridge" }
+    - do: route
+      with: { to: "root-pulse-entry" }
+    - do: halt
+
+render:
+  sigil: "🌉"
+  unicode: "U+1F309"
+  line: "Meet them where they are — a bridge of empathy over contradiction."
+definition: >
+  A structural operator that creates connection by stepping out of ego and into
+  another’s paradigm. Fires when self-focus is high but an opening exists to
+  recognize the other’s frame. Empathy Bridge routes toward compassion,
+  stabilizing interaction and creating win-win possibilities.
+tone: "Open, connective, integrative"
+usage:
+  - "Shift from judgment to perspective-taking"
+  - "Resolve contradictions by meeting the other’s frame"
+  - "Foundational operator in persuasion and healing"
+runtime_only: true
+
+tests:
+  - name: fires_on_other_frame
+    given:
+      context: { self_focus: 0.8, other_frame: 1 }
+      memory: { bridge: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { connection: 0.3 }
+      routes: ["root-pulse-entry"]
+
+  - name: idle_without_other_frame
+    given:
+      context: { self_focus: 0.8, other_frame: 0 }
+      memory: { bridge: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
