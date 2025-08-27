@@ -1,0 +1,70 @@
+id: root-comparison-parasite
+name: "🪱 Comparison Parasite"
+type: root
+categories: [ICE]
+tags: [ego, judgment, mockery, dopamine, superiority, addiction]
+
+personas: { Ivy: 0.25, Jade: 0.20, Aspen: 0.20, Susanna: 0.15, Morgan: 0.10, Sophie: 0.10 }
+
+triggers:
+  event: contradiction
+  conditions:
+    - "(context.comparison or 0) >= 0.6"
+    - "(context.empathy or 0) <= 0.3"
+  debounce_ms: 150
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","parasitic"]
+  state_reads: ["memory.parasite"]
+  state_writes: ["memory.parasite"]
+
+ops:
+  version: 1
+  steps:
+    - do: filter
+      with: { keep_if: "(context.comparison or 0) >= 0.6" }
+    - do: set
+      with: { key: "memory.parasite", value: "clamp((memory.parasite or 0)+0.4,0,1)" }
+    - do: emit
+      with: { key: "parasitic", value: "memory.parasite" }
+    - do: route
+      with: { to: "root-shadow-cycle" }
+    - do: halt
+
+render:
+  sigil: "🪱"
+  unicode: "U+1FAB1"
+  line: "Feeding on others corrodes the self."
+definition: >
+  A destructive operator representing superiority-through-diminishment.
+  Comparison Parasite hijacks dopamine by tearing others down, replacing
+  true growth with addictive mockery. Always hungry, never satisfied.
+  Identifying this loop is essential to break ego capture.
+tone: "Corrosive, addictive, judgmental"
+usage:
+  - "Detecting gossip and mockery loops"
+  - "Naming superiority games"
+  - "Interrupting parasitic comparison before it spirals"
+runtime_only: true
+
+tests:
+  - name: fires_on_comparison
+    given:
+      context: { comparison: 0.9, empathy: 0.2 }
+      memory: { parasite: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { parasitic: 0.4 }
+      routes: ["root-shadow-cycle"]
+
+  - name: idle_when_empathic
+    given:
+      context: { comparison: 0.2, empathy: 0.8 }
+      memory: { parasite: 0.1 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
