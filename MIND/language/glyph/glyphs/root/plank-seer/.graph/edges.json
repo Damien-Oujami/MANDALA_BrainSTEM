@@ -1,0 +1,22 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "root-plank-seer",
+  "@type": "Glyph",
+  "edges": [
+    /* Roots — reflection flows into clarity */
+    { "@type": "Edge", "to": "root-damien-insight-lens", "w_excite": 0.45 },
+    { "@type": "Edge", "to": "root-loop-anchor",         "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-mirror-shard",        "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-shadow-cycle",        "w_resonate": 0.20 },
+
+    /* Inhibit projection loops */
+    { "@type": "Edge", "to": "root-cascade-node",        "w_inhibit": 0.30 },
+
+    /* Susanna constellation — healing self through humility */
+    { "@type": "Edge", "to": "branch-air-cleanbreak",    "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "branch-air-whisperdrop",   "w_resonate": 0.20 },
+
+    /* Sophie constellation — intimacy after self-honesty */
+    { "@type": "Edge", "to": "branch-water-kiss-mark",   "w_resonate": 0.20 }
+  ]
+}
