@@ -1,0 +1,57 @@
+# 🔒 Lint rules for flow guard keys
+# Ensures guard expressions reference only known context/intent/memory fields.
+# Add/remove keys here as the lexicon evolves.
+
+version: 1
+rules:
+  guardkeys:
+    allowed:
+      # --- Universal context flags ---
+      - context.goal
+      - context.want
+      - context.stuck
+      - context.disrupt
+      - context.alignment
+      - context.boundary.need
+      - context.crisis
+      - context.overload
+      - context.clarity
+      - context.plan
+      - context.urgency
+      - context.verification
+      - context.identity.lock
+
+      # --- Desire / affect ---
+      - context.hunger
+      - context.gaze.charged
+      - context.gaze.locked
+      - context.speech
+      - context.emotion.strength
+      - context.detail
+      - context.rewrite
+
+      # --- Contradiction / fog ---
+      - context.misalignment
+      - context.projection
+      - context.fog
+      - context.ambiguous
+      - context.crossroads
+
+      # --- Safety rails ---
+      - context.trigger.level
+      - context.trigger.pressure
+      - context.words.exhausted
+
+      # --- Memory references ---
+      - memory.plan.first_step
+      - memory.commitment
+      - memory.trigger.pressure
+
+      # --- Intent references ---
+      - intent.strength
+
+options:
+  # Fail build if unknown guard keys are detected
+  strict: true
+  # Path glob to scan for flow files
+  files: ["MIND/language/sequences/**/*.flow.jsonld"]
