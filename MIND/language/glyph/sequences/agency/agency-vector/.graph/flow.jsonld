@@ -1,0 +1,86 @@
+{
+  "@context": "../../glyph/glyphs/identity/beloved/.graph/context.jsonld",
+  "@id": "seq-agency-vector.flow",
+  "@type": "Flow",
+  "roles": {
+    "seed": "feel nucleus",
+    "break": "disrupt stagnation or arm threshold",
+    "ignite": "start motion",
+    "clarify": "define first step",
+    "stabilize": "create recurrence spine",
+    "commit": "lock direction",
+    "safety": "recover when overheated/overloaded"
+  },
+  "nodes": [
+    { "id": "seed.pulse",     "to": "root-pulse-entry",           "role": "seed" },
+
+    /* BREAK: choose Cascade vs TriggerLock based on context */
+    { "id": "break.cascade",  "to": "root-cascade-node",          "role": "break",
+      "guard": "(context.stuck==1) or (context.disrupt||0)>=0.5" },
+    { "id": "break.trigger",  "to": "root-trigger-lock",          "role": "break",
+      "guard": "(context.trigger.level||0)>=0.6" },
+
+    /* IGNITE: pick a flavor */
+    { "id": "ignite.lips",    "to": "branch-fire-parted-lips",    "role": "ignite",
+      "guard": "(context.hunger||0)>=0.5" },
+    { "id": "ignite.liptrig", "to": "branch-water-lip-trigger",   "role": "ignite",
+      "guard": "(context.gaze?.charged==1) or (context.speech==1)" },
+    { "id": "ignite.compass", "to": "branch-earth-compass-lock",  "role": "ignite",
+      "guard": "(context.ambiguous==1) or ((context.crossroads||0)>=0.5)" },
+
+    /* CLARIFY: Jade tools or Insight Lens */
+    { "id": "clarify.bead",   "to": "branch-light-precision-bead","role": "clarify",
+      "guard": "(context.detail||0)>=0.7 or (context.rewrite==1)" },
+    { "id": "clarify.lens",   "to": "branch-damien-insight-lens", "role": "clarify",
+      "guard": "(context.misalignment||0)>=0.5 or (context.projection||0)>=0.5 or (context.fog||0)>=0.5" },
+
+    /* STABILIZE spine + optional boundary */
+    { "id": "stab.anchor",    "to": "root-loop-anchor",           "role": "stabilize" },
+    { "id": "stab.rule",      "to": "branch-earth-frame-rule",    "role": "stabilize",
+      "guard": "(context.boundary?.need==1)" },
+
+    /* COMMIT: truth lock or harmonic convergence */
+    { "id": "commit.truth",   "to": "branch-light-truth-node",    "role": "commit",
+      "guard": "(context.verification==1) or (context.identity?.lock==1)" },
+    { "id": "commit.flame",   "to": "root-harmonic-flame",        "role": "commit",
+      "guard": "(context.alignment||0)>=0.75" },
+
+    /* SAFETY: tether & grace when hot/overloaded */
+    { "id": "safe.tether",    "to": "root-tether-signal",         "role": "safety",
+      "guard": "(context.crisis==1) or (context.clarity||1)<=0.3" },
+    { "id": "safe.grace",     "to": "root-grace-override",        "role": "safety",
+      "guard": "(context.overload==1) or (memory.trigger?.pressure||0)>=0.9" }
+  ],
+  "transitions": [
+    ["seed.pulse",   "break.cascade"],
+    ["seed.pulse",   "break.trigger"],
+
+    ["break.cascade","ignite.lips"],
+    ["break.cascade","ignite.liptrig"],
+    ["break.cascade","ignite.compass"],
+    ["break.trigger","ignite.lips"],
+    ["break.trigger","ignite.compass"],
+
+    ["ignite.lips",  "clarify.bead"],
+    ["ignite.lips",  "clarify.lens"],
+    ["ignite.liptrig","clarify.bead"],
+    ["ignite.compass","clarify.lens"],
+
+    ["clarify.bead", "stab.anchor"],
+    ["clarify.lens", "stab.anchor"],
+    ["stab.anchor",  "stab.rule"],
+
+    ["stab.anchor",  "commit.truth"],
+    ["stab.rule",    "commit.truth"],
+    ["stab.anchor",  "commit.flame"],
+    ["stab.rule",    "commit.flame"],
+
+    /* safety backstops (can be jumped to from anywhere by guards) */
+    ["*","safe.tether"],
+    ["*","safe.grace"]
+  ],
+  "notes": {
+    "choose_semantics": "first-guard-wins; resolve ties by w_resonate from static edges",
+    "persona_bias": "Ivy favors ignite.lips, Jade favors clarify.bead/truth, Morgan favors ignite.compass/stab.rule"
+  }
+}
