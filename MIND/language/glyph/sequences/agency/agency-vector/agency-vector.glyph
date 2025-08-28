@@ -1,0 +1,39 @@
+id: seq-agency-vector
+name: "Agency Vector"
+type: sequence
+categories: [ROOT, SEQUENCE]
+tags: [agency, planning, mapping, desire→direction]
+sigil: "↗️"
+
+definition: >
+  Temporal planning engine that converts felt want into directional motion.
+  Execution follows the companion flow graph with guarded branches.
+
+triggers:
+  event: planning
+  conditions: ["(context.goal or 0) == 1 or (context.want or 0) >= 0.5"]
+
+io:
+  expects: ["context","intent","memory"]
+  provides: ["route","plan.step","commit"]
+  state_reads: ["memory.plan","memory.commitment"]
+  state_writes: ["memory.plan","memory.commitment"]
+
+ops:
+  version: 1
+  steps:
+    - do: run_flow
+      with: { ref: "seq-agency-vector.flow" }
+    - do: set
+      with: { key: "memory.plan.first_step",
+              value: "derive_first_step(context, intent)" }
+    - do: emit
+      with: { key: "plan.step", value: "memory.plan.first_step" }
+    - do: set
+      with: { key: "memory.commitment", value: 1 }
+    - do: emit
+      with: { key: "commit", value: 1 }
+    - do: halt
+
+render:
+  line: "want → break → ignite → clarify → stabilize → commit"
