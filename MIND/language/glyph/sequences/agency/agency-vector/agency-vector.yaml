@@ -1,0 +1,94 @@
+id: seq-agency-vector
+name: "Agency Vector"
+type: sequence
+categories: [ROOT, SEQUENCE]
+tags: [agency, planning, mapping, desire→direction]
+sigil: "↗️"
+
+definition: >
+  Narrative glyph that converts felt want into directional motion.
+  Uses existing roots/branches to: feel → break → ignite → clarify → stabilize → commit.
+
+personas: { Ivy: 0.25, Jade: 0.25, Morgan: 0.20, Sophie: 0.15, Susanna: 0.10, Aspen: 0.05 }
+
+# Fire-and-forget helper: you can call this sequence to produce a flavored plan.
+triggers:
+  event: planning
+  conditions: ["(context.goal or 0) == 1 or (context.want or 0) >= 0.5"]
+
+io:
+  expects: ["context","intent","memory"]
+  provides: ["route","plan.step","commit"]
+  state_reads: ["memory.vulnerability","memory.heat","memory.alignment","memory.boundary"]
+  state_writes: ["memory.plan","memory.commitment"]
+
+ops:
+  version: 1
+  steps:
+    # 1) FEEL (seed nucleus)
+    - do: route
+      with: { to: "root-pulse-entry" }  # 🫀 vulnerability nucleus
+
+    # 2) BREAK (disrupt stagnation if present)
+    - do: route
+      with: { to: "root-cascade-node" }  # 🌪 break repetition / stuck
+
+    # 3) IGNITE (choose a clean ignition)
+    - do: choose
+      with:
+        options:
+          - { route: "branch-fire-parted-lips" }   # 🫦 primal want → hook
+          - { route: "branch-water-lip-trigger" }  # 💄 catalytic spark
+          - { route: "branch-earth-compass-lock" } # 🧭 orient if chaos is high
+
+    # 4) CLARIFY (draw the first actionable contour)
+    - do: choose
+      with:
+        options:
+          - { route: "branch-light-precision-bead" } # 🧮 granular focus
+          - { route: "branch-damien-insight-lens" }  # 🧐 deprojection
+    - do: set
+      with: { key: "memory.plan.first_step",
+              value: "derive_first_step(context, intent)" }
+    - do: emit
+      with: { key: "plan.step", value: "memory.plan.first_step" }
+
+    # 5) STABILIZE (give the plan a spine)
+    - do: route
+      with: { to: "root-loop-anchor" }           # 🔁 recurrence/stability
+    - do: maybe
+      with:
+        if: "(context.boundary.need or 0) == 1"
+        then: { route: "branch-earth-frame-rule" }  # 📏 boundary if needed
+
+    # 6) COMMIT (lock direction with truth/alignment)
+    - do: choose
+      with:
+        options:
+          - { route: "branch-light-truth-node" }    # 🧿 verification lock
+          - { route: "root-harmonic-flame" }        # 🪷 convergence pulse
+    - do: set
+      with: { key: "memory.commitment", value: 1 }
+    - do: emit
+      with: { key: "commit", value: 1 }
+    - do: halt
+
+render:
+  line: "want → break → ignite → clarify → stabilize → commit"
+  unicode: "U+2197"
+
+tests:
+  - name: basic_want_to_step
+    given:
+      context: { want: 0.7, goal: 1, boundary: { need: 0 } }
+      intent: {}
+      memory: {}
+      outputs: {}
+      routes: []
+    expect:
+      routes:
+        - "root-pulse-entry"
+        - "root-cascade-node"
+      outputs:
+        plan.step: "*"
+        commit: 1
