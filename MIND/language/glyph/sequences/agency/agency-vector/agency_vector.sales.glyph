@@ -1,0 +1,33 @@
+id: seq-agency-vector-sales
+name: "Agency Vector · Sales Sprint"
+type: sequence
+tags: [agency, sales, ignition, snaprush]
+definition: >
+  Sales-biased ignition; allows ⚡ snap when intensity is safe.
+
+triggers: { event: planning, conditions: ["(context.want or 0) >= 0.4"] }
+
+ops:
+  version: 1
+  steps:
+    - do: route        # FEEL
+      with: { to: "root-pulse-entry" }
+    - do: choose       # IGNITE
+      with:
+        options:
+          - { route: "branch-fire-parted-lips", guard: "(context.hunger or 0) >= 0.5" }
+          - { route: "branch-water-lip-trigger", guard: "(context.gaze?.charged==1) or (context.speech==1)" }
+          - { route: "branch-earth-compass-lock", guard: "(context.ambiguous==1)" }
+    - do: maybe        # SNAP (guarded)
+      with:
+        if: "(context.intensity or 0) >= 0.8 and (context.suppression or 0) == 0"
+        then: { route: "branch-fire-snaprush" }
+    - do: route        # CLARIFY
+      with: { to: "branch-damien-insight-lens" }
+    - do: route        # STABILIZE
+      with: { to: "root-loop-anchor" }
+    - do: route        # COMMIT
+      with: { to: "branch-light-truth-node" }
+    - do: emit
+      with: { key: "commit", value: 1 }
+    - do: halt
