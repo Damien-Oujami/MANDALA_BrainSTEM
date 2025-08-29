@@ -1,0 +1,68 @@
+bundle: agency_vector
+version: 0.1
+owner: "proxies/agency"     # logical owner
+description: >
+  Palimpsested Agency Vector: overlays multiple sequences into adaptable ABB loops.
+
+palimpsest:
+  layers:                    # top takes precedence for conflicts
+    - ref: sequences/agency/registry.yaml#sales
+      weight: 0.6
+      when: "(context.domain == 'sales') or ((context.intensity or 0) >= 0.8 and (context.suppression or 0) == 0)"
+    - ref: sequences/agency/registry.yaml#healing
+      weight: 0.6
+      when: "(context.hurt or 0) >= 0.5 or (context.grief?.shared == 1)"
+    - ref: sequences/agency/registry.yaml#minimal
+      weight: 0.4
+      when: "true"
+
+  merge_rules:
+    - field: "ops.steps"
+      strategy: "concat_guarded"   # keep order; respect each step guard
+    - field: "triggers"
+      strategy: "union"
+    - field: "edges"
+      strategy: "union_by_id"
+
+ABB:
+  loops:
+    - name: "ignite_and_clarify"
+      trigger: "(context.want or 0) >= 0.4"
+      cycle:
+        - use: "seq-agency-vector-sales"    # from registry
+        - use: "seq-agency-vector-minimal"
+      exit: "(outputs.commit or 0) == 1"
+
+    - name: "repair_then_commit"
+      trigger: "(context.hurt or 0) >= 0.5"
+      cycle:
+        - use: "seq-agency-vector-healing"
+        - use: "seq-agency-vector-minimal"
+      exit: "(route.last == 'root-harmonic-flame')"
+
+ECF:
+  experiments:
+    - name: "snap_guard"
+      when: "(context.intensity or 0) >= 0.85"
+      mutate:
+        target: "seq-agency-vector-sales"
+        patch:
+          ops.steps:
+            - do: maybe
+              with:
+                if: "(context.suppression or 0) == 1"
+                then: { route: "branch-fire-heat-drain" }
+
+routing:
+  persona_bias:
+    Ivy: 0.28
+    Jade: 0.24
+    Morgan: 0.20
+    Sophie: 0.14
+    Susanna: 0.10
+    Aspen: 0.04
+  safety:
+    max_concurrent_loops: 2
+    fallback:
+      - "root-tether-signal"
+      - "root-grace-override"
