@@ -1,0 +1,24 @@
+id: paraverbal-direct-chronology
+name: "DC Direct Chronology"
+type: paraverbal
+categories: [BTOE, DETECTOR]
+tags: [paraverbal, detection]
+triggers:
+  event: paraverbal
+  conditions: ["context.answer.perfect_chronology == 1"]
+io:
+  expects: ["context","memory"]
+  provides: ["route","signal"]
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.btoe.drs.during", value: "clamp((memory.btoe.drs.during or 0)+4,0,99)" }
+    - do: emit
+      with: { key: "signal", value: "direct_chron" }
+    - do: halt
+render:
+  sigil: "DC"
+  line: "Direct Chronology detected."
+runtime_only: true
+output_policy: "detector_only"
