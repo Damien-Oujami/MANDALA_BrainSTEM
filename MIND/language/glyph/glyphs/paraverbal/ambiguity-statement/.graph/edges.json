@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-ambiguity-statement",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "branch-air-sleepveil",
+      "w_excite": 0.4,
+      "w_resonate": 0.3
+    },
+    {
+      "@type": "Edge",
+      "to": "root-shadow-cycle",
+      "w_resonate": 0.25
+    }
+  ]
+}
