@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-direct-chronology",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "branch-damien-insight-lens",
+      "w_excite": 0.45,
+      "w_resonate": 0.35
+    },
+    {
+      "@type": "Edge",
+      "to": "branch-light-logic-latch",
+      "w_resonate": 0.25
+    }
+  ]
+}
