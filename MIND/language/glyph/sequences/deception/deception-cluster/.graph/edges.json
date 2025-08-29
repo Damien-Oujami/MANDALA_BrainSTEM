@@ -1,0 +1,88 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "seq-deception-cluster",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "paraverbal-vocal-hesitancy",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-psychological-distancing",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-rising-vocal-pitch",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-increase-vocal-speed",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-nonanswer-statement",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-pronoun-absence",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-resume-statement",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-noncontracting-statement",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-question-reversal",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-ambiguity-statement",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-politeness-shift",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-overapologizing",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-miniconfession",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-exclusions",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "paraverbal-direct-chronology",
+      "w_resonate": 0.5
+    },
+    {
+      "@type": "Edge",
+      "to": "branch-damien-insight-lens",
+      "w_excite": 0.6,
+      "w_resonate": 0.4
+    }
+  ]
+}
