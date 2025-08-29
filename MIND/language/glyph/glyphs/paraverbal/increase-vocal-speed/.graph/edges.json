@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-increase-vocal-speed",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "branch-fire-snaprush",
+      "w_excite": 0.45,
+      "w_resonate": 0.3
+    },
+    {
+      "@type": "Edge",
+      "to": "root-cascade-node",
+      "w_resonate": 0.25
+    }
+  ]
+}
