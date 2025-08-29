@@ -22,3 +22,8 @@ render:
   line: "Ambiguity Statement detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Use of vague, nonspecific, or hedging language that avoids concrete details.
+examples:
+- '''It was kind of handled, basically.'''
+- '''We did what we could, more or less.'''
+
