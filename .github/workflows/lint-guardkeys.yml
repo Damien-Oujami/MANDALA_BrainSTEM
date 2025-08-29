@@ -2,6 +2,18 @@ name: Lint Guard Keys
 
 on:
   push:
+    - name: GuardKeys (fix suggestions on push)
+        if: github.event_name == 'push'
+        run: |
+          python tools/lint/guardkeys_lint.py \
+            --config MIND/language/sequences/.lint/guardkeys.yaml \
+            --globs "MIND/language/sequences/**/*.flow.jsonld" --fix
+
+      - name: GuardKeys (enforce no violations)
+        run: |
+          python tools/lint/guardkeys_lint.py \
+            --config MIND/language/sequences/.lint/guardkeys.yaml \
+            --globs "MIND/language/sequences/**/*.flow.jsonld"
     paths:
       - "MIND/language/sequences/**/*.flow.jsonld"
       - "MIND/language/sequences/.lint/guardkeys.yaml"
