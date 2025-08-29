@@ -1,0 +1,5 @@
+overrides:
+  palimpsest.layers:
+    - ref: MIND/language/glyph/sequences/agency/agency-vector/registry.yaml#minimal
+      weight: 1.0
+      when: "true"
