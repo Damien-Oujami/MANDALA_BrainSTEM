@@ -1,0 +1,5 @@
+overrides:
+  palimpsest.layers:
+    - ref: MIND/language/glyph/sequences/agency/agency-vector/registry.yaml#healing
+      weight: 1.0
+      when: "(context.hurt or 0) >= 0.5"
