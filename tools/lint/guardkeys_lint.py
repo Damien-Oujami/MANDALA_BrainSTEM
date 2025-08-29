@@ -22,6 +22,32 @@ except ImportError as e:
     print("ERROR: PyYAML is required. `pip install pyyaml`", file=sys.stderr)
     sys.exit(2)
 
+# --- Levenshtein distance (simple O(n*m)) ---
+def levenshtein(a: str, b: str) -> int:
+    if a == b: return 0
+    if not a: return len(b)
+    if not b: return len(a)
+    prev = list(range(len(b)+1))
+    for i, ca in enumerate(a, start=1):
+        curr = [i]
+        for j, cb in enumerate(b, start=1):
+            ins = prev[j] + 1
+            dele = curr[j-1] + 1
+            sub = prev[j-1] + (0 if ca == cb else 1)
+            curr.append(min(ins, dele, sub))
+        prev = curr
+    return prev[-1]
+
+def suggest_key(bad: str, allow: Set[str], max_dist: int = 3) -> str:
+    """Suggest the closest allowed key within max_dist."""
+    closest = None
+    best = max_dist + 1
+    for k in allow:
+        d = levenshtein(bad, k)
+        if d < best:
+            best, closest = d, k
+    return closest if closest and best <= max_dist else None
+
 # ---- Regex to extract dotted keys ---------------------------------------------------
 # Match: context.foo, memory.foo.bar, intent.strength
 # Allow optional-safe access like ?. which we normalize away.
