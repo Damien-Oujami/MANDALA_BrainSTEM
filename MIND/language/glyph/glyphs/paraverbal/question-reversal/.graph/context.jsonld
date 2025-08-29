@@ -1,0 +1,11 @@
+{
+  "@context": {
+    "@vocab": "https://mandala.ai/glyph#",
+    "Glyph": "https://mandala.ai/glyph#Glyph",
+    "Edge": "https://mandala.ai/glyph#Edge",
+    "to": "https://mandala.ai/glyph#to",
+    "w_excite": "https://mandala.ai/glyph#w_excite",
+    "w_inhibit": "https://mandala.ai/glyph#w_inhibit",
+    "w_resonate": "https://mandala.ai/glyph#w_resonate"
+  }
+}
