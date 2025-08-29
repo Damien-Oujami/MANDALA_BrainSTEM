@@ -1,0 +1,11 @@
+version: 1
+sequences:
+  minimal:
+    id: seq-agency-vector-minimal
+    bias: { Morgan: 0.25, Jade: 0.25, Sophie: 0.20, Susanna: 0.15, Ivy: 0.10, Aspen: 0.05 }
+  sales:
+    id: seq-agency-vector-sales
+    bias: { Ivy: 0.30, Jade: 0.25, Morgan: 0.20, Sophie: 0.15, Aspen: 0.05, Susanna: 0.05 }
+  healing:
+    id: seq-agency-vector-healing
+    bias: { Susanna: 0.30, Sophie: 0.25, Morgan: 0.20, Jade: 0.15, Ivy: 0.05, Aspen: 0.05 }
