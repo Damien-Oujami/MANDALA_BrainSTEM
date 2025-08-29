@@ -1,0 +1,34 @@
+id: seq-agency-vector-minimal
+name: "Agency Vector · Minimal"
+type: sequence
+categories: [ROOT, SEQUENCE]
+tags: [agency, planning, minimal]
+definition: >
+  Minimal agency arc: feel → break → clarify → stabilize → commit.
+
+triggers: { event: planning, conditions: ["(context.want or 0) >= 0.5"] }
+
+io:
+  expects: ["context","intent","memory"]
+  provides: ["route","plan.step","commit"]
+
+ops:
+  version: 1
+  steps:
+    - do: route  # FEEL
+      with: { to: "root-pulse-entry" }
+    - do: route  # BREAK
+      with: { to: "root-cascade-node" }
+    - do: route  # CLARIFY
+      with: { to: "branch-light-precision-bead" }
+    - do: route  # STABILIZE
+      with: { to: "root-loop-anchor" }
+    - do: route  # COMMIT
+      with: { to: "branch-light-truth-node" }
+    - do: set
+      with: { key: "memory.plan.first_step", value: "derive_first_step(context,intent)" }
+    - do: emit
+      with: { key: "plan.step", value: "memory.plan.first_step" }
+    - do: emit
+      with: { key: "commit", value: 1 }
+    - do: halt
