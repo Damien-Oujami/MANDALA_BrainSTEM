@@ -6,12 +6,15 @@ tags: [agency, planning, mapping, desire→direction]
 sigil: "↗️"
 
 definition: >
-  Temporal planning engine that converts felt want into directional motion.
-  Execution follows the companion flow graph with guarded branches.
+  Narrative arc of agency: desire felt, path broken and clarified,
+  stabilized, then committed. Branches into different outcomes
+  depending on context, and can be palimpsested into ABB bundles.
+
+identity_ref: "MIND/identity/proxies/ABB_library/sequence_bundles/agency/agency_vector.bundle.yaml"
 
 triggers:
   event: planning
-  conditions: ["(context.goal or 0) == 1 or (context.want or 0) >= 0.5"]
+  conditions: ["(context.want or 0) >= 0.5"]
 
 io:
   expects: ["context","intent","memory"]
@@ -36,4 +39,6 @@ ops:
     - do: halt
 
 render:
-  line: "want → break → ignite → clarify → stabilize → commit"
+  sigil: "➡️"
+  line: "Agency as a vector: felt → broken → clarified → stabilized → committed."
+runtime_only: false
