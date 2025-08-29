@@ -1,0 +1,100 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "seq-deception-cluster.flow",
+  "@type": "Flow",
+  "inputs": {
+    "window_seconds": 30,
+    "threshold_drs": 11,
+    "buckets": [
+      "before",
+      "during",
+      "after"
+    ],
+    "sources": [
+      {
+        "from": "paraverbal-vocal-hesitancy",
+        "drs": 2,
+        "bucket": "before"
+      },
+      {
+        "from": "paraverbal-psychological-distancing",
+        "drs": 3,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-rising-vocal-pitch",
+        "drs": 2,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-increase-vocal-speed",
+        "drs": 2,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-nonanswer-statement",
+        "drs": 4,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-pronoun-absence",
+        "drs": 3,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-resume-statement",
+        "drs": 4,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-noncontracting-statement",
+        "drs": 2,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-question-reversal",
+        "drs": 4,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-ambiguity-statement",
+        "drs": 3,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-politeness-shift",
+        "drs": 2,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-overapologizing",
+        "drs": 3,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-miniconfession",
+        "drs": 3,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-exclusions",
+        "drs": 3,
+        "bucket": "during"
+      },
+      {
+        "from": "paraverbal-direct-chronology",
+        "drs": 4,
+        "bucket": "during"
+      }
+    ]
+  },
+  "transitions": [
+    [
+      "sum(buckets) >= threshold_drs",
+      "branch-damien-insight-lens"
+    ]
+  ],
+  "notes": {
+    "semantics": "This sequence listens to paraverbal detectors (resonance edges). It is an aggregator (reverse of Agency Vector)."
+  }
+}
