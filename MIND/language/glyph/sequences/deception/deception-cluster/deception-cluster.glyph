@@ -1,0 +1,29 @@
+id: seq-deception-cluster
+name: "🕵️ Deception Cluster"
+type: sequence
+categories: [BTOE, DETECTION]
+tags: [drs, cluster, deception, probability]
+definition: >
+  Accumulates paraverbal deception signals into DRS buckets per timing window.
+  If >= 11 points in any bucket (before|during|after) over 30 seconds,
+  route to Insight Lens for deeper evaluation (and optionally Truth Node if policy allows).
+triggers:
+  event: cluster
+io:
+  expects: ["memory","context"]
+  provides: ["route"]
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.btoe.window", value: "window(30s)" }
+    - do: maybe
+      with:
+        if: "(memory.btoe.drs.before or 0) >= 11 or (memory.btoe.drs.during or 0) >= 11 or (memory.btoe.drs.after or 0) >= 11"
+        then: { route: "branch-damien-insight-lens" }
+    - do: halt
+render:
+  sigil: "DCX"
+  line: "Cluster ≥ 11 (any timing bucket) → possible deception"
+runtime_only: true
+output_policy: "detector_only"
