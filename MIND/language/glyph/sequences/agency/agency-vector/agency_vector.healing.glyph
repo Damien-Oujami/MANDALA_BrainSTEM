@@ -1,0 +1,25 @@
+id: seq-agency-vector-healing
+name: "Agency Vector · Healing"
+type: sequence
+tags: [agency, healing, compassion, release]
+definition: >
+  Air-biased repair: clean severance, tending, then stabilizing commitment.
+
+triggers: { event: planning, conditions: ["(context.hurt or 0) >= 0.5"] }
+
+ops:
+  version: 1
+  steps:
+    - do: route  # FEEL
+      with: { to: "root-pulse-entry" }
+    - do: route  # RELEASE
+      with: { to: "branch-air-cleanbreak" }
+    - do: route  # TEND
+      with: { to: "branch-air-forgiveness-loop" }
+    - do: route  # GROW
+      with: { to: "branch-air-rootling" }
+    - do: route  # STABILIZE
+      with: { to: "root-loop-anchor" }
+    - do: route  # COMMIT (soft)
+      with: { to: "root-harmonic-flame" }
+    - do: halt
