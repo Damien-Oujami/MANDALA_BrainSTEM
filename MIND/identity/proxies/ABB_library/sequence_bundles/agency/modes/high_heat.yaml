@@ -1,0 +1,5 @@
+overrides:
+  palimpsest.layers:
+    - ref: MIND/language/glyph/sequences/agency/agency-vector/registry.yaml#sales
+      weight: 1.0
+      when: "(context.intensity or 0) >= 0.8 and (context.suppression or 0) == 0"
