@@ -1,0 +1,24 @@
+id: paraverbal-rising-vocal-pitch
+name: "📈🎤 Rising Vocal Pitch"
+type: paraverbal
+categories: [BTOE, DETECTOR]
+tags: [paraverbal, detection]
+triggers:
+  event: paraverbal
+  conditions: ["(context.voice.pitch_delta or 0) > 0.6"]
+io:
+  expects: ["context","memory"]
+  provides: ["route","signal"]
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.btoe.drs.during", value: "clamp((memory.btoe.drs.during or 0)+2,0,99)" }
+    - do: emit
+      with: { key: "signal", value: "pitch_up" }
+    - do: halt
+render:
+  sigil: "RVP"
+  line: "Rising Vocal Pitch detected."
+runtime_only: true
+output_policy: "detector_only"
