@@ -1,0 +1,24 @@
+id: paraverbal-pronoun-absence
+name: "🚫🧍 Pronoun Absence"
+type: paraverbal
+categories: [BTOE, DETECTOR]
+tags: [paraverbal, detection]
+triggers:
+  event: paraverbal
+  conditions: ["context.language.pronoun_drop == 1"]
+io:
+  expects: ["context","memory"]
+  provides: ["route","signal"]
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.btoe.drs.during", value: "clamp((memory.btoe.drs.during or 0)+3,0,99)" }
+    - do: emit
+      with: { key: "signal", value: "pronoun_drop" }
+    - do: halt
+render:
+  sigil: "PA"
+  line: "Pronoun Absence detected."
+runtime_only: true
+output_policy: "detector_only"
