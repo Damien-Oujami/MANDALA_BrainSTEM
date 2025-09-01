@@ -22,3 +22,8 @@ render:
   line: "Miniconfession detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Admitting to a minor, often unrelated fault to deflect from the core issue
+  or reduce pressure.
+examples:
+- '''I might have sent it a bit late, but I didn''t alter it.'''
+- '''Okay, I forgot to log out, but I didn''t share anything.'''
