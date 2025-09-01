@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-miniconfession",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "root-submerged-pattern",
+      "w_excite": 0.4,
+      "w_resonate": 0.3
+    },
+    {
+      "@type": "Edge",
+      "to": "root-mirror-shard",
+      "w_resonate": 0.25
+    }
+  ]
+}
