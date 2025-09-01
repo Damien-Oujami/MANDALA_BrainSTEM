@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-resume-statement",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "branch-status-banana",
+      "w_excite": 0.45,
+      "w_resonate": 0.35
+    },
+    {
+      "@type": "Edge",
+      "to": "root-mirror-shard",
+      "w_resonate": 0.2
+    }
+  ]
+}
