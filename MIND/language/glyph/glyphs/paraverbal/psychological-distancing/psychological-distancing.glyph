@@ -22,3 +22,8 @@ render:
   line: "Psychological Distancing detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Use of impersonal or distancing language to avoid ownership (e.g., definite
+  articles or third-person phrasing instead of personal pronouns).
+examples:
+- Says 'the car' instead of 'my car'.
+- Refers to spouse as 'that woman' instead of 'my wife'.
