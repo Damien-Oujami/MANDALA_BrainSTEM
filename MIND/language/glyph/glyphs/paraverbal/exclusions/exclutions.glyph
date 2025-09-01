@@ -18,7 +18,12 @@ ops:
       with: { key: "signal", value: "exclusion" }
     - do: halt
 render:
-  sigil: "🚧"
+  sigil: "EX"
   line: "Exclusions detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Use of exclusionary qualifiers that limit commitment or certainty ('to
+  the best of my knowledge', 'basically').
+examples:
+- '''As far as I know, that''s correct.'''
+- '''We were basically finished.'''
