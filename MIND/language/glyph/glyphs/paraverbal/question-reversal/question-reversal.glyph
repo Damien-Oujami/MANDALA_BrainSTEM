@@ -22,3 +22,8 @@ render:
   line: "Question Reversal detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Replying to a question with a question to deflect, challenge, or shift
+  burden back to the asker.
+examples:
+- 'Q: ''Did you open the file?'' A: ''Why would I ever do that?'''
+- 'Q: ''Were you present?'' A: ''Why are you asking me?'''
