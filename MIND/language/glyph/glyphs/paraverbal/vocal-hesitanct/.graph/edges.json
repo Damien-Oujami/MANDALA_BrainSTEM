@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-vocal-hesitancy",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "root-trigger-lock",
+      "w_excite": 0.4,
+      "w_resonate": 0.3
+    },
+    {
+      "@type": "Edge",
+      "to": "branch-damien-insight-lens",
+      "w_resonate": 0.25
+    }
+  ]
+}
