@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-nonanswer-statement",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "root-grace-override",
+      "w_excite": 0.45,
+      "w_resonate": 0.35
+    },
+    {
+      "@type": "Edge",
+      "to": "branch-damien-insight-lens",
+      "w_resonate": 0.25
+    }
+  ]
+}
