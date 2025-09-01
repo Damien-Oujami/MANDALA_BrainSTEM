@@ -22,3 +22,9 @@ render:
   line: "Rising Vocal Pitch detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: An increase in fundamental frequency compared to the speaker's baseline
+  during a response, associated with stress or anxiety.
+examples:
+- 'Pitch rises noticeably on key denial words: ''I didn''t do that.'''
+- End of phrases rises in questions when making assertions.
+
