@@ -1,5 +1,5 @@
 id: paraverbal-direct-chronology
-name: "DC Direct Chronology"
+name: "📚➡️ Direct Chronology"
 type: paraverbal
 categories: [BTOE, DETECTOR]
 tags: [paraverbal, detection]
@@ -22,3 +22,8 @@ render:
   line: "Direct Chronology detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Unnaturally perfect chronological recounting that sounds rehearsed rather
+  than lived.
+examples:
+- '''At 7:00 I arrived, 7:05 I sat, 7:10 I called…'''
+- Over-ordered details delivered like a script.
