@@ -22,3 +22,8 @@ render:
   line: "Pronoun Absence detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Omission of first-person singular pronouns in places where ownership/agency
+  would normally be stated.
+examples:
+- '''Was told to submit the form'' instead of ''I submitted the form.'''
+- '''Mistakes were made'' rather than ''I made a mistake.'''
