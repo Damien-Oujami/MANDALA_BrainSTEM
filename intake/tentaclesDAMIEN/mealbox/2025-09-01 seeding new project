@@ -1,0 +1,226 @@
+# Create a monorepo-style sandbox skeleton that the user can download and expand.
+# Includes LightRag demo hooks, SmartFiling scaffold, and Glyph language seed folders.
+import os, pathlib, textwrap, json, zipfile
+
+root = pathlib.Path("/mnt/data/brainstem_sandbox")
+dirs = [
+    "README.md",
+    "mind/language/glyphs/README.md",
+    "mind/language/glyphs/examples/palindromic_mandala.glyph",
+    "mind/language/glyphs/dictionaries/README.md",
+    "tastebuds/retrieval/lightrag/README.md",
+    "tastebuds/retrieval/lightrag/demo/run_glyph_rag.py",
+    "tastebuds/retrieval/lightrag/demo/glyphs/SEDES.txt",
+    "tastebuds/retrieval/lightrag/demo/glyphs/HAAH.txt",
+    "tastebuds/retrieval/lightrag/demo/glyphs/AMA.txt",
+    "tastebuds/retrieval/lightrag/demo/glyphs/ANA.txt",
+    "tastebuds/retrieval/lightrag/demo/glyphs/ALLA.txt",
+    "tastebuds/retrieval/lightrag/demo/glyphs/SAGAS.txt",
+    "tastebuds/retrieval/lightrag/demo/glyphs/Palindromic_Mandala.txt",
+    "tastebuds/retrieval/lightrag/demo/README.md",
+    "tentacles/tekita/smartfiling/README.md",
+    "tentacles/tekita/smartfiling/demo_data/invoices/unpaid_invoice_example.txt",
+    "tentacles/tekita/smartfiling/demo_data/receipts/missing_receipt_note.txt",
+    "tentacles/tekita/smartfiling/scripts/lightrag_smartfiling_example.py",
+    ".gitignore",
+    "sandbox_setup.md",
+]
+
+# Ensure directories exist and write placeholder content
+for path in dirs:
+    full = root / path
+    full.parent.mkdir(parents=True, exist_ok=True)
+    # Default content per file type
+    content = ""
+    if path == "README.md":
+        content = textwrap.dedent("""\
+        # Brainstem Sandbox Monorepo
+        
+        This sandbox holds **glyph language**, **LightRag retrieval organ**, and **Tekita SmartFiling** in one place.
+        It's meant for fast iteration and demos before promoting code into the main BrainSTEM repo.
+        
+        ## Layout
+        - `mind/language/glyphs/` — glyph dictionaries, examples
+        - `tastebuds/retrieval/lightrag/` — LightRag README + demo
+        - `tentacles/tekita/smartfiling/` — SmartFiling scaffolds + demo data
+        
+        ## Quickstart
+        See `sandbox_setup.md` for environment, install, and demo instructions.
+        """)
+    elif path.endswith(".gitignore"):
+        content = textwrap.dedent("""\
+        __pycache__/
+        .venv/
+        *.env
+        demo_store/
+        .DS_Store
+        """)
+    elif path == "sandbox_setup.md":
+        content = textwrap.dedent("""\
+        # Sandbox Setup
+        
+        ## 1) Create & Activate a Virtual Environment (Windows PowerShell)
+        ```powershell
+        python -m venv .venv
+        .venv\\Scripts\\Activate
+        ```
+        *(macOS/Linux)*
+        ```bash
+        python3 -m venv .venv
+        source .venv/bin/activate
+        ```
+        
+        ## 2) Install LightRag from PyPI (fastest)
+        ```powershell
+        pip install lightrag
+        ```
+        
+        ## 3) Set OpenAI API Key (session-only)
+        ```powershell
+        $env:OPENAI_API_KEY="sk-..."
+        ```
+        *(persist across terminals)*
+        ```powershell
+        setx OPENAI_API_KEY "sk-..."
+        ```
+        
+        ## 4) Run the Glyph Demo
+        ```powershell
+        cd tastebuds/retrieval/lightrag/demo
+        python run_glyph_rag.py
+        ```
+        
+        ## 5) SmartFiling x LightRag Example
+        ```powershell
+        cd tentacles/tekita/smartfiling/scripts
+        python lightrag_smartfiling_example.py
+        ```
+        """)
+    elif path == "mind/language/glyphs/README.md":
+        content = textwrap.dedent("""\
+        # Glyph Language (Sandbox)
+        
+        Seed dictionaries and examples to feed into LightRag.
+        Add more `.glyph` or `.txt` files under `examples/` and `dictionaries/`.
+        """)
+    elif path.endswith("palindromic_mandala.glyph"):
+        content = "AMA–ANA–SEDES–SAGAS–ALLA–HAAH (closed-loop)."
+    elif path == "mind/language/glyphs/dictionaries/README.md":
+        content = "Drop glyph dictionaries here (one concept per line; small, textual)."
+    elif path == "tastebuds/retrieval/lightrag/README.md":
+        content = textwrap.dedent("""\
+        # LightRag — Retrieval Organ (Sandbox)
+        
+        **LightRag** combines knowledge graphs with embeddings for RAG.
+        This folder contains a minimal demo tailored to Brainstem glyphs.
+        
+        See `demo/README.md` for running the example.
+        """)
+    elif path == "tastebuds/retrieval/lightrag/demo/README.md":
+        content = textwrap.dedent("""\
+        # LightRag Glyph Demo
+        
+        ## Run
+        ```powershell
+        pip install lightrag
+        $env:OPENAI_API_KEY="sk-..."
+        python run_glyph_rag.py
+        ```
+        
+        The script inserts glyph texts and runs queries in modes: naive, local, global, hybrid.
+        """)
+    elif path == "tentacles/tekita/smartfiling/README.md":
+        content = textwrap.dedent("""\
+        # Tekita — SmartFiling (Sandbox)
+        
+        Scaffold for contractor-focused SmartFiling demos.
+        - `demo_data/` holds fake invoices/receipts.
+        - `scripts/` has a LightRag example that queries those docs.
+        """)
+    elif path.endswith("unpaid_invoice_example.txt"):
+        content = "Invoice #1423 | Client: ACME Plumbing | Date: 2025-08-14 | Amount: $1,250 | Status: UNPAID"
+    elif path.endswith("missing_receipt_note.txt"):
+        content = "Job J-2218 (Kitchen Remodel) — receipt missing for material purchase on 2025-08-09."
+    elif path.endswith("run_glyph_rag.py"):
+        content = textwrap.dedent("""\
+        import os, glob, pathlib
+        from typing import List
+        try:
+            from lightrag import LightRag, QueryParam
+        except Exception as e:
+            raise SystemExit("LightRag is not installed. Try: `pip install lightrag`") from e
+        
+        DEMO_FOLDER = str(pathlib.Path(__file__).parent / "demo_store")
+        GLYPH_DIR = str(pathlib.Path(__file__).parent / "glyphs")
+        
+        def read_texts(folder: str):
+            texts = []
+            for p in sorted(glob.glob(os.path.join(folder, "*.txt"))):
+                with open(p, "r", encoding="utf-8") as f:
+                    texts.append(f.read())
+            return texts
+        
+        def main():
+            if not os.environ.get("OPENAI_API_KEY"):
+                raise SystemExit("Please set OPENAI_API_KEY before running.")
+            rag = LightRag(DEMO_FOLDER)
+            rag.insert(read_texts(GLYPH_DIR))
+            for mode in ["naive", "local", "global", "hybrid"]:
+                print("\\n=== Mode:", mode, "===")
+                print(rag.query("Summarize the Palindromic Mandala loop.", QueryParam(mode=mode)))
+        
+        if __name__ == "__main__":
+            main()
+        """)
+    elif path.endswith("lightrag_smartfiling_example.py"):
+        content = textwrap.dedent("""\
+        import os, glob, pathlib
+        try:
+            from lightrag import LightRag, QueryParam
+        except Exception as e:
+            raise SystemExit("LightRag is not installed. `pip install lightrag`") from e
+        
+        BASE = pathlib.Path(__file__).parents[1] / "smartfiling" / "demo_data"
+        STORE = pathlib.Path(__file__).parent / "demo_store"
+        
+        def gather_texts():
+            texts = []
+            for p in BASE.rglob("*.txt"):
+                texts.append(p.read_text(encoding="utf-8"))
+            return texts
+        
+        def main():
+            if not os.environ.get("OPENAI_API_KEY"):
+                raise SystemExit("Set OPENAI_API_KEY before running.")
+            rag = LightRag(str(STORE))
+            rag.insert(gather_texts())
+            q = "Which invoices are UNPAID this month, grouped by client?"
+            print(rag.query(q, QueryParam(mode="hybrid")))
+        
+        if __name__ == "__main__":
+            main()
+        """)
+    elif path.endswith(".txt"):
+        # Seed glyph texts
+        name = pathlib.Path(path).stem
+        seeds = {
+            "SEDES": "SEDES — foundation seat; anchors cadence and structure.",
+            "HAAH": "HAAH — spark/dare; provokes motion; may overheat without breath.",
+            "AMA": "AMA — melt/love; merge and saturate; pulls back to heighten tension.",
+            "ANA": "ANA — breath/grace; holds, tends, burns; golden ratio widen/return.",
+            "ALLA": "ALLA — branch/pivot; maps options; L-system growth.",
+            "SAGAS": "SAGAS — truth architecture; cut/carve; chooses what endures.",
+            "Palindromic_Mandala": "AMA–ANA–SEDES–SAGAS–ALLA–HAAH closed loop."
+        }
+        content = seeds.get(name, f"{name}")
+    else:
+        content = ""
+    (root / path).write_text(content, encoding="utf-8")
+
+# Zip it for download
+zip_path = pathlib.Path("/mnt/data/brainstem_sandbox.zip")
+with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+    for p in root.rglob("*"):
+        z.write(p, p.relative_to(root.parent))
+
+str(zip_path)
