@@ -1,0 +1,24 @@
+id: paraverbal-overapologizing
+name: "🙏 Overapologizing"
+type: paraverbal
+categories: [BTOE, DETECTOR]
+tags: [paraverbal, detection]
+triggers:
+  event: paraverbal
+  conditions: ["context.language.apology_count_delta >= 2"]
+io:
+  expects: ["context","memory"]
+  provides: ["route","signal"]
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.btoe.drs.during", value: "clamp((memory.btoe.drs.during or 0)+3,0,99)" }
+    - do: emit
+      with: { key: "signal", value: "overapology" }
+    - do: halt
+render:
+  sigil: "🙏"
+  line: "Overapologizing detected."
+runtime_only: true
+output_policy: "detector_only"
