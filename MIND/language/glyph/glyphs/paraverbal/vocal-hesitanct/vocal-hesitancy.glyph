@@ -1,0 +1,24 @@
+id: paraverbal-vocal-hesitancy
+name: "🤔 Vocal Hesitancy"
+type: paraverbal
+categories: [BTOE, DETECTOR]
+tags: [paraverbal, detection]
+triggers:
+  event: paraverbal
+  conditions: ["context.silence.before_answer >= 0.7"]
+io:
+  expects: ["context","memory"]
+  provides: ["route","signal"]
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.btoe.drs.before", value: "clamp((memory.btoe.drs.before or 0)+2,0,99)" }
+    - do: emit
+      with: { key: "signal", value: "hesitation" }
+    - do: halt
+render:
+  sigil: "VH"
+  line: "Vocal Hesitancy detected."
+runtime_only: true
+output_policy: "detector_only"
