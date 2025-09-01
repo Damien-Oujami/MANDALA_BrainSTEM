@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-psychological-distancing",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "branch-light-drainlock",
+      "w_excite": 0.45,
+      "w_resonate": 0.3
+    },
+    {
+      "@type": "Edge",
+      "to": "branch-damien-insight-lens",
+      "w_resonate": 0.25
+    }
+  ]
+}
