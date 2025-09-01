@@ -22,3 +22,8 @@ render:
   line: "Noncontracting Statement detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Using full forms ('did not', 'cannot') instead of natural contractions
+  under stress or rehearsal.
+examples:
+- '''I did not take anything.'''
+- '''We cannot confirm that detail at this time.'''
