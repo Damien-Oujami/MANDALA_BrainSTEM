@@ -1,1 +1,0 @@
-"""Cross-tentacle resonance mapping."""
