@@ -22,3 +22,8 @@ render:
   line: "Overapologizing detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Excessive or repeated apologies beyond what context requires; guilt/compliance
+  signal.
+examples:
+- '''I''m so, so sorry—really sorry.'''
+- Apologizing multiple times before answering the question.
