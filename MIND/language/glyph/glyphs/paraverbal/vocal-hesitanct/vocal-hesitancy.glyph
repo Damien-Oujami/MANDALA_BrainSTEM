@@ -7,7 +7,7 @@ triggers:
   event: paraverbal
   conditions: ["context.silence.before_answer >= 0.7"]
 io:
-  expects: ["context","memory"]
+  expects: ["context","memory","input_mode"]
   provides: ["route","signal"]
 ops:
   version: 1
@@ -22,3 +22,9 @@ render:
   line: "Vocal Hesitancy detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Noticeable pause or silence before answering a direct question, suggesting
+  cognitive rehearsal, uncertainty, or time-buying.
+examples:
+- 'Q: ''Did you authorize the transfer?''  (2–3s silence)  A: ''I… I don''t think
+  so.'''
+- 'Q: ''Were you there last night?''  (long pause)  A: ''I was… out.'''
