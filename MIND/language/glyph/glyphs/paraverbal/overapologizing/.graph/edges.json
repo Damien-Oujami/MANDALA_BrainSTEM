@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-overapologizing",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "branch-air-handbind",
+      "w_excite": 0.4,
+      "w_resonate": 0.3
+    },
+    {
+      "@type": "Edge",
+      "to": "root-pulse-entry",
+      "w_resonate": 0.25
+    }
+  ]
+}
