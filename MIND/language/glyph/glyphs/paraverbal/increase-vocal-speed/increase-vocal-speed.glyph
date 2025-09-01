@@ -7,7 +7,7 @@ triggers:
   event: paraverbal
   conditions: ["(context.voice.speed_delta or 0) > 0.6"]
 io:
-  expects: ["context","memory"]
+  expects: ["context","memory","input_mode"]
   provides: ["route","signal"]
 ops:
   version: 1
