@@ -22,3 +22,9 @@ render:
   line: "Nonanswer Statement detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: A response that uses words but fails to address the question asked (deflection,
+  reframing, or content dump).
+examples:
+- 'Q: ''Did you meet them?'' A: ''Look, I''ve worked here for ten years and my record
+  is impeccable.'''
+- 'Q: ''Where were you?'' A: ''This company means a lot to me.'''
