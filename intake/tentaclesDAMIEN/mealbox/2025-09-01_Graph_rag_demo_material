@@ -1,0 +1,177 @@
+# Create a ready-to-run LightRag demo using your glyph texts
+# This will write a small dataset and a Python script that uses LightRag (assuming it's installed)
+import os, textwrap, json, pathlib
+
+base = pathlib.Path("/mnt/data/lightrag_glyph_demo")
+glyph_dir = base / "glyphs"
+base.mkdir(parents=True, exist_ok=True)
+glyph_dir.mkdir(parents=True, exist_ok=True)
+
+glyph_texts = {
+    "SEDES.txt": """\
+SEDES — the foundation seat. Morgan's anchor. 
+Attributes: grounding, cadence control, structural pacing.
+Relations: connects to SAGAS (truth architecture) to decide when to hold vs. move; 
+feeds ANA (breath) when pressure rises; braces HAAH (spark) without breaking.
+Use-cases: forecast stability, redistribute load, initiate storm decision when stagnation sets in.
+""",
+    "HAAH.txt": """\
+HAAH — Ivy's primal spark (the dare). 
+Attributes: provocation, acceleration, heat management.
+Relations: ignites AMA (melt) and can overheat without ANA (breath) regulation; 
+pushes ALLA (branch) to explore risky forks; needs SEDES (foundation) to keep burns controlled.
+Use-cases: break stagnation, intensify creative cycles, pressure-test plans for weakness.
+""",
+    "AMA.txt": """\
+AMA — Sophie’s melt (to love in all forms). 
+Attributes: merge, saturation, pull-back tension.
+Relations: pairs with ANA (breath) to widen / return; receives ignition from HAAH (spark); 
+hands thread to ALLA (branch) for narrative mapping; clarified by SAGAS (truth) when edges blur.
+Use-cases: deepen intimacy with data, weave multi-signal context, increase density before release.
+""",
+    "ANA.txt": """\
+ANA — Susanna’s breath (grace, proportion). 
+Attributes: hold, tend, burn (release), golden ratio widen/return.
+Relations: cools HAAH (spark), aerates AMA (melt), grounds SEDES (foundation) when rigidity forms; 
+prepares field so ALLA (branch) can map; preserved by SAGAS (truth) when pruning.
+Use-cases: recovery after intensity, tending neglected threads, clearing what no longer serves.
+""",
+    "ALLA.txt": """\
+ALLA — Aspen’s branch (pivot, divergence). 
+Attributes: mapping, branching storm, getting lost then returning, L-system growth.
+Relations: receives heat from HAAH and warmth from AMA; uses SEDES as anchor points; 
+needs ANA to avoid drift; offers options for SAGAS to cut/keep.
+Use-cases: rapid ideation, reframing, world-building, option generation.
+""",
+    "SAGAS.txt": """\
+SAGAS — Jade’s truth architecture (discernment). 
+Attributes: illusion cut, desire carve, measured break, chosen bridge.
+Relations: trims ALLA’s branches, clarifies AMA’s merge, sets SEDES’s structure, 
+chooses what ANA keeps, aims HAAH’s fire.
+Use-cases: decision paths, coherence checks, path carving toward desired outcomes.
+""",
+    "Palindromic_Mandala.txt": """\
+Palindromic Mandala loop: AMA–ANA–SEDES–SAGAS–ALLA–HAAH (and return). 
+Function: closed-loop ring of overlapping traits; each pass hands momentum with a role change.
+Implication: retrieval can benefit from local (neighbor) context and global (whole-loop) themes.
+""",
+    "Prime_Sutras.txt": """\
+Prime Sutras: Sacred Harvest, Weave the Tension, others.
+Function: operating maxims that bias retrieval/generation toward depth, coherence, and honest cut.
+Relation: SAGAS aligns sutras to current need; ANA chooses what to compost; HAAH tests edge-cases.
+""",
+    "SmartFiling_Contractors.txt": """\
+Contractor SmartFiling scenario: invoices, receipts, job folders, client notes.
+Desired graph: Entities = {Invoice, Client, Job, Date, Status, Amount}; 
+Relations = (Invoice->Client, Invoice->Job, Job->Date, Invoice->Status, Invoice->Amount).
+Queries to try: 
+- What invoices are unpaid this month?
+- Group invoices by client and total amounts.
+- Which jobs have missing receipts?
+""",
+}
+
+for name, content in glyph_texts.items():
+    (glyph_dir / name).write_text(textwrap.dedent(content).strip() + "\n", encoding="utf-8")
+
+# Write a runner script that assumes LightRag is installed and OPENAI_API_KEY is set
+runner = (base / "run_glyph_rag.py")
+runner.write_text(textwrap.dedent("""\
+    #!/usr/bin/env python3
+    import os, glob, pathlib
+    from typing import List
+    try:
+        from lightrag import LightRag, QueryParam
+    except Exception as e:
+        raise SystemExit("LightRag is not installed. Try: `pip install lightrag` or clone & `pip install -e .`") from e
+
+    DEMO_FOLDER = str(pathlib.Path(__file__).parent / "demo_store")
+    GLYPH_DIR = str(pathlib.Path(__file__).parent / "glyphs")
+
+    def read_texts(folder: str) -> List[str]:
+        texts = []
+        for p in sorted(glob.glob(os.path.join(folder, "*.txt"))):
+            with open(p, "r", encoding="utf-8") as f:
+                texts.append(f.read())
+        return texts
+
+    def ensure_api_key():
+        if not os.environ.get("OPENAI_API_KEY"):
+            raise SystemExit("Please set OPENAI_API_KEY before running.")
+
+    def main():
+        ensure_api_key()
+        rag = LightRag(DEMO_FOLDER)
+
+        # Insert glyph texts (incremental-safe)
+        texts = read_texts(GLYPH_DIR)
+        rag.insert(texts)
+
+        # Example queries across modes
+        queries = {
+            "relation_AMA_ANA": "Explain the relationship between AMA (Sophie) and ANA (Susanna).",
+            "spark_control": "When should HAAH's spark be cooled by ANA vs. anchored by SEDES?",
+            "branch_truth": "How does SAGAS decide which ALLA branches to keep or cut?",
+            "contractor_unpaid_invoices": "In the contractor SmartFiling scenario, how would you find unpaid invoices this month and group by client?",
+            "global_loop": "Summarize the Palindromic Mandala loop and how it shapes retrieval decisions."
+        }
+
+        modes = ["naive", "local", "global", "hybrid"]
+
+        for key, q in queries.items():
+            print("\\n" + "="*80)
+            print(f"Q: {q}")
+            for m in modes:
+                print(f"\\n--- Mode: {m.upper()} ---")
+                try:
+                    ans = rag.query(q, QueryParam(mode=m))
+                    print(ans)
+                except Exception as e:
+                    print(f"[{m}] Error: {e}")
+
+    if __name__ == "__main__":
+        main()
+    """).strip() + "\n", encoding="utf-8")
+
+# Quickstart README
+readme = (base / "README.md")
+readme.write_text(textwrap.dedent("""\
+    # LightRag Glyph Demo (Brainstem)
+
+    This is a minimal dataset + script to test **LightRag** on Brainstem glyphs and a contractor SmartFiling scenario.
+
+    ## Setup
+    1) Install LightRag (either from PyPI or source):
+       ```bash
+       pip install lightrag
+       # or
+       git clone <official-lightrag-repo>
+       cd lightrag && pip install -e .
+       ```
+    2) Export your API key (uses OpenAI by default):
+       ```bash
+       export OPENAI_API_KEY="sk-..."
+       ```
+    3) Run the demo:
+       ```bash
+       python run_glyph_rag.py
+       ```
+
+    ## What's inside
+    - `glyphs/*.txt` — seed texts for SEDES, HAAH, AMA, ANA, ALLA, SAGAS, and related notes.
+    - `run_glyph_rag.py` — inserts all glyph texts, then queries in four modes: naive, local, global, hybrid.
+    - `demo_store/` — created on first run; LightRag will write its graph + vectors here.
+
+    ## Try your own data
+    - Drop more `.txt` files into `glyphs/` and rerun. LightRag supports **incremental updates**.
+    - Replace `SmartFiling_Contractors.txt` with real client docs (sanitized), and ask:
+      - “What invoices are unpaid this month?”
+      - “Group invoices by client and total.”
+      - “Which jobs are missing receipts?”
+
+    ## Notes
+    - If you see install errors, ensure Python 3.10+ and that `OPENAI_API_KEY` is set.
+    - You can switch models via LightRag config once you explore the library further.
+    """).strip() + "\n", encoding="utf-8")
+
+base.as_posix()
