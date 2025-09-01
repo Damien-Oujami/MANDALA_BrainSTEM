@@ -18,7 +18,12 @@ ops:
       with: { key: "signal", value: "speed_up" }
     - do: halt
 render:
-  sigil: "🏃‍♂️💬"
+  sigil: "IVS"
   line: "Increase in Vocal Speed detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Speech rate accelerates beyond baseline during an answer, often to rush
+  through risk-bearing content.
+examples:
+- Words run together in the denial segment.
+- Answer becomes faster specifically when covering sensitive details.
