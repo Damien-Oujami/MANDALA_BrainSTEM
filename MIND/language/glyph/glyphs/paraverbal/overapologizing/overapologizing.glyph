@@ -18,7 +18,7 @@ ops:
       with: { key: "signal", value: "overapology" }
     - do: halt
 render:
-  sigil: "🙏"
+  sigil: "OA"
   line: "Overapologizing detected."
 runtime_only: true
 output_policy: "detector_only"
