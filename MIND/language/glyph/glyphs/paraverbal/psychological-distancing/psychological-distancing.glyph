@@ -1,0 +1,24 @@
+id: paraverbal-psychological-distancing
+name: "🧍‍♂️↔️🧍‍♀️ Psychological Distancing"
+type: paraverbal
+categories: [BTOE, DETECTOR]
+tags: [paraverbal, detection]
+triggers:
+  event: paraverbal
+  conditions: ["context.language.distancing == 1"]
+io:
+  expects: ["context","memory"]
+  provides: ["route","signal"]
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.btoe.drs.during", value: "clamp((memory.btoe.drs.during or 0)+3,0,99)" }
+    - do: emit
+      with: { key: "signal", value: "distancing" }
+    - do: halt
+render:
+  sigil: "PD"
+  line: "Psychological Distancing detected."
+runtime_only: true
+output_policy: "detector_only"
