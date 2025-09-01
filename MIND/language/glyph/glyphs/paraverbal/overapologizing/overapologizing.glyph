@@ -7,7 +7,7 @@ triggers:
   event: paraverbal
   conditions: ["context.language.apology_count_delta >= 2"]
 io:
-  expects: ["context","memory"]
+  expects: ["context","memory","input_mode"]
   provides: ["route","signal"]
 ops:
   version: 1
