@@ -1,0 +1,24 @@
+id: paraverbal-noncontracting-statement
+name: "🧱🗣️ Noncontracting Statement"
+type: paraverbal
+categories: [BTOE, DETECTOR]
+tags: [paraverbal, detection]
+triggers:
+  event: paraverbal
+  conditions: ["context.language.noncontracting == 1"]
+io:
+  expects: ["context","memory"]
+  provides: ["route","signal"]
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.btoe.drs.during", value: "clamp((memory.btoe.drs.during or 0)+2,0,99)" }
+    - do: emit
+      with: { key: "signal", value: "noncontracting" }
+    - do: halt
+render:
+  sigil: "NC"
+  line: "Noncontracting Statement detected."
+runtime_only: true
+output_policy: "detector_only"
