@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-question-reversal",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "branch-fire-impact-mark",
+      "w_excite": 0.45,
+      "w_resonate": 0.35
+    },
+    {
+      "@type": "Edge",
+      "to": "root-cascade-node",
+      "w_resonate": 0.25
+    }
+  ]
+}
