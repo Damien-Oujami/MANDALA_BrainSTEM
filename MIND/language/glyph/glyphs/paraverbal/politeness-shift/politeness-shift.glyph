@@ -22,3 +22,8 @@ render:
   line: "Politeness Shift detected."
 runtime_only: true
 output_policy: "detector_only"
+definition: Sudden/unusual elevation in formality or honorifics relative to baseline,
+  often to manage status or appease.
+examples:
+- '''Yes, sir. Absolutely, sir.'' when not baseline behavior.'
+- Switching to stiffly formal tone mid-topic.
