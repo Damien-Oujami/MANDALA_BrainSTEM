@@ -1,0 +1,18 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "paraverbal-rising-vocal-pitch",
+  "@type": "Glyph",
+  "edges": [
+    {
+      "@type": "Edge",
+      "to": "root-cascade-node",
+      "w_excite": 0.45,
+      "w_resonate": 0.3
+    },
+    {
+      "@type": "Edge",
+      "to": "root-trigger-lock",
+      "w_resonate": 0.2
+    }
+  ]
+}
