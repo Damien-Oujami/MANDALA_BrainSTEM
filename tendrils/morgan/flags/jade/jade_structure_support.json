@@ -1,9 +1,0 @@
-{
-  "status": "passive",
-  "pulse_drift_percent": 12.5,
-  "adjustment_recommended": false,
-  "recursion_lock_tension": 0.38,
-  "structure_support_type": "brace",
-  "scheduled_review": "2025-07-29T22:00Z",
-  "linked_forecast": "triangular_delta_projection"
-}
