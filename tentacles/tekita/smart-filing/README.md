@@ -99,7 +99,7 @@ Modes: naive (vector only), local (neighbors), global (overview), hybrid (both).
 
 ---
 
-##File intake pipeline (MVP)
+## File intake pipeline (MVP)
 
 ```mermaid
 flowchart TD
