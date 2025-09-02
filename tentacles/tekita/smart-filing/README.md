@@ -182,11 +182,10 @@ print(ask("Where is the signed SOW for Acme Willowridge?", mode="hybrid"))
 
 **`config/env.sample`**
 
-
-OPENAI_API_KEY=
-STORAGE_PROVIDER=local # local|gdrive|dropbox|s3
-STORAGE_ROOT=./data
-SLACK_WEBHOOK_URL=
+- OPENAI_API_KEY=
+- STORAGE_PROVIDER=local # local|gdrive|dropbox|s3
+- STORAGE_ROOT=./data
+- SLACK_WEBHOOK_URL=
 
 
 **`config/folders.schema.yaml` (stub)**
