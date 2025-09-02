@@ -97,7 +97,11 @@ def ask(q: str, mode="hybrid"):
 
 Modes: naive (vector only), local (neighbors), global (overview), hybrid (both). 
 
-File intake pipeline (MVP)
+---
+
+##File intake pipeline (MVP)
+
+```mermaid
 flowchart TD
     A[User drops files] --> B[Ingest → parse/OCR]
     B --> C[Classify → doc_type, entities, project]
@@ -105,82 +109,71 @@ flowchart TD
     D --> E[Organize → move/rename; log trace]
     E --> F[Index → LightRAG update]
     F --> G[Notify → Slack/Email summary + links]
+```
 
-Monetization (v0 → v2)
+---
 
-v0 Pilot (contractors)
+## Monetization (v0 → v2)
+- **v0 Pilot (contractors)**
+  - Setup fee $1.5k → map Drive + install TEKITA + baseline filing + week of tuning
+  - Monthly $299–$799 based on volume (document count & seats)
+- **Add-ons**
+  - Vendor & COI tracking, permit/inspection deadline alerts
+  - AP/AR extraction (invoice → ledger), QuickBooks/Xero push
+  - “Find it for me” concierge (human-in-the-loop SLA)
 
-Setup fee $1.5k → map Drive + install TEKITA + baseline filing + week of tuning
+**Positioning:** “Your documents file themselves. Your company answers back.”
 
-Monthly $299–$799 based on volume (document count & seats)
+---
 
-Add-ons
+### Ops & safety
+- Idempotent moves with trace (JSON log per decision)
+- Dry-run mode before first apply
+- PII guardrails (mask in logs; secure storage)
+- Rollback (shadow copy for N days)
 
-Vendor & COI tracking, permit/inspection deadline alerts
+---
 
-AP/AR extraction (invoice → ledger), QuickBooks/Xero push
+## Getting started
 
-“Find it for me” concierge (human-in-the-loop SLA)
-
-Positioning: “Your documents file themselves. Your company answers back.”
-
-Ops & safety
-
-Idempotent moves with trace (JSON log per decision)
-
-Dry-run mode before first apply
-
-PII guardrails (mask in logs; secure storage)
-
-Rollback (shadow copy for N days)
-
-Getting started
-
-Clone repo; copy env:
-
+1. Clone repo; copy env:
+```bash
 cp tentacles/tekita/smart-filing/config/env.sample .env
-
-
-Fill .env: storage creds (Drive/Dropbox/S3), OpenAI key (or local), Slack webhook.
-
-Run local indexer on a sample data/ set:
-
+```
+2. Fill .env: storage creds (Drive/Dropbox/S3), OpenAI key (or local), Slack webhook.
+3. Run local indexer on a sample data/ set:
+```bash
 python tentacles/tekita/smart-filing/lightrag/indexer.py
-
-
-Drop 10–20 contractor docs into /inbox/ and run:
-
+```
+4. Drop 10–20 contractor docs into /inbox/ and run:
+```bash
 python tentacles/tekita/smart-filing/pipelines/file_intake.py --apply --notify
-
-
-Ask KITA:
-
+```
+5. Ask KITA:
+```python
 from lightrag.indexer import ask
 print(ask("Where is the signed SOW for Acme Willowridge?", mode="hybrid"))
+```
 
-Roadmap
+---
 
- v0: Local folder moves + notifications + LightRAG index
+## Roadmap
 
- v0.1: “Explain my filing” trace per file
+- [ ] v0: Local folder moves + notifications + LightRAG index
+- [ ] v0.1: “Explain my filing” trace per file
+- [ ] v0.2: Slack slash-commands (/kita file here, /kita find <thing>)
+- [ ] v0.3: Vendor/COI expiry watchlist
+- [ ] v1.0: Multi-tenant dashboard + billing + audit trails
+- [ ] v1.1: Legal vertical beta (narrow scope)
+- [ ] v2.0: Medical pilot (PHI-safe pathways, de-identification)
 
- v0.2: Slack slash-commands (/kita file here, /kita find <thing>)
+---
 
- v0.3: Vendor/COI expiry watchlist
+## Mandala integration
 
- v1.0: Multi-tenant dashboard + billing + audit trails
-
- v1.1: Legal vertical beta (narrow scope)
-
- v2.0: Medical pilot (PHI-safe pathways, de-identification)
-
-Mandala integration
-
-tastebuds/ (digestion): entity/relationship extraction patterns and logs feed back as glyphs.
-
-throat/ (expression): KITA’s answers and “filing explanations” are compressed into Memory sutras.
-
-Luma overlay: revenue + robustness signals bias future feature picks.
+- **tastebuds/** (digestion): entity/relationship extraction patterns and logs feed back as glyphs.
+- **throat/** (expression): KITA’s answers and “filing explanations” are compressed into Memory sutras.
+- **Luma overlay:** revenue + robustness signals bias future feature picks.
 
 
 ---
@@ -214,26 +207,22 @@ rules:
     rename: "{project}_contract_{counter}.pdf"
 ```
 
-First tasks (drop into tasks/)
+---
 
-2025-09-02_init.md
 
- Create tentacles/tekita/smart-filing/ scaffold
+## First tasks (drop into tasks/)
 
- Add README.md (this doc)
+`2025-09-02_init.md`
 
- Commit config/env.sample, folders.schema.yaml stub
+- [ ] Create tentacles/tekita/smart-filing/ scaffold
+- [ ] Add README.md (this doc)
+- [ ] Commit config/env.sample, folders.schema.yaml stub
+- [ ] Add kita/agent.yaml with role + tools list
+- [ ] Seed docs/personas.md with KITA voice & boundaries
 
- Add kita/agent.yaml with role + tools list
+`2025-09-02_lightrag_setup.md`
 
- Seed docs/personas.md with KITA voice & boundaries
-
-2025-09-02_lightrag_setup.md
-
- Install LightRAG package
-
- Build minimal index over /samples/contractors/
-
- Test query in naive, local, global, hybrid modes
-
- Log token usage + answer quality (keep screenshots)
+- [ ] Install LightRAG package
+- [ ] Build minimal index over /samples/contractors/
+- [ ] Test query in naive, local, global, hybrid modes
+- [ ] Log token usage + answer quality (keep screenshots)
