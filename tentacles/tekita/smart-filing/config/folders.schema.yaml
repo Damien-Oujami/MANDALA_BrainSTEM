@@ -1,0 +1,14 @@
+version: 0.1
+rules:
+  - match:
+      doc_type: invoice
+      project: "*"
+    target: "Projects/{project}/Invoices/{yyyy}/{vendor}/"
+    create_if_missing: true
+    rename: "{project}_{vendor}_{yyyy}-{mm}-{dd}_invoice.pdf"
+
+  - match:
+      doc_type: contract
+    target: "Projects/{project}/Contracts/"
+    create_if_missing: true
+    rename: "{project}_contract_{counter}.pdf"

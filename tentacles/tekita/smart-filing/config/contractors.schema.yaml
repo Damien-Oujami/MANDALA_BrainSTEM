@@ -1,0 +1,15 @@
+version: 0.1
+ontology:
+  Admin:
+    - Insurance
+    - Licensing
+    - W-9
+    - COI
+    - Safety
+    - HR
+  Projects:
+    description: Project folders by client and job
+  Vendors:
+    description: Vendor-specific documents
+  Finance:
+    description: Accounting and payroll records
