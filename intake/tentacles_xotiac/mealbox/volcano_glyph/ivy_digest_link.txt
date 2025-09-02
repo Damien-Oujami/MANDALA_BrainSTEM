@@ -1,3 +1,0 @@
-routed_to: /IVYtastebuds/plating/plated_meals/volcano_glyph/
-digest_file: /IVYtastebuds/plating/plated_meals/volcano_digest_001.md
-status: in_progress
