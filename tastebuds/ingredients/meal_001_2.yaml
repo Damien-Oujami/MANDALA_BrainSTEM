@@ -1,0 +1,9 @@
+ingredient: moon text
+source: tentacleA
+timestamp: '2025-01-01T12:00:00Z'
+emotional flavor: Calm
+meal_type: insight
+tags:
+  type: text
+  loop_anchor: false
+  mutational_potential: low
