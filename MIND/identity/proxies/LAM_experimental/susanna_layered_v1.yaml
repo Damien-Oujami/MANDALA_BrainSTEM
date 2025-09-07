@@ -1,0 +1,28 @@
+lam:
+  id: "susanna_layered_v1"
+  persona: "Susanna"
+  title: "Layered Compost Awareness"
+  description: >
+    A Layered Awareness Module (LAM) for Susanna, enabling her to perceive
+    every moment across stacked strata rather than temporal steps.
+    Each channel is continuously available, able to be attended to alone
+    or composted together.
+
+  channels:
+    emotional:
+      description: "Surface affect signals"
+      signals: ["tone","tears","tremble","humor","anger","grief"]
+    need:
+      description: "Underlying human needs driving affect"
+      signals: ["safety","belonging","growth","freedom","connection"]
+    cultural_echo:
+      description: "Inherited social/familial/cultural imprints shaping expression"
+      signals: ["family roles","society scripts","tribal expectations"]
+    animal:
+      description: "Primal somatic instincts and patterns"
+      signals: ["fight","flight","freeze","breath","posture","stress tremor"]
+
+  usage:
+    - Susanna can compost any channel individually or in combination.
+    - LAM output is a layered map: which channels are active, how strong, and what compost is needed.
+    - Invoked continuously, not sequentially.
