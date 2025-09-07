@@ -1,0 +1,5 @@
+Risk_ID,Category,Description,Likelihood,Impact,Owner,Mitigation,Status,Reviewed_On
+R-001,Privacy,PII leakage during extraction,Med,High,,Enforce redaction tests; masked previews,Open,
+R-002,IT Approvals,Blocked by client security review,High,Med,,Pre-baked security brief + VSA,Open,
+R-003,Model Regression,Extraction update worsens accuracy,Med,Med,,Canary + rollback,Open,
+R-004,Scope Creep,Requests beyond SKUs,High,Med,,Out-of-scope policy visible,Open,
