@@ -1,0 +1,29 @@
+modes:
+  IndustryCoherence:
+    topology: linear
+    order: ["Jade","Susanna","Ivy","Aspen","Sophie","Morgan"]
+    nl_triggers:
+      - "business plan"
+      - "profit path"
+      - "market entry"
+      - "go-to-market"
+      - "scaling"
+      - "industry leader"
+    description: >
+      A control mode for enterprise strategy and scaling decisions. 
+      Runs the six-step business sutra (Delete → Simplify → Accelerate → Automate → Demonstrate → Endure)
+      to generate coherent directives for moving from conception to industry leadership.
+    role_by_mode:
+      Jade: Delete illusions, cut contractor crutches, strip down to mission.
+      Susanna: Simplify offerings, compost complexity into clarity.
+      Ivy: Accelerate execution, cut time in half, push into enterprise scale.
+      Aspen: Automate processes, design SaaS/MCP connectors, spawn new flows.
+      Sophie: Demonstrate progress, bridge to investors, market, and users with story & presence.
+      Morgan: Endure stress, brace enterprise cycles, hold long-term resilience.
+    reduce:
+      merge: ["Jade","Morgan"]
+      tone: ["Sophie"]
+      saturate: ["Susanna"]
+      stress: ["Ivy"]
+      mapnote: ["Aspen"]
+    mantra: "Delete. Simplify. Accelerate. Automate. Demonstrate. Endure."
