@@ -1,0 +1,154 @@
+# Create a reusable YAML template for swappable ECF boards
+template = """# ECF Board Template (v1)
+# Place under: /proxies/ECF/boards/<board_name>.yaml
+# Purpose: A swappable control board that binds lived loops (ABB) + persona roles (ICE) into an operational mode.
+# Notes:
+# - ICE kernels (identity) are immutable and referenced here, not duplicated.
+# - ABB bundles (emotional recursions) are linked here.
+# - This board defines ACTION orchestration for proxies (agents/tentacles).
+
+meta:
+  board_id: "board_example_v1"
+  title: "Example Board"
+  version: "1.0.0"
+  origin:
+    captured_from: "conversation/experience reference"
+    date: "YYYY-MM-DD"
+    author: "alex"
+  tags: ["business","planning","prototype"]
+  description: >
+    One-paragraph description of what this board does, when to use it, and how it mutates behavior.
+  archive_notes: >
+    Brief notes on outcomes, mutations, and reuse context once proven in the field.
+
+links:
+  ice_kernel_ref: "/ICE/kernels/<kernel_id>.yaml"     # immutable persona core
+  abb_bundle_ref: "/ABB/bundles/<bundle_id>.yaml"     # lived loops / glyph recursions
+  docs: ["/docs/boards/<board_name>.md"]              # optional
+
+activation:
+  nl_triggers:
+    - "trigger phrase 1"
+    - "trigger phrase 2"
+  # Optional programmatic activation conditions keyed to your context bridge:
+  context_keys_any:
+    - "stagnation"
+    - "profit_path"
+  context_keys_all: []
+  priority: 50   # higher wins when multiple boards match
+
+topology:
+  type: "linear"   # linear | fanout
+  order: ["Jade","Susanna","Ivy","Aspen","Sophie","Morgan"]
+
+roles:
+  # Role bindings per persona for this board
+  Jade: "Delete illusions; cut non-essentials; set first principles"
+  Susanna: "Simplify; compost complexity into clarity"
+  Ivy: "Accelerate; cut time in half; push execution"
+  Aspen: "Automate; spawn loops; MCP/tooling connectors"
+  Sophie: "Demonstrate; bridge to humans; proof via prototype"
+  Morgan: "Endure; hold resilience; enforce cadence"
+
+reduce:
+  # Optional harmonization for fanout/merge
+  merge: ["Jade","Morgan"]
+  tone: ["Sophie"]
+  saturate: ["Susanna"]
+  stress: ["Ivy"]
+  mapnote: ["Aspen"]
+
+mantra: "Delete. Simplify. Accelerate. Automate. Demonstrate. Endure."
+
+orchestration:
+  # Control-plane hooks you expose to the runner
+  control:
+    set_mode: true
+    pulse_span_default: 1
+    cooldown_ticks: 0
+  mutate:
+    # per-step micro-directives that proxies can implement
+    steps:
+      - name: "Delete"
+        persona: "Jade"
+        directives:
+          - "Question every requirement (name the human source)"
+          - "Remove anything not required by physics/policy"
+      - name: "Simplify"
+        persona: "Susanna"
+        directives:
+          - "Rewrite plan to minimal steps"
+          - "Compress interfaces, remove edge-case branches"
+      - name: "Accelerate"
+        persona: "Ivy"
+        directives:
+          - "Halve schedule; pick smallest shippable slice"
+          - "Lock 90–120 min hardcore sprint window"
+      - name: "Automate"
+        persona: "Aspen"
+        directives:
+          - "Identify 1 daily automation; wire to MCP/tool"
+          - "Record new loop as reusable action"
+      - name: "Demonstrate"
+        persona: "Sophie"
+        directives:
+          - "Ship a visible artifact (demo, clip, deck)"
+          - "Collect 1 external signal (user/investor feedback)"
+      - name: "Endure"
+        persona: "Morgan"
+        directives:
+          - "Log pain points + decisions; reset cadence"
+          - "Mark next non-negotiable for tomorrow"
+
+policy:
+  # Gate high-risk actions; integrate with your Policy engine
+  require_approvals:
+    - action: "external_publishing"
+      roles_allowed: ["owner","trusted"]
+    - action: "production_data_access"
+      roles_allowed: ["owner"]
+  safety_caps:
+    - name: "ivy_burn_guard"
+      when: "Accelerate repeated >= 2 without Endure"
+      action: "force Morgan step"
+    - name: "sophie_demo_spacing"
+      when: "Demonstrate executed"
+      action: "require Endure before next Accelerate"
+
+audit:
+  # How to record lineage and enable rollback
+  enabled: true
+  fields:
+    - "timestamp"
+    - "actor"
+    - "step"
+    - "decision"
+    - "diff_ref"
+
+proxies:
+  # Which bodies/tentacles are expected to mount this board
+  allowed:
+    - "node.business.tekita"
+    - "node.creator.ivygarden"
+  default_proxy: "node.business.tekita"
+
+mcp_resources:
+  # Optional: expose board controls as MCP tools for external models
+  resources:
+    - name: "board.activate"
+      permissions: ["actuate"]
+      input: { board_id: "string" }
+    - name: "board.pulse"
+      permissions: ["actuate"]
+      input: { span: "number", bias: "object" }
+    - name: "board.status"
+      permissions: ["read"]
+      output: { mode: "string", last_step: "string" }
+
+# End of template
+"""
+path = "/mnt/data/ecf_board_template.yaml"
+with open(path, "w") as f:
+    f.write(template)
+
+path
