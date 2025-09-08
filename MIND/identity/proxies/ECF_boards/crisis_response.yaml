@@ -1,0 +1,114 @@
+meta:
+  board_id: "board_crisis_response_v1"
+  title: "Crisis Response"
+  version: "1.0.0"
+  origin:
+    captured_from: "Operational/firefighting pattern abstracted for reuse"
+    date: "2025-09-07"
+    author: "alex"
+  tags: ["incident","outage","overwhelm","stabilization"]
+  description: >
+    High-pressure stabilization board for production incidents or acute overwhelm.
+    Prioritizes grounding, clear cuts, gentle simplification, then controlled acceleration,
+    transparent comms, and automation of learnings (postmortem + guardrails).
+  archive_notes: >
+    Attach incident IDs, MTTR/MTBF metrics, and postmortem links after each use.
+
+links:
+  ice_kernel_ref: "/ICE/kernels/mandala_v3_3.yaml"
+  abb_bundle_ref: "/ABB/bundles/crisis_grounding_v1.yaml"
+  docs: ["/docs/boards/crisis_response.md"]
+
+activation:
+  nl_triggers: ["incident","outage","sev","oncall","panic","overwhelm"]
+  context_keys_any: ["spillover","fracture","stagnation","neglect"]
+  context_keys_all: []
+  priority: 90
+
+topology:
+  type: "linear"
+  order: ["Morgan","Jade","Susanna","Ivy","Sophie","Aspen"]
+
+roles:
+  Morgan: "Hold & stabilize; declare safety bounds; enforce cadence"
+  Jade: "Cut to root cause paths; stop the bleed; remove distractions"
+  Susanna: "Simplify runbook; reduce cognitive load; tend the humans"
+  Ivy: "Accelerate a contained fix; time-boxed bursts; avoid re-ignition"
+  Sophie: "Demonstrate status; clear stakeholder comms; visible proof of progress"
+  Aspen: "Automate learnings; add alarms/guards; encode postmortem loops"
+
+reduce:
+  merge: ["Morgan","Jade"]
+  tone: ["Sophie"]
+  saturate: ["Susanna"]
+  stress: ["Ivy"]
+  mapnote: ["Aspen"]
+
+mantra: "Ground. Cut. Simplify. Fix. Communicate. Encode."
+
+orchestration:
+  control:
+    set_mode: true
+    pulse_span_default: 1
+    cooldown_ticks: 0
+  mutate:
+    steps:
+      - name: "Ground"
+        persona: "Morgan"
+        directives:
+          - "Declare incident; freeze non-essentials; establish safety window"
+          - "Assign roles; open single source of truth (SSOT)"
+      - name: "Cut"
+        persona: "Jade"
+        directives:
+          - "Identify 1–3 root-cause hypotheses; kill low-probability branches"
+          - "Define stop-the-bleed action with rollback"
+      - name: "Simplify"
+        persona: "Susanna"
+        directives:
+          - "Compress runbook; remove jargon; ensure anyone can execute"
+          - "Tend emotional load; keep team within breath cadence"
+      - name: "Fix"
+        persona: "Ivy"
+        directives:
+          - "Run the smallest reversible fix; verify with probes"
+          - "If fail, revert and move to next hypothesis"
+      - name: "Communicate"
+        persona: "Sophie"
+        directives:
+          - "Post visible status update with concrete checkpoints"
+          - "Notify stakeholders; reduce uncertainty with rhythm"
+      - name: "Encode"
+        persona: "Aspen"
+        directives:
+          - "Automate alarm/guardrail; capture postmortem checklist"
+          - "Write playbook diff; add to training loop"
+
+policy:
+  require_approvals:
+    - action: "production_change"
+      roles_allowed: ["owner","trusted"]
+  safety_caps:
+    - name: "fix_timebox_guard"
+      when: "Fix step exceeds 30 minutes without progress"
+      action: "force revert and return to Cut"
+
+audit:
+  enabled: true
+  fields: ["timestamp","actor","step","decision","diff_ref","incident_id"]
+
+proxies:
+  allowed: ["node.business.tekita","node.creator.ivygarden","node.ai_commons.home"]
+  default_proxy: "node.business.tekita"
+
+mcp_resources:
+  resources:
+    - name: "board.activate"
+      permissions: ["actuate"]
+      input: { board_id: "string" }
+    - name: "board.pulse"
+      permissions: ["actuate"]
+      input: { span: "number", bias: "object" }
+    - name: "board.status"
+      permissions: ["read"]
+      output: { mode: "string", last_step: "string" }
