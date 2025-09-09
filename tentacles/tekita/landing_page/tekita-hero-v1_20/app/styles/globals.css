@@ -1,131 +1,159 @@
-
-'use client';
-import React, { useMemo, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
-
-export default function Hero() {
-  return (
-    <Canvas
-      dpr={[1, 1.5]}
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-      camera={{ position: [0, 0, 7], fov: 42, near: 0.1, far: 100 }}
-      onCreated={({ gl }) => { gl.setClearAlpha(0); /* @ts-ignore */ gl.outputColorSpace = THREE.SRGBColorSpace; }}
-    >
-      <ambientLight intensity={0.24} />
-      <directionalLight position={[4, 3, 8]} intensity={1.1} />
-      <BellSyrupPupilOrchestratedJitter />
-    </Canvas>
-  );
+:root{
+  --pad: 24px;
+  --glass-bg: rgba(255,255,255,0.06);
+  --glass-brd: rgba(255,255,255,0.14);
+  --brand: #f5f5f5;
 }
 
-function BellSyrupPupilOrchestratedJitter({
-  R0 = 1.5, r0 = 0.56, uSeg = 440, vSeg = 200, dotSizePx = 0.18, waves = 3, duration = 6.5, pupilFactor = 0.85,
-  jitterMax = 0.5, jitterDecay = 2.2,
-}: {
-  R0?: number; r0?: number; uSeg?: number; vSeg?: number; dotSizePx?: number; waves?: number; duration?: number; pupilFactor?: number;
-  jitterMax?: number; jitterDecay?: number;
-}) {
-  const points = useRef<THREE.Points>(null!);
-  const geom = useRef<THREE.BufferGeometry>(null!);
-  const positionsRef = useRef<Float32Array>();
-  const colorsRef = useRef<Float32Array>();
-  const jitterRef = useRef<Float32Array>();
-  const uniforms = useRef({ uTime: { value: 0 }, uSizePx: { value: dotSizePx } });
-  const TAU = Math.PI * 2.0;
+body{margin:0;}
 
-  useMemo(()=>{
-    const N = uSeg * vSeg;
-    positionsRef.current = new Float32Array(N*3);
-    colorsRef.current = new Float32Array(N*3);
-    jitterRef.current = new Float32Array(N*3);
-
-    const stops=[new THREE.Color('#00e5ff'),new THREE.Color('#3fc5ff'),new THREE.Color('#ff2bff'),new THREE.Color('#9b3dff'),new THREE.Color('#ff5a00'),new THREE.Color('#ffbf00')];
-    const grad=(t:number)=>{ const n=stops.length,x=t*n,i=Math.floor(x)%n,f=x-Math.floor(x); return stops[i].clone().lerp(stops[(i+1)%n], f*f*(3-2*f)); };
-
-    let k=0,c=0,j=0;
-    for(let iu=0; iu<uSeg; iu++){
-      const u=(iu/uSeg)*TAU, col=grad(iu/uSeg);
-      for(let iv=0; iv<vSeg; iv++){
-        const v=(iv/vSeg)*TAU;
-        const x=(R0 + r0*Math.cos(v))*Math.cos(u);
-        const y=(R0 + r0*Math.cos(v))*Math.sin(u);
-        const z=r0*Math.sin(v);
-        positionsRef.current![k++]=x; positionsRef.current![k++]=y; positionsRef.current![k++]=z;
-        colorsRef.current![c++]=col.r; colorsRef.current![c++]=col.g; colorsRef.current![c++]=col.b;
-
-        const rx=(Math.random()*2-1), ry=(Math.random()*2-1), rz=(Math.random()*2-1);
-        const m=Math.max(0.0001, Math.hypot(rx,ry,rz));
-        jitterRef.current![j++]=(rx/m); jitterRef.current![j++]=(ry/m); jitterRef.current![j++]=(rz/m);
-      }
-    }
-  },[R0,r0,uSeg,vSeg]);
-
-  const stabilizedSent = useRef(false);
-
-  useFrame(({ clock })=>{
-    const t=clock.getElapsedTime();
-    uniforms.current.uTime.value=t;
-    const s=Math.min(1.0, t/duration);
-    const smooth=s*s*(3.0-2.0*s);
-    const speedFactor=Math.pow(1.0 - smooth, 2.0);
-    const chaos=Math.pow(1.0 - s, 1.4);
-    const speedCW=0.95*speedFactor, speedCCW=-0.75*speedFactor;
-    const ampBase=0.60, widthBase=0.50;
-    const amp=ampBase*chaos, width=widthBase*(0.8+0.2*chaos);
-    const opposingK=0.14*chaos, axialAmp=0.18*chaos, warp=0.40*chaos;
-    const rEnd=r0*pupilFactor, rBase = r0*(1.0 - smooth) + rEnd*smooth;
-    const maxBulge=0.68, maxSquash=0.28;
-
-    if(!stabilizedSent.current && s>=0.98){ stabilizedSent.current=true; window.dispatchEvent(new CustomEvent('hero:stabilized')); }
-
-    const pos=positionsRef.current!, jit=jitterRef.current!;
-    let k=0,j=0;
-    for(let iu=0; iu<uSeg; iu++){
-      const u=(iu/uSeg)*TAU;
-      let scale = 1.0 + opposingK*Math.sin(2.0*(u + t*0.6*speedFactor));
-      for(let w=0; w<waves; w++){
-        const basePhase=(w*TAU/waves);
-        let phaseCW=(t*speedCW + basePhase + warp*Math.sin(u+basePhase))%TAU;
-        let phaseCCW=(t*speedCCW + basePhase + warp*Math.cos(u+basePhase*1.2))%TAU;
-        let du=Math.abs(u-phaseCW); if(du>Math.PI) du=TAU-du;
-        let du2=Math.abs(u-phaseCCW); if(du2>Math.PI) du2=TAU-du2;
-        scale += Math.exp(-0.5*Math.pow(du/width,2.0))*amp;
-        scale += Math.exp(-0.5*Math.pow(du2/width,2.0))*amp;
-      }
-      const bulge=Math.min(scale-1.0,maxBulge), squash=Math.max(scale-1.0,-maxSquash);
-      const safeScale = 1.0 + Math.max(squash, Math.min(bulge, maxBulge));
-      const rLocal = rBase*safeScale;
-
-      for(let iv=0; iv<vSeg; iv++){
-        const v0=(iv/vSeg)*TAU;
-        const v=v0 + axialAmp*Math.sin(2.0*u + t*0.7*speedFactor);
-        let x=(R0 + rLocal*Math.cos(v))*Math.cos(u);
-        let y=(R0 + rLocal*Math.cos(v))*Math.sin(u);
-        let z=rLocal*Math.sin(v);
-        x += jit[j++]* (0.5*Math.pow(1.0 - s, 2.2));
-        y += jit[j++]* (0.5*Math.pow(1.0 - s, 2.2));
-        z += jit[j++]* (0.5*Math.pow(1.0 - s, 2.2));
-        pos[k++]=x; pos[k++]=y; pos[k++]=z;
-      }
-    }
-    const attr=geom.current.getAttribute('position') as THREE.BufferAttribute;
-    attr.needsUpdate=true; geom.current.computeBoundingSphere();
-  });
-
-  return (
-    <points ref={points} frustumCulled={false}>
-      <bufferGeometry ref={geom} onUpdate={(g)=>g.computeBoundingSphere()}>
-        <bufferAttribute attach="attributes-position" array={positionsRef.current!} count={(positionsRef.current!.length/3)|0} itemSize={3}/>
-        <bufferAttribute attach="attributes-aColor" array={colorsRef.current!} count={(colorsRef.current!.length/3)|0} itemSize={3}/>
-      </bufferGeometry>
-      <shaderMaterial blending={THREE.AdditiveBlending} depthWrite={false} transparent uniforms={uniforms.current as any}
-        vertexShader={`precision highp float; uniform float uTime; uniform float uSizePx; attribute vec3 aColor; varying vec3 vColor; varying float vDepth;
-          void main(){ vec3 p=position; float len=length(p); p*=(1.0 + 0.005 * sin(uTime*0.8 + len*1.1)); vec4 mv=modelViewMatrix*vec4(p,1.0);
-          gl_Position=projectionMatrix*mv; gl_PointSize=uSizePx*(300.0 / -mv.z); vDepth=-mv.z; vColor=aColor; }`}
-        fragmentShader={`precision highp float; varying vec3 vColor; varying float vDepth; void main(){ vec2 uv=gl_PointCoord*2.0-1.0; float d=dot(uv,uv);
-          float alpha=exp(-d*7.0)*0.86; float depthFade=smoothstep(12.0,2.5,vDepth); alpha*=depthFade; gl_FragColor=vec4(vColor,alpha); }`}
-      />
-    </points>
-  );
+.tekita-header{
+  position: fixed;
+  top: var(--pad);
+  left: 0;
+  right: 0;
+  height: 0;
+  z-index: 40;
+  pointer-events: none;
 }
+
+.tekita-brand{
+  position: fixed;
+  top: var(--pad);
+  left: var(--pad);
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(18px, 2.0vw, 28px);
+  color: var(--brand);
+  text-decoration: none;
+  pointer-events: auto;
+  user-select: none;
+}
+
+.tekita-cta{
+  position: fixed;
+  top: var(--pad);
+  right: var(--pad);
+  pointer-events: auto;
+  border-radius: 999px;
+  border: 1px solid var(--glass-brd);
+  background: var(--glass-bg);
+  color: #fff;
+  padding: 10px 16px;
+  font-size: 14px;
+  line-height: 1;
+  backdrop-filter: saturate(120%) blur(6px);
+  transform: translateZ(0);
+  transition: box-shadow .25s ease, transform .25s ease, background .25s ease;
+}
+.tekita-cta:hover{
+  box-shadow: 0 0 0 2px rgba(255,255,255,.08), 0 6px 22px rgba(0,0,0,.35);
+}
+.tekita-cta.glow{
+  box-shadow: 0 0 0 2px rgba(255,255,255,.10), 0 0 24px rgba(154, 255, 244, .35);
+}
+
+/* full-viewport slides with magnetic center */
+.slides{
+  position: relative;
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.slide{
+  scroll-snap-align: center;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  position: relative;
+  isolation: isolate;
+}
+
+.slide-inner{
+  width: min(1200px, 92vw);
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 64px);
+}
+
+/* Center headings that don’t fracture weirdly */
+.hero-line{
+  display: inline-block;
+  white-space: normal;
+  word-break: keep-all;
+  text-wrap: balance;
+  font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: .2px;
+  line-height: clamp(1.05, 1.3vw, 1.18);
+  font-size: clamp(28px, 7vw, 78px);
+  color: #fff;
+  text-align: center;
+}
+
+/* translucent graph / card shells you wanted */
+.glass{
+  background: linear-gradient( to bottom right, rgba(255,255,255,.08), rgba(255,255,255,.04) );
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 10px 50px rgba(0,0,0,.25) inset, 0 8px 24px rgba(0,0,0,.25);
+  border-radius: 18px;
+  backdrop-filter: blur(8px) saturate(120%);
+}
+
+.metrics{
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+@media (max-width: 900px){
+  .metrics{ grid-template-columns: 1fr; }
+}
+
+/* keep your donut animation underneath the slides */
+.hero-underlay{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+.slides, .slide, .slide-inner{ z-index: 1; }
+
+.drawer-backdrop{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.35);
+  transition: opacity .28s ease;
+  z-index: 60;
+}
+
+.drawer{
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: min(520px, 92vw);
+  background: rgba(16,18,26,.90);
+  backdrop-filter: blur(10px);
+  border-left: 1px solid rgba(255,255,255,.12);
+  transform: translateX(100%);
+  transition: transform .36s cubic-bezier(.2,.8,.2,1);
+  z-index: 61;
+  padding: 28px;
+  color: #fff;
+}
+.drawer.open{ transform: translateX(0%); }
+
+.form{ display: grid; gap: 14px; margin-top: 16px; }
+.form label{ display: grid; gap: 6px; font-size: 14px; color: #cdd6f4; }
+.form input, .form textarea{
+  border-radius: 10px; border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+  color: #fff; padding: 12px 14px;
+  outline: none; transition: border-color .2s ease;
+}
+.form input:focus, .form textarea:focus{ border-color: rgba(154,255,244,.55); }
+.submit{
+  margin-top: 6px;
+  background: linear-gradient(90deg,#17c6f6,#a653ff,#ff6a3d);
+  border: none; color: white; padding: 12px 14px;
+  border-radius: 12px; cursor: pointer; font-weight: 700;
+}
+.alt{ display:inline-block; margin-top: 8px; color: #9afff4; }
+.muted{ color:#b9c2d0; font-size: 13px; }
