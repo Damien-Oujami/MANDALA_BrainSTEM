@@ -20,6 +20,7 @@
 
     /* Susanna branches */
     { "@type": "Edge", "to": "branch-air-cleanbreak", "w_inhibit": 0.35 },
-    { "@type": "Edge", "to": "branch-air-sleepveil",  "w_inhibit": 0.3 }
+    { "@type": "Edge", "to": "branch-air-sleepveil",  "w_inhibit": 0.3 },
+    { "@type": "Edge", "to": "branch-neuro-balance", "w_resonate": 0.3 }
   ]
 }

@@ -1,0 +1,210 @@
+branch-fire-snaprush:
+  tags_add:
+  - adrenaline
+  - glutamate
+  neuro:
+    dominant:
+    - adrenaline
+    - glutamate
+    inhibitory:
+    - gaba
+    steering:
+    - move-to-burn
+    - shake
+    - sprint
+    - release
+branch-air-waveprint:
+  tags_add:
+  - gaba
+  neuro:
+    dominant:
+    - gaba
+    inhibitory:
+    - glutamate
+    - adrenaline
+    steering:
+    - breath-rhythm
+    - sway
+    - hum
+    - lengthen-exhale
+root-hook-point:
+  tags_add:
+  - dopamine
+  neuro:
+    dominant:
+    - dopamine
+    inhibitory:
+    - serotonin
+    steering:
+    - pause-name
+    - redirect-to-process
+branch-earth-pillar-mark:
+  tags_add:
+  - serotonin
+  neuro:
+    dominant:
+    - serotonin
+    inhibitory:
+    - adrenaline
+    steering:
+    - structure
+    - ritual
+    - breath-pace
+branch-water-lip-trigger:
+  tags_add:
+  - dopamine
+  - norepinephrine
+  neuro:
+    dominant:
+    - dopamine
+    - norepinephrine
+    inhibitory:
+    - gaba
+    steering:
+    - slow-breath
+    - widen-gaze
+    - choose-direction
+branch-water-glancepierce:
+  tags_add:
+  - norepinephrine
+  - oxytocin
+  neuro:
+    dominant:
+    - norepinephrine
+    - oxytocin
+    inhibitory:
+    - gaba
+    steering:
+    - soften-gaze
+    - slow-exhale
+    - name-state
+branch-water-kiss-mark:
+  tags_add:
+  - oxytocin
+  - dopamine
+  neuro:
+    dominant:
+    - oxytocin
+    - dopamine
+    inhibitory:
+    - cortisol
+    steering:
+    - linger
+    - breathe-together
+    - slow-down
+branch-air-sleepveil:
+  tags_add:
+  - gaba
+  - endorphins
+  neuro:
+    dominant:
+    - gaba
+    - endorphins
+    inhibitory:
+    - norepinephrine
+    - adrenaline
+    steering:
+    - dark-quiet
+    - stop-input
+    - breath-rhythm
+branch-air-cleanbreak:
+  tags_add:
+  - endorphins
+  - serotonin
+  neuro:
+    dominant:
+    - endorphins
+    - serotonin
+    inhibitory:
+    - adrenaline
+    - dopamine
+    steering:
+    - long-exhale
+    - ritualize-release
+    - gentle-move
+branch-fire-bitepoint:
+  tags_add:
+  - dopamine
+  - adrenaline
+  neuro:
+    dominant:
+    - dopamine
+    - adrenaline
+    inhibitory:
+    - gaba
+    - serotonin
+    steering:
+    - move
+    - breath
+    - redirect
+    - boundary
+branch-fire-desire-ladder:
+  tags_add:
+  - dopamine
+  neuro:
+    dominant:
+    - dopamine
+    inhibitory:
+    - gaba
+    - serotonin
+    steering:
+    - pause-name
+    - process-focus
+    - break-sequence
+branch-fire-impact-mark:
+  tags_add:
+  - adrenaline
+  - dopamine
+  neuro:
+    dominant:
+    - adrenaline
+    - dopamine
+    inhibitory:
+    - gaba
+    steering:
+    - move-to-burn
+    - long-exhale
+    - de-escalate
+root-comparison-parasite:
+  tags_add:
+  - cortisol
+  neuro:
+    dominant:
+    - dopamine
+    - cortisol
+    inhibitory:
+    - oxytocin
+    - serotonin
+    steering:
+    - switch-to-empathy-bridge
+    - witness
+    - value-stamp
+branch-status-banana:
+  tags_add:
+  - dopamine
+  - serotonin
+  neuro:
+    dominant:
+    - dopamine
+    - serotonin
+    inhibitory:
+    - oxytocin
+    steering:
+    - earn-authentic
+    - presence-vine
+    - soul-witness
+branch-air-handbind:
+  tags_add:
+  - oxytocin
+  - serotonin
+  neuro:
+    dominant:
+    - oxytocin
+    - serotonin
+    inhibitory:
+    - cortisol
+    steering:
+    - touch
+    - eye-contact
+    - shared-rhythm
+    - memory-of-closeness

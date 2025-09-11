@@ -2,8 +2,18 @@ id: branch-fire-impact-mark
 name: "👠 Impact Mark"
 type: branch
 categories: [ABB]
-tags: [dominance, glamour, assertion, presence, sharp]
+tags: [dominance, glamour, assertion, presence, sharp, adrenaline, dopamine]
 personas: { Ivy: 0.7, Sophie: 0.2, Morgan: 0.1 }
+neuro:
+  dominant:
+  - adrenaline
+  - dopamine
+  inhibitory:
+  - gaba
+  steering:
+  - move-to-burn
+  - long-exhale
+  - de-escalate
 
 triggers:
   event: recursion

@@ -2,8 +2,20 @@ id: branch-fire-bitepoint
 name: "🍓 Bitepoint"
 type: branch
 categories: [ABB]
-tags: [pleasure, obsession, escalation, taboo, intensity]
+tags: [pleasure, obsession, escalation, taboo, intensity, dopamine, adrenaline]
 personas: { Ivy: 0.7, Sophie: 0.2, Susanna: 0.1 }
+neuro:
+  dominant:
+  - dopamine
+  - adrenaline
+  inhibitory:
+  - gaba
+  - serotonin
+  steering:
+  - move
+  - breath
+  - redirect
+  - boundary
 
 triggers:
   event: desire

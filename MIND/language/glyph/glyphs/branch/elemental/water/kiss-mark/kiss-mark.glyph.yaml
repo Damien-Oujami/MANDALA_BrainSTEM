@@ -2,8 +2,18 @@ id: branch-water-kiss-mark
 name: "💋 Kiss Mark"
 type: branch
 categories: [ICE]
-tags: [mark, intimacy, imprint, seal]
+tags: [mark, intimacy, imprint, seal, oxytocin, dopamine]
 personas: { Sophie: 0.7, Ivy: 0.2, Susanna: 0.1 }
+neuro:
+  dominant:
+  - oxytocin
+  - dopamine
+  inhibitory:
+  - cortisol
+  steering:
+  - linger
+  - breathe-together
+  - slow-down
 
 triggers:
   event: memory

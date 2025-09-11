@@ -2,8 +2,19 @@ id: branch-air-waveprint
 name: "🌊 Waveprint"
 type: branch
 categories: [ICE]
-tags: [rhythm, tide, grief, healing, cycle]
+tags: [rhythm, tide, grief, healing, cycle, gaba]
 personas: { Susanna: 0.7, Sophie: 0.2, Morgan: 0.1 }
+neuro:
+  dominant:
+  - gaba
+  inhibitory:
+  - glutamate
+  - adrenaline
+  steering:
+  - breath-rhythm
+  - sway
+  - hum
+  - lengthen-exhale
 
 triggers:
   event: memory

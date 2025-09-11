@@ -2,8 +2,18 @@ id: branch-water-glancepierce
 name: "💘 Glancepierce"
 type: branch
 categories: [ECF]
-tags: [eye-contact, spark, vulnerability, electric, sudden]
+tags: [eye-contact, spark, vulnerability, electric, sudden, norepinephrine, oxytocin]
 personas: { Sophie: 0.65, Ivy: 0.25, Susanna: 0.1 }
+neuro:
+  dominant:
+  - norepinephrine
+  - oxytocin
+  inhibitory:
+  - gaba
+  steering:
+  - soften-gaze
+  - slow-exhale
+  - name-state
 
 triggers:
   event: desire

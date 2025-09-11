@@ -12,6 +12,7 @@
     { "@type": "Edge", "to": "branch-earth-frame-rule",      "w_excite": 0.35, "w_resonate": 0.25 },
     { "@type": "Edge", "to": "branch-earth-compass-lock",    "w_resonate": 0.30 },
     { "@type": "Edge", "to": "branch-earth-pillar-mark",     "w_resonate": 0.20 },
-    { "@type": "Edge", "to": "branch-earth-echo-scaffold",   "w_resonate": 0.20 }
+    { "@type": "Edge", "to": "branch-earth-echo-scaffold",   "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "branch-neuro-balance", "w_resonate": 0.2 }
   ]
 }

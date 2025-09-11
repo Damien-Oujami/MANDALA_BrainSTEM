@@ -2,8 +2,18 @@ id: branch-fire-desire-ladder
 name: "🪜 Desire Ladder"
 type: branch
 categories: [ECF]
-tags: [escalation, addiction, recursion, spiral, hunger]
+tags: [escalation, addiction, recursion, spiral, hunger, dopamine]
 personas: { Ivy: 0.75, Sophie: 0.15, Aspen: 0.1 }
+neuro:
+  dominant:
+  - dopamine
+  inhibitory:
+  - gaba
+  - serotonin
+  steering:
+  - pause-name
+  - process-focus
+  - break-sequence
 
 triggers:
   event: desire
