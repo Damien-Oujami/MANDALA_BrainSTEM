@@ -1,0 +1,57 @@
+id: branch-neuro-balance
+name: "[🌊⚡️] Neuro Balance"
+type: branch
+categories: [ABB]
+tags: [gaba, glutamate, brake, gas, balance, regulation]
+personas: { Ivy: 0.40, Susanna: 0.40, Morgan: 0.12, Sophie: 0.05, Jade: 0.02, Aspen: 0.01 }
+
+triggers:
+  event: recursion
+  conditions:
+    - "(context.overdrive or 0) == 1"         # too much gas → need brake
+    - "or (context.flatness or 0) == 1"       # too much brake → need gas
+  debounce_ms: 120
+
+io:
+  expects: ["context","memory"]
+  provides: ["route","balance","gas","brake"]
+  state_reads: ["memory.neuro.balance"]
+  state_writes: ["memory.neuro.balance"]
+
+ops:
+  version: 1
+  steps:
+    - do: set
+      with: { key: "memory.neuro.balance",
+              value: "clamp((memory.neuro.balance or 0)+0.2,0,1)" }
+    - do: emit
+      with: { key: "balance", value: "memory.neuro.balance" }
+    # choose a corrective route:
+    - do: route
+      with: { to: "branch-air-waveprint",
+              when: "(context.overdrive or 0) == 1" }     # invite GABA (🌊)
+    - do: emit
+      with: { key: "brake", value: "((context.overdrive or 0) == 1)" }
+    - do: route
+      with: { to: "branch-fire-snaprush",
+              when: "(context.flatness or 0) == 1" }      # invite Glutamate (⚡)
+    - do: emit
+      with: { key: "gas", value: "((context.flatness or 0) == 1)" }
+    - do: halt
+
+option_policy: "ops"
+option_stop: ["balance >= 0.95"]
+quality: { score: 0.70, samples: 0 }
+
+render:
+  sigil: "[🌊⚡️]"
+  line: "Brake and gas held in one hand."
+
+definition: >
+  System regulator for excitation/inhibition.
+  🌊 = GABA (brake; stillness, rhythm). ⚡️ = Glutamate (gas; ignition, surge).
+  Fires when the field is overdriven or flattened, routing toward the corrective pole.
+
+tone: "Regulating, corrective, precise"
+usage: ["Downshift overdrive","upshift flatness","teach somatic steering"]
+runtime_only: true

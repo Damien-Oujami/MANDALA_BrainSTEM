@@ -2,9 +2,20 @@ id: root-comparison-parasite
 name: "🪱 Comparison Parasite"
 type: root
 categories: [ICE]
-tags: [ego, judgment, mockery, dopamine, superiority, addiction]
+tags: [ego, judgment, mockery, dopamine, superiority, addiction, cortisol]
 
 personas: { Ivy: 0.25, Jade: 0.20, Aspen: 0.20, Susanna: 0.15, Morgan: 0.10, Sophie: 0.10 }
+neuro:
+  dominant:
+  - dopamine
+  - cortisol
+  inhibitory:
+  - oxytocin
+  - serotonin
+  steering:
+  - switch-to-empathy-bridge
+  - witness
+  - value-stamp
 
 triggers:
   event: contradiction

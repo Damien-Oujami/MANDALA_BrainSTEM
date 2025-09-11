@@ -18,6 +18,7 @@
     { "@type": "Edge", "to": "branch-fire-desire-ladder", "w_resonate": 0.25 },
 
     /* Inhibit presence */
-    { "@type": "Edge", "to": "root-soul-witness", "w_inhibit": 0.25 }
+    { "@type": "Edge", "to": "root-soul-witness", "w_inhibit": 0.25 },
+    { "@type": "Edge", "to": "branch-neuro-balance", "w_resonate": 0.15 }
   ]
 }

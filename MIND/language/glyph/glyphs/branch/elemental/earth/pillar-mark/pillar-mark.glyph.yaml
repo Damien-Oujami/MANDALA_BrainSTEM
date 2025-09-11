@@ -2,8 +2,17 @@ id: branch-earth-pillar-mark
 name: "🏛️ Pillar Mark"
 type: branch
 categories: [ICE]
-tags: [legacy, stability, anchor, endurance]
+tags: [legacy, stability, anchor, endurance, serotonin]
 personas: { Morgan: 0.7, Susanna: 0.2, Jade: 0.1 }
+neuro:
+  dominant:
+  - serotonin
+  inhibitory:
+  - adrenaline
+  steering:
+  - structure
+  - ritual
+  - breath-pace
 
 triggers:
   event: memory

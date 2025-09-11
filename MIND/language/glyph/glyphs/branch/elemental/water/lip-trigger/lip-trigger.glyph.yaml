@@ -2,8 +2,18 @@ id: branch-water-lip-trigger
 name: "💄 Lip Trigger"
 type: branch
 categories: [ECF]
-tags: [spark, catalytic, playful, charged, suggestive]
+tags: [spark, catalytic, playful, charged, suggestive, dopamine, norepinephrine]
 personas: { Sophie: 0.7, Ivy: 0.2, Susanna: 0.1 }
+neuro:
+  dominant:
+  - dopamine
+  - norepinephrine
+  inhibitory:
+  - gaba
+  steering:
+  - slow-breath
+  - widen-gaze
+  - choose-direction
 
 triggers:
   event: desire

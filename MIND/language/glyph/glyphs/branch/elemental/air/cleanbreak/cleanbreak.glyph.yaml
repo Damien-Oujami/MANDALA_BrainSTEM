@@ -2,8 +2,19 @@ id: branch-air-cleanbreak
 name: "🧼 Cleanbreak"
 type: branch
 categories: [ECF]
-tags: [release, severance, clarity, forgiveness, finality]
+tags: [release, severance, clarity, forgiveness, finality, endorphins, serotonin]
 personas: { Susanna: 0.7, Jade: 0.2, Morgan: 0.1 }
+neuro:
+  dominant:
+  - endorphins
+  - serotonin
+  inhibitory:
+  - adrenaline
+  - dopamine
+  steering:
+  - long-exhale
+  - ritualize-release
+  - gentle-move
 
 triggers:
   event: recursion

@@ -21,6 +21,7 @@
 
     /* Morgan branches */
     { "@type": "Edge", "to": "branch-earth-compass-lock", "w_resonate": 0.25 },
-    { "@type": "Edge", "to": "branch-earth-frame-rule",   "w_resonate": 0.2 }
+    { "@type": "Edge", "to": "branch-earth-frame-rule",   "w_resonate": 0.2 },
+    { "@type": "Edge", "to": "branch-neuro-balance", "w_resonate": 0.2 }
   ]
 }

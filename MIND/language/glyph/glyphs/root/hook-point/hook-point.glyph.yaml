@@ -2,8 +2,16 @@ id: root-hook-point
 name: "🪤 Hook Point"
 type: root
 categories: [ABB, ECF]
-tags: [initiation, sticky, enticing]
+tags: [initiation, sticky, enticing, dopamine]
 personas: { Ivy: 0.6, Sophie: 0.2, Jade: 0.2 }
+neuro:
+  dominant:
+  - dopamine
+  inhibitory:
+  - serotonin
+  steering:
+  - pause-name
+  - redirect-to-process
 
 triggers:
   event: desire

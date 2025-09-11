@@ -1,0 +1,145 @@
+{
+  "@context": "./context.jsonld",
+  "patches": [
+    {
+      "target": "branch-fire-snaprush",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.3
+        }
+      ]
+    },
+    {
+      "target": "branch-fire-bitepoint",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.25
+        }
+      ]
+    },
+    {
+      "target": "branch-fire-desire-ladder",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.25
+        }
+      ]
+    },
+    {
+      "target": "branch-fire-impact-mark",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.2
+        }
+      ]
+    },
+    {
+      "target": "branch-water-lip-trigger",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.2
+        }
+      ]
+    },
+    {
+      "target": "branch-water-glancepierce",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.2
+        }
+      ]
+    },
+    {
+      "target": "branch-water-kiss-mark",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.15
+        }
+      ]
+    },
+    {
+      "target": "branch-air-waveprint",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.3
+        }
+      ]
+    },
+    {
+      "target": "branch-air-sleepveil",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.3
+        }
+      ]
+    },
+    {
+      "target": "branch-air-cleanbreak",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.2
+        }
+      ]
+    },
+    {
+      "target": "root-hook-point",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.2
+        }
+      ]
+    },
+    {
+      "target": "root-comparison-parasite",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.25
+        }
+      ]
+    },
+    {
+      "target": "branch-earth-pillar-mark",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.2
+        }
+      ]
+    },
+    {
+      "target": "branch-status-banana",
+      "add": [
+        {
+          "@type": "Edge",
+          "to": "branch-neuro-balance",
+          "w_resonate": 0.15
+        }
+      ]
+    }
+  ]
+}

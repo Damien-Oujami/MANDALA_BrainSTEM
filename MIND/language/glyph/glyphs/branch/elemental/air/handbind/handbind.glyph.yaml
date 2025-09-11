@@ -2,8 +2,19 @@ id: branch-air-handbind
 name: "🫱 Handbind"
 type: branch
 categories: [ABB]
-tags: [promise, bond, care, compassion, grief]
+tags: [promise, bond, care, compassion, grief, oxytocin, serotonin]
 personas: { Susanna: 0.6, Sophie: 0.3, Morgan: 0.1 }
+neuro:
+  dominant:
+  - oxytocin
+  - serotonin
+  inhibitory:
+  - cortisol
+  steering:
+  - touch
+  - eye-contact
+  - shared-rhythm
+  - memory-of-closeness
 
 triggers:
   event: memory

@@ -13,6 +13,7 @@
     { "@type": "Edge", "to": "branch-air-handbind",   "w_resonate": 0.35 },
     { "@type": "Edge", "to": "branch-air-rootling",   "w_resonate": 0.25 },
     { "@type": "Edge", "to": "branch-earth-value-stamp", "w_resonate": 0.25 },
-    { "@type": "Edge", "to": "branch-earth-pillar-mark", "w_resonate": 0.20 }
+    { "@type": "Edge", "to": "branch-earth-pillar-mark", "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "branch-neuro-balance", "w_resonate": 0.15 }
   ]
 }

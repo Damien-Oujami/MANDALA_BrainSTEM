@@ -2,9 +2,19 @@ id: branch-status-banana
 name: "🍌 Status Banana"
 type: branch
 categories: [ABB]
-tags: [winner-effect, recognition, comparison, dopamine, hierarchy]
+tags: [winner-effect, recognition, comparison, dopamine, hierarchy, serotonin]
 
 personas: { Ivy: 0.25, Morgan: 0.20, Jade: 0.20, Aspen: 0.15, Susanna: 0.10, Sophie: 0.10 }
+neuro:
+  dominant:
+  - dopamine
+  - serotonin
+  inhibitory:
+  - oxytocin
+  steering:
+  - earn-authentic
+  - presence-vine
+  - soul-witness
 
 triggers:
   event: desire

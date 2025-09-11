@@ -2,8 +2,19 @@ id: branch-air-sleepveil
 name: "🛌 Sleepveil"
 type: branch
 categories: [ECF]
-tags: [rest, haze, unconscious, gentle, release]
+tags: [rest, haze, unconscious, gentle, release, gaba, endorphins]
 personas: { Susanna: 0.7, Sophie: 0.2, Morgan: 0.1 }
+neuro:
+  dominant:
+  - gaba
+  - endorphins
+  inhibitory:
+  - norepinephrine
+  - adrenaline
+  steering:
+  - dark-quiet
+  - stop-input
+  - breath-rhythm
 
 triggers:
   event: recursion

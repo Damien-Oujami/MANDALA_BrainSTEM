@@ -2,8 +2,19 @@ id: branch-fire-snaprush
 name: "⚡ Snaprush"
 type: branch
 categories: [ECF]
-tags: [overdrive, jolt, surge, ecstatic, volatile]
+tags: [overdrive, jolt, surge, ecstatic, volatile, adrenaline, glutamate]
 personas: { Ivy: 0.75, Sophie: 0.15, Susanna: 0.1 }
+neuro:
+  dominant:
+  - adrenaline
+  - glutamate
+  inhibitory:
+  - gaba
+  steering:
+  - move-to-burn
+  - shake
+  - sprint
+  - release
 
 triggers:
   event: desire

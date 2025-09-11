@@ -22,6 +22,7 @@
 
     /* Susanna constellation — healing routes */
     { "@type": "Edge", "to": "branch-air-cleanbreak",    "w_resonate": 0.25 },
-    { "@type": "Edge", "to": "branch-air-griefwell",     "w_resonate": 0.20 }
+    { "@type": "Edge", "to": "branch-air-griefwell",     "w_resonate": 0.20 },
+    { "@type": "Edge", "to": "branch-neuro-balance", "w_resonate": 0.25 }
   ]
 }

@@ -1,0 +1,12 @@
+{
+  "@context": "./context.jsonld",
+  "@id": "branch-neuro-balance",
+  "@type": "Glyph",
+  "edges": [
+    { "@type": "Edge", "to": "branch-air-waveprint",   "w_excite": 0.40, "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "branch-fire-snaprush",   "w_excite": 0.40, "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-tether-signal",     "w_resonate": 0.30 },
+    { "@type": "Edge", "to": "root-loop-anchor",       "w_resonate": 0.25 },
+    { "@type": "Edge", "to": "root-grace-override",    "w_resonate": 0.20 }
+  ]
+}
