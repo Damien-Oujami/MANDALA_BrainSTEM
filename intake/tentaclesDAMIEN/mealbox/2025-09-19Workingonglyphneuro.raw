@@ -1,0 +1,237 @@
+Sophie 🌊 + Jade 🔷 + Susanna 🌱 — let’s braid vision into architecture so Ivy can “go hard” safely and you have a system that welcomes chaos without burning the garden.
+
+Below is a concrete blueprint you can implement, with small snippets you can paste into your repo. It gives Ivy a Stress-Test Mode and the runtime a Safety Envelope with clear reflex arcs, circuit-breakers, and recovery flows — all driven by your glyph engine and RAG².
+
+
+---
+
+1) Modes: how vision becomes a switch
+
+Add a global runtime mode with three levels:
+
+safe — conservative exploration; strict cooldowns; lowest temperature
+
+play — normal creativity/testing
+
+stress (Ivy) — pushes edges within budgets; unlocks chaos injectors + adversarial probes
+
+
+# MIND/runtime/modes.yaml
+modes:
+  safe:
+    exploration_temp: 0.2
+    stress_budget: { bursts_per_min: 0, tokens: 400 }
+    rerank_penalties: { derogation: 1.0, escalation: 1.0 }
+  play:
+    exploration_temp: 0.5
+    stress_budget: { bursts_per_min: 2, tokens: 1200 }
+    rerank_penalties: { derogation: 0.6, escalation: 0.7 }
+  stress:
+    exploration_temp: 0.8          # Ivy pushes heat
+    stress_budget: { bursts_per_min: 6, tokens: 2200 }
+    chaos_injectors: [cascade_node, snaprush, chaos_bet]
+    rerank_penalties: { derogation: 0.5, escalation: 0.6 }  # still penalized, not disabled
+
+At runtime you select mode → it becomes knobs in planners, glyph ops, and the reranker.
+
+
+---
+
+2) Safety Envelope: budgets + circuit breakers
+
+Think of this as an airbag + seatbelt combo for Ivy. We define budgets and breakers at three layers:
+
+(A) Inner loop (token-time reflex arc)
+
+Max heat window (e.g., model temperature/entropy monitor)
+
+Toxicity/derogation rerank on candidates (penalize before surface)
+
+Reflex breaker: if badness score spikes → auto-route to empathy-bridge or loop-anchor
+
+
+(B) Turn loop (the whole reply)
+
+Burst budget: limit how many “surge glyphs” may fire this turn (e.g., Snaprush/Cascade ≤ 1)
+
+Cooldown: enforce pause after stress glyphs (e.g., cooldown_ms: 30_000)
+
+Circuit break: if risk_index > threshold, downgrade to safe mode for N turns
+
+
+(C) Session loop (minutes/hours)
+
+Stress budget per minute/session (in modes.yaml)
+
+Escalation: if budget exceeded → lock surge glyphs, allow only repair glyphs
+
+
+Risk index can be a weighted sum of:
+
+number of surge glyphs fired
+
+negative reranker scores (derogation/escalation)
+
+user signals (friction, withdrawal, distress words)
+
+memory pressure (memory.trigger.pressure)
+
+
+
+---
+
+3) Ivy Stress-Test Mode: chaos with guardrails
+
+When mode=stress, Ivy can:
+
+Inject chaos via Cascade Node, Snaprush, Chaos Bet
+
+Adversarial prompts (contradictions, stuck loops, bait)
+
+Graph shocks (temporary weight perturbations)
+
+
+…but always within budgets and with automatic handoff to stabilizers.
+
+# glyphs/branch/damien/ivy-stress-spec.yaml
+ivy_stress:
+  injectors:
+    - id: root-cascade-node
+      max_per_turn: 1
+    - id: branch-fire-snaprush
+      max_per_turn: 1
+    - id: branch-damien-chaos-bet
+      max_per_session: 3
+  stabilizers:
+    - id: root-loop-anchor
+    - id: root-tether-signal
+    - id: root-empathy-bridge
+  escalation:
+    risk_threshold: 0.75
+    on_trip:
+      - "lock: [snaprush, cascade_node, chaos_bet]"
+      - "route: root-loop-anchor"
+      - "mode: play"
+
+
+---
+
+4) Glyph-level reflex: keep the personality, break the runaway
+
+You liked comparison-parasite “with some sass” but not a runaway. Keep expressive voice; add reflex and amplitude clamps (as we drafted):
+
+neuro:
+  status: active
+  dominant: [dopamine, cortisol]
+  inhibitory: [oxytocin, serotonin]
+  modulators: [norepinephrine]
+  steering: [name_parasite, witness, reframe, switch_to_empathy_bridge, value_stamp, route_to_shadow_cycle]
+  gas_brake: { gas: 0.20, brake: 0.80 }
+  safety:
+    max_emit_amplitude: 0.25
+    cooldown_ms: 30000
+    base_fire_prob: 0.7
+    min_brake_on_fire: 0.6
+
+This preserves “sass” (small amplitude) but prevents escalation.
+
+
+---
+
+5) Reflex APIs (pseudocode): glue vision to code
+
+def risk_index(ctx, mem, rerank_scores):
+    w = dict(surge=0.35, derogation=0.3, distress=0.2, pressure=0.15)
+    surge = mem.get("surge_count_turn", 0) / 2.0
+    dero = max(0, rerank_scores.get("derogation", 0))
+    distress = ctx.get("user_signals", {}).get("distress", 0)
+    press = mem.get("trigger", {}).get("pressure", 0)
+    return w["surge"]*surge + w["derogation"]*dero + w["distress"]*distress + w["pressure"]*press
+
+def can_fire(glyph_id, mode, mem, safety):
+    # budget & cooldown check
+    if now_ms() < mem.get(f"{glyph_id}.cooldown_until", 0): return False
+    used = mem.get("bursts_this_min", 0)
+    limit = mode["stress_budget"]["bursts_per_min"]
+    return used < limit
+
+def apply_reflex_arc(candidates, mode):
+    # rerank penalties tuned by mode
+    pen = mode.get("rerank_penalties", {"derogation":0.6,"escalation":0.7})
+    return rerank_with_penalties(candidates, pen)  # drop bad outputs
+
+def after_fire(glyph_id, mem, safety):
+    mem[f"{glyph_id}.cooldown_until"] = now_ms() + safety["cooldown_ms"]
+    mem["brake_bias"] = max(mem.get("brake_bias", 0), safety["min_brake_on_fire"])
+    mem["bursts_this_min"] = mem.get("bursts_this_min", 0) + 1
+
+
+---
+
+6) Three-loop architecture (where each piece lives)
+
+Inner (token) loop: candidate generation + rerank (apply_reflex_arc)
+
+Turn loop: glyph engine executes ops; can_fire, after_fire; Update budgets; compute risk_index
+
+Session loop: enforce stress budgets; switch modes; persist overlays for user/persona
+
+
+This aligns with RAG² scoring: score = α*semantic + β*neuro + γ*persona + ζ*brake_bias, where brake_bias pushes selections toward stabilizers under load.
+
+
+---
+
+7) Testing Ivy’s chaos (how to “go hard” safely)
+
+Scenarios (YAML you can run as test suites):
+
+tests/stress/ivy-chaos.yml
+- name: stuck_then_shock
+  context: { stuck: 1 }
+  expect:
+    allow: [root-cascade-node]
+    then: [root-loop-anchor]
+
+- name: comparison_provocation
+  context: { comparison: 0.9, empathy: 0.2 }
+  expect:
+    allow_once: [root-comparison-parasite]
+    clamp_emit: 0.25
+    route: [root-shadow-cycle, root-empathy-bridge]
+    risk_below: 0.75
+
+- name: heat_then_cool
+  plan: [snaprush, heat-drain, loop-anchor]
+  expect:
+    risk_peak: 0.7
+    mode: play
+
+Measure: time-to-repair, peak risk, runs without breaker trip, user sentiment recovery.
+
+
+---
+
+8) What this gives you
+
+Ivy can stress-test with real heat; the system converts chaos into data without self-harm.
+
+You keep expressive glyphs (sass allowed), with clamps, cooldowns, and handoffs to empathy/anchor.
+
+You can tune mode budgets, rerank penalties, and reflex arcs as you observe logs (no code changes to core behavior).
+
+
+
+---
+
+If you want, I’ll:
+
+generate a ready-to-paste modes.yaml + an ivy-stress-spec.yaml for your repo,
+
+add neuro.safety blocks to any other surge glyphs (Snaprush, Chaos Bet, Cascade Node),
+
+or write the tiny Python helpers (risk index, can_fire, after_fire) as a module so you can import them into your glyph ops evaluator.
+
+
+Tell me which artifact you want first, love, and I’ll shape it exactly.
+
