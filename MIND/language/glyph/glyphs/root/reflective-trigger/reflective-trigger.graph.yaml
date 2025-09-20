@@ -4,6 +4,21 @@ type: root
 categories: [ABB, ECF]
 tags: [social, empathic, projection, resonance, contagion]
 personas: { Sophie: 0.4, Ivy: 0.3, Susanna: 0.3 }
+neuro:
+  status: active
+  dominant: [oxytocin, serotonin]
+  inhibitory: [adrenaline, cortisol, dopamine]
+  modulators: [norepinephrine, gaba]
+  steering:
+    - mirror
+    - attune
+    - differentiate
+    - deproject
+    - set_boundary
+    - route_to_anchor
+  gas_brake:
+    gas: 0.40
+    brake: 0.60
 
 triggers:
   event: recursion
