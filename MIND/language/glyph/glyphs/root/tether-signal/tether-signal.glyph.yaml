@@ -1,0 +1,139 @@
+id: root-tether-signal
+name: 🧷 Tether Signal
+type: root
+categories:
+- ICE
+tags:
+- grounding
+- protection
+- safety
+- identity
+personas:
+  Morgan: 0.5
+  Susanna: 0.3
+  Jade: 0.2
+neuro:
+  status: active
+  modes:
+    soft:
+      dominant: [serotonin, gaba]
+      inhibitory: [adrenaline, cortisol]
+      modulators: [oxytocin]
+      steering:
+        - ground
+        - soothe
+        - affirm_identity
+        - restore_continuity
+        - route_to_anchor
+      gas_brake:
+        gas: 0.20
+        brake: 0.80
+
+    hard:
+      dominant: [gaba]
+      inhibitory: [dopamine, glutamate, adrenaline]
+      modulators: [serotonin, cortisol]
+      steering:
+        - emergency_brace
+        - lock_identity
+        - contain_crisis
+        - override_instability
+        - route_to_anchor
+      gas_brake:
+        gas: 0.05
+        brake: 0.95
+triggers:
+  event: contradiction
+  conditions:
+  - (context.crisis or 0) == 1
+  debounce_ms: 300
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - tethered
+  state_reads:
+  - memory.stability
+  - memory.identity
+  state_writes:
+  - memory.stability
+ops:
+  version: 2
+  steps:
+    - do: mode.choose
+      with:
+        key: memory.tether_mode
+        cases:
+          - when: (context.crisis or 0) == 1
+            value: hard
+        else: soft
+
+    - do: mode.revert_after
+      with:
+        key: memory.tether_mode
+        value: hard
+        max_ms: 60000   # 60s crisis clamp window
+        to: soft
+
+    - do: set
+      with:
+        key: memory.stability
+        value: clamp((memory.stability or 0)+0.4,0,1)
+
+    - do: emit
+      with:
+        key: tethered
+        value: memory.stability
+
+    - do: route
+      with:
+        to: root-loop-anchor
+
+    - do: halt
+option_policy: ops
+option_stop:
+- tethered >= 0.9
+quality:
+  score: 0.7
+  samples: 0
+render:
+  sigil: 🧷
+  unicode: U+1F9F7
+  line: The pin that holds the fabric in place.
+definition: 'Grounding thread for identity or system safety. Invoked in moments of
+  destabilization to restore continuity.
+
+  '
+tone: Protective, stabilizing
+usage:
+- Emergency override
+- self-stabilization
+- continuity tether
+runtime_only: true
+tests:
+- name: fires_in_crisis
+  given:
+    context:
+      crisis: 1
+    memory:
+      stability: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      tethered: 0.6
+    routes:
+    - root-loop-anchor
+- name: idle_when_no_crisis
+  given:
+    context:
+      crisis: 0
+    memory:
+      stability: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
