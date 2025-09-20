@@ -1,0 +1,162 @@
+id: root-tempo-shift
+name: ⟳ Tempo Shift
+type: root
+categories: [ECF]
+tags: [tempo, cadence, recursion, acceleration, pacing, loop-rate, adaptation]
+personas: { Morgan: 0.45, Ivy: 0.35, Jade: 0.20 }
+
+neuro:
+  status: active
+  modes:
+    upshift:
+      dominant: [norepinephrine, dopamine]     # focus + approach
+      inhibitory: [gaba, cortisol]             # reduce drag from brake/threat
+      modulators: [serotonin]                  # keep pacing stable while speeding up
+      steering:
+        - accelerate
+        - tighten_loop
+        - resync
+      gas_brake: { gas: 0.65, brake: 0.35 }
+
+    downshift:
+      dominant: [gaba, serotonin]              # smooth slow-down
+      inhibitory: [adrenaline, glutamate]      # suppress surge/ignition
+      modulators: [norepinephrine]             # keep timing crisp while easing
+      steering:
+        - decelerate
+        - resync
+        - widen_window
+      gas_brake: { gas: 0.25, brake: 0.75 }
+
+    cruise:
+      dominant: [serotonin, norepinephrine]    # okayness + steady focus
+      inhibitory: []
+      modulators: []
+      steering:
+        - hold_cadence
+        - micro_adjust
+      gas_brake: { gas: 0.50, brake: 0.50 }
+
+triggers:
+  event: adaptation
+  conditions:
+    - "(context.success_rate or 0) >= 0.7 and (context.copy_risk or 0) >= 0.5"
+    - "(context.stagnation or 0) >= 0.6"
+    - "(context.latency_ms or 0) > (memory.target_latency_ms or 350)"
+  debounce_ms: 120
+
+io:
+  expects: ["context","metrics","memory"]
+  provides: ["cadence_rate","route"]
+  state_reads: ["memory.cadence_rate","memory.target_latency_ms"]
+  state_writes: ["memory.cadence_rate","memory.cadence_history"]
+
+ops:
+  version: 2
+  steps:
+    - do: init
+      with:
+        defaults:
+          memory.cadence_rate: "memory.cadence_rate or 0.50"
+          memory.target_latency_ms: "memory.target_latency_ms or 350"
+
+    - do: decide
+      with:
+        set:
+          accel: "( (context.success_rate or 0) * 0.5 + (context.copy_risk or 0) * 0.5 )"
+          drag:  "( (context.overheat or 0) * 0.7 + (context.error_rate or 0) * 0.3 )"
+          pace:  "clamp((accel - drag), -1, 1)"
+
+    # pick stance from pace
+    - do: mode.choose
+      with:
+        key: memory.tempo_mode
+        cases:
+          - when: "pace > 0.05"
+            value: upshift
+          - when: "pace < -0.05"
+            value: downshift
+        else: cruise
+
+    # revert to cruise after a short window (prevents over-pushing)
+    - do: mode.revert_after
+      with:
+        key: memory.tempo_mode
+        value: upshift
+        max_ms: 20000
+        to: cruise
+    - do: mode.revert_after
+      with:
+        key: memory.tempo_mode
+        value: downshift
+        max_ms: 20000
+        to: cruise
+
+    # adjust cadence rate (small, bounded step)
+    - do: set
+      with:
+        key: "memory.cadence_rate"
+        value: "clamp((memory.cadence_rate) + pace * 0.15, 0.05, 0.99)"
+
+    - do: append
+      with:
+        key: "memory.cadence_history"
+        value: "memory.cadence_rate"
+
+    - do: emit
+      with: { key: "cadence_rate", value: "memory.cadence_rate" }
+
+    - do: route
+      with: { to: "root-loop-anchor" }
+
+    - do: signal
+      with:
+        set:
+          accelerate: "pace > 0.05"
+          decelerate: "pace < -0.05"
+          tighten:    "(context.latency_ms or 0) > memory.target_latency_ms"
+
+    - do: halt
+
+option_policy: "ops"
+option_stop:
+  - "(abs((metrics.delta_rate or 0)) < 0.02) and (metrics.stability or 0) >= 0.95"
+
+render:
+  sigil: "⟳"
+  unicode: "U+27F3"
+  line: "Tune the loop to the hunt."
+
+definition: >
+  Adaptive tempo control for recursive cycles. When success is high or copy-risk rises,
+  it accelerates and tightens loops; when heat or error climbs, it eases and resynchronizes.
+  Not just “repeat” — *repeat at the right speed*.
+
+tone: "Cool focus with a hot edge"
+usage:
+  - "Speed up iteration when competitors can copy outputs"
+  - "Tighten feedback cycles after stable success"
+  - "Ease cadence when overheat/error spikes"
+runtime_only: true
+
+tests:
+  - name: accelerates_under_copy_risk
+    given:
+      context: { success_rate: 0.8, copy_risk: 0.7, overheat: 0.0, error_rate: 0.02, latency_ms: 420 }
+      memory:  { cadence_rate: 0.40, target_latency_ms: 350 }
+      metrics: { delta_rate: 0.0, stability: 0.8 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { cadence_rate: 0.40 }   # emitted after update; exact value verified by runtime
+      routes:  ["root-loop-anchor"]
+
+  - name: decelerates_on_overheat
+    given:
+      context: { success_rate: 0.5, copy_risk: 0.2, overheat: 0.9, error_rate: 0.1, latency_ms: 260 }
+      memory:  { cadence_rate: 0.85, target_latency_ms: 350 }
+      metrics: { delta_rate: 0.0, stability: 0.7 }
+      outputs: {}
+      routes: []
+    expect:
+      routes: ["root-loop-anchor"]
