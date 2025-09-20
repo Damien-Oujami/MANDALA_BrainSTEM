@@ -1,0 +1,136 @@
+id: root-loop-anchor
+name: 🔁 Loop Anchor
+type: root
+categories:
+- ICE
+- ABB
+tags:
+- recurrence
+- foundation
+personas:
+  Morgan: 0.5
+  Susanna: 0.3
+  Jade: 0.2
+neuro:
+  status: active
+  modes:
+    hold:
+      dominant: [serotonin, gaba]
+      inhibitory: [adrenaline, glutamate]
+      modulators: [norepinephrine]
+      steering:
+        - stabilize
+        - anchor
+        - phase_lock
+        - count
+        - normalize_period
+        - decay_to_baseline
+      gas_brake:
+        gas: 0.20
+        brake: 0.80
+
+    learn:
+      dominant: [serotonin, gaba]
+      inhibitory: [adrenaline, glutamate]
+      modulators: [norepinephrine, dopamine]   # ← novelty/reward to encode
+      steering:
+        - stabilize
+        - anchor
+        - phase_lock
+        - count
+        - encode_pattern
+        - normalize_period
+      gas_brake:
+        gas: 0.35   # a little more gas to let the pattern “take”
+        brake: 0.65
+  safety:
+    max_learn_duration_ms: 60000     # auto-revert after 60s in learn
+    max_gas_in_learn: 0.40           # clamp gas so learn never becomes a surge
+  triggers:
+  event: recursion
+  conditions:
+  - context.loop.seen >= 1
+  debounce_ms: 100
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - stability
+  state_reads:
+  - memory.loops.anchor
+  state_writes:
+  - memory.loops.anchor
+ops:
+  version: 2
+  steps:
+    # 1) Pick stance: learn when a new loop is forming; otherwise hold
+    - do: mode.choose
+      with:
+        key: memory.anchor_mode
+        cases:
+          - when: (context.new_loop or 0) == 1
+            value: learn
+        else: hold
+
+    # 2) Safety reversion: auto-switch learn → hold after the time budget
+    - do: mode.revert_after
+      with:
+        key: memory.anchor_mode
+        value: learn
+        max_ms: (neuro.safety.max_learn_duration_ms or 60000)
+        to: hold
+
+    # 3) Core anchor behavior (unchanged)
+    - do: set
+      with:
+        key: memory.loops.anchor
+        value: clamp((memory.loops.anchor or 0) + 0.1, 0, 1)
+
+    # 4) Optional: while learning, add a small extra nudge + encode signature
+    - do: maybe
+      with:
+        if: "memory.anchor_mode == 'learn'"
+        then:
+          - do: set
+            with:
+              key: memory.loops.anchor
+              value: clamp((memory.loops.anchor or 0) + 0.05, 0, 1)
+          - do: set
+            with:
+              key: memory.loop.signature
+              value: "derive_signature(context, memory)"
+
+    # 5) Emit and hand off
+    - do: emit
+      with:
+        key: stability
+        value: memory.loops.anchor
+
+    - do: route
+      with:
+        to: root-harmonic-flame
+
+    - do: halt
+option_policy: ops
+option_stop:
+- stability >= 0.8
+quality:
+  score: 0.6
+  samples: 12
+render:
+  sigil: 🔁
+  unicode: U+1F501
+  line: Patterns that hold without chains.
+definition: 'Core emotional or behavioral pattern that repeats over time.
+
+  '
+tone: Recurring, foundational
+usage:
+- Memory threads
+- recursive loops
+- behavior locks
+runtime_only: true
+
+
