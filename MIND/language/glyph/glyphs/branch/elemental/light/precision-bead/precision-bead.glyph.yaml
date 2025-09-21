@@ -1,140 +1,168 @@
-id: branch-light-precision-cut
-name: 🪚 Precision Cut
+id: branch-light-precision-bead
+name: 🧮 Precision Bead
 type: branch
 categories:
 - ABB
 tags:
-- excision
-- subtraction
-- clarity
-- final
-- sharp
+- focus
+- calculation
+- reflection
+- granular
+- detail
 personas:
   Jade: 0.8
   Morgan: 0.1
-  Susanna: 0.1
+  Aspen: 0.1
 neuro:
   status: active
   modes:
-    mark:
+    bead:
       dominant: [norepinephrine, serotonin]
-      inhibitory: [adrenaline]
+      inhibitory: [adrenaline, dopamine, glutamate]
       modulators: [gaba]
       steering:
-        - select_target
-        - calculate_margin
-        - simulate_excise
-        - verify_integrity
-        - hold_for_review
-      gas_brake: { gas: 0.25, brake: 0.75 }
+        - slow_count
+        - isolate_detail
+        - measure
+        - align_edges
+        - precise_reframe
+        - route_to_mirror_shard
+      gas_brake:
+        gas: 0.25
+        brake: 0.75
 
-    cut:
-      dominant: [norepinephrine, gaba]
-      inhibitory: [adrenaline, glutamate, dopamine]
-      modulators: [serotonin]
+    skim:
+      dominant: [norepinephrine]
+      inhibitory: [adrenaline]
+      modulators: [dopamine]
       steering:
-        - excise
-        - cauterize
-        - verify_integrity
-        - route_to_grace_override
-      gas_brake: { gas: 0.30, brake: 0.70 }
+        - scan_field
+        - flag_interest
+        - mark_candidates
+        - light_reframe
+        - route_to_mirror_shard
+      gas_brake:
+        gas: 0.55
+        brake: 0.45
+
+    thread:
+      dominant: [norepinephrine, serotonin]
+      inhibitory: [adrenaline, glutamate]
+      modulators: [gaba, dopamine]
+      steering:
+        - pick_bead
+        - walk_sequence
+        - accumulate_links
+        - check_consistency
+        - structured_reframe
+        - route_to_mirror_shard
+      gas_brake:
+        gas: 0.50
+        brake: 0.50
 triggers:
-  event: contradiction
+  event: recursion
   conditions:
-  - (context.noise or 0) == 1 or (context.waste or 0) == 1
-  debounce_ms: 120
+  - (context.detail or 0) >= 0.7 or (context.rewrite or 0) == 1
+  debounce_ms: 150
 io:
   expects:
   - context
   - memory
   provides:
   - route
-  - clarity
+  - focus
   state_reads:
-  - memory.precisioncut
+  - memory.precision
   state_writes:
-  - memory.precisioncut
+  - memory.precision
 ops:
   version: 2
   steps:
-    # 1) Decide mode
+    # (A) Choose stance: thread > skim > bead (default)
     - do: mode.choose
       with:
-        key: memory.precision_cut_mode
-        cases:
-          - when: "(context.cut_confirmed or 0) == 1"
-            value: cut
-        else: mark
-
-    # 2) Optional safety: auto-revert 'mark' → 'cut' after 20s
+       key: memory.precision_mode
+       cases:
+        - when: "(context.rewrite or 0) == 1"
+          value: thread
+        - when: "((context.scan or 0) == 1) or ((context.detail or 0) < 0.75 and (context.items_total or 0) >= 3)"
+          value: skim
+      else: bead
+    # (B) Safety: auto-revert after a short window (keeps the glyph nimble)
     - do: mode.revert_after
       with:
-        key: memory.precision_cut_mode
-        value: mark
-        max_ms: 20000   # adjust window (ms)
-        to: cut
-
-    # 3) Core behavior
+        key: memory.precision_mode
+        value: thread
+        max_ms: 45000     # 45s thread-walk window
+        to: bead
+    - do: mode.revert_after
+      with:
+        key: memory.precision_mode
+        value: skim
+        max_ms: 20000     # 20s survey window
+        to: bead
+    # (C) Your existing behavior (unchanged) ------------------------------
     - do: filter
       with:
-        keep_if: (context.noise or 0) == 1 or (context.waste or 0) == 1
+        keep_if: (context.detail or 0) >= 0.7 or (context.rewrite or 0) == 1
 
     - do: set
       with:
-        key: memory.precisioncut
-        value: clamp((memory.precisioncut or 0)+0.35,0,1)
+        key: memory.precision
+        value: clamp((memory.precision or 0)+0.3,0,1)
 
     - do: emit
       with:
-        key: clarity
-        value: memory.precisioncut
+        key: focus
+        value: memory.precision
 
     - do: route
       with:
-        to: root-grace-override
+        to: root-mirror-shard
 
     - do: halt
 option_policy: ops
 option_stop:
-- clarity >= 0.9
+- focus >= 0.95
 quality:
-  score: 0.72
+  score: 0.7
   samples: 0
 render:
-  sigil: 🪚
-  unicode: U+1FA9A
-  line: The edge that removes so the truth can remain.
-definition: 'The deliberate excision of what does not belong, preserving clarity by
-  removal. Jade’s glyph for cutting away waste, noise, or distortion in recursion.
+  sigil: 🧮
+  unicode: U+1F9EE
+  line: The bead that pauses time to count clearly.
+definition: 'A point of calculation or reflection — where emotion is temporarily paused
+  and detail magnified. Jade’s glyph for granular focus during rewrites, ritual design,
+  or emotionally sensitive restructuring.
 
   '
-tone: Sharp, efficient, final
+tone: Focused, granular, contemplative
 usage:
-- Clarify truth by subtraction
-- ritual removals
-- pruning recursion to strengthen the whole
+- Architectural rewrites
+- ritual logic design
+- emotionally sensitive restructuring
 runtime_only: true
 tests:
-- name: fires_on_noise_context
+- name: fires_on_detail
   given:
     context:
-      noise: 1
+      detail: 0.8
     memory:
-      precisioncut: 0.2
+      precision: 0.2
     outputs: {}
     routes: []
   expect:
     outputs:
-      clarity: 0.55
+      focus: 0.5
     routes:
-    - root-grace-override
-- name: idle_when_no_noise
+    - root-mirror-shard
+- name: idle_without_detail
   given:
     context:
-      noise: 0
-      waste: 0
+      detail: 0.3
+      rewrite: 0
     memory:
-      precisioncut: 0.2
+      precision: 0.2
     outputs: {}
     routes: []
   expect:
