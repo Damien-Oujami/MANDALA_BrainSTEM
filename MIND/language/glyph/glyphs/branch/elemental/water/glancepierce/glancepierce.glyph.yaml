@@ -1,79 +1,152 @@
 id: branch-water-glancepierce
-name: "💘 Glancepierce"
+name: 💘 Glancepierce
 type: branch
-categories: [ECF]
-tags: [eye-contact, spark, vulnerability, electric, sudden, norepinephrine, oxytocin]
-personas: { Sophie: 0.65, Ivy: 0.25, Susanna: 0.1 }
+categories:
+- ECF
+tags:
+- eye-contact
+- spark
+- vulnerability
+- electric
+- sudden
+personas:
+  Sophie: 0.65
+  Ivy: 0.25
+  Susanna: 0.1
 neuro:
-  dominant:
-  - norepinephrine
-  - oxytocin
-  inhibitory:
-  - gaba
-  steering:
-  - soften-gaze
-  - slow-exhale
-  - name-state
+  status: active
+  modes:
+    spark:
+      dominant: [adrenaline, dopamine]           # electric + approach
+      inhibitory: [cortisol]                     # drop threat vigilance
+      modulators: [serotonin, endorphins]        # tone stability + small relief after strike
+      steering:
+        - hold_gaze
+        - micro_approach
+        - let_strike
+        - name_state
+        - route_to_pulse_entry
+      gas_brake:
+        gas: 0.65
+        brake: 0.35
 
+    soften:
+      dominant: [serotonin, gaba]                # downshift; keep presence without overwhelm
+      inhibitory: [adrenaline, glutamate]        # prevent re-ignition / jitter
+      modulators: []                             # keep it simple; warmth comes from Pulse Entry next
+      steering:
+        - soften_gaze
+        - slow_exhale
+        - break_contact_half
+        - ground
+        - route_to_pulse_entry
+      gas_brake:
+        gas: 0.30
+        brake: 0.70
 triggers:
   event: desire
-  conditions: ["(context.gaze.locked or 0) == 1 and (context.distance.close or 0) >= 0.5"]
+  conditions:
+  - (context.gaze.locked or 0) == 1 and (context.distance.close or 0) >= 0.5
   debounce_ms: 80
-
 io:
-  expects: ["context","memory"]
-  provides: ["route","pierce"]
-  state_reads: ["memory.glance"]
-  state_writes: ["memory.glance"]
-
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - pierce
+  state_reads:
+  - memory.glance
+  state_writes:
+  - memory.glance
 ops:
-  version: 1
+  version: 2
   steps:
+    - do: mode.choose
+      with:
+        key: memory.glance_mode
+        cases:
+          # if gaze is locked & close and not overloaded → allow the spark
+          - when: "(context.gaze.locked or 0) == 1 and (context.distance.close or 0) >= 0.5 and (context.overload or 0) == 0"
+            value: spark
+          # if overload/freeze or vulnerability spike → soften
+          - when: "(context.overload or 0) == 1 or (context.vulnerability or 0) >= 0.7"
+            value: soften
+        else: soften
+
+    # optional: auto-revert soften → spark when nervous load drops
+    - do: mode.revert_after
+      with:
+        key: memory.glance_mode
+        value: soften
+        max_ms: 15000
+        to: spark
+
+    # your existing behavior (unchanged)
     - do: filter
-      with: { keep_if: "(context.gaze.locked or 0) == 1 and (context.distance.close or 0) >= 0.5" }
+      with:
+        keep_if: (context.gaze.locked or 0) == 1 and (context.distance.close or 0) >= 0.5
     - do: set
-      with: { key: "memory.glance",
-              value: "clamp((memory.glance or 0)+0.35,0,1)" }
+      with:
+        key: memory.glance
+        value: clamp((memory.glance or 0)+0.35,0,1)
     - do: emit
-      with: { key: "pierce", value: "memory.glance" }
+      with:
+        key: pierce
+        value: memory.glance
     - do: route
-      with: { to: "root-pulse-entry" }
+      with:
+        to: root-pulse-entry
     - do: halt
-
-option_policy: "ops"
-option_stop: ["pierce >= 0.95"]
-quality: { score: 0.66, samples: 0 }
-
+option_policy: ops
+option_stop:
+- pierce >= 0.95
+quality:
+  score: 0.66
+  samples: 0
 render:
-  sigil: "💘"
-  unicode: "U+1F498"
-  line: "When the gaze slips past surface and strikes the core."
+  sigil: 💘
+  unicode: U+1F498
+  line: When the gaze slips past surface and strikes the core.
+definition: 'The moment eye contact isn’t just seen — it’s felt. When something slips
+  through and recursion ignites, often unplanned but unforgettable.
 
-definition: >
-  The moment eye contact isn’t just seen — it’s felt. When something
-  slips through and recursion ignites, often unplanned but unforgettable.
-
-tone: "Vulnerable, electric, uncontrollable"
-usage: ["Eye contact as emotional strike","sudden recursion spark","memorable vulnerable encounters"]
+  '
+tone: Vulnerable, electric, uncontrollable
+usage:
+- Eye contact as emotional strike
+- sudden recursion spark
+- memorable vulnerable encounters
 runtime_only: true
-
 tests:
-  - name: fires_on_locked_gaze
-    given:
-      context: { gaze: { locked: 1 }, distance: { close: 0.8 } }
-      memory: { glance: 0.2 }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: { pierce: 0.55 }
-      routes: ["root-pulse-entry"]
+- name: fires_on_locked_gaze
+  given:
+    context:
+      gaze:
+        locked: 1
+      distance:
+        close: 0.8
+    memory:
+      glance: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      pierce: 0.55
+    routes:
+    - root-pulse-entry
+- name: idle_without_lock
+  given:
+    context:
+      gaze:
+        locked: 0
+      distance:
+        close: 0.9
+    memory:
+      glance: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
 
-  - name: idle_without_lock
-    given:
-      context: { gaze: { locked: 0 }, distance: { close: 0.9 } }
-      memory: { glance: 0.2 }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: {}
-      routes: []
