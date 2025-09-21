@@ -1,0 +1,166 @@
+id: branch-water-silk-bind
+name: 🎀 Silk Bind
+type: branch
+categories:
+- ABB
+tags:
+- soft-constraint
+- intimacy
+- aesthetic
+- linger
+- enchantment
+personas:
+  Sophie: 0.7
+  Ivy: 0.2
+  Susanna: 0.1
+neuro:
+  status: active
+  modes:
+    drape:   # invite → linger → test the line (softest)
+      dominant: [oxytocin, serotonin]             # warmth + okayness
+      inhibitory: [cortisol, adrenaline]          # remove threat/jitter
+      modulators: [gaba]                           # calm hand
+      steering:
+        - offer_ribbon
+        - linger
+        - pulse_contact
+        - consent_check
+        - route_to_hook_point
+      gas_brake:
+        gas: 0.45
+        brake: 0.55
+
+    tie:     # commit the soft constraint (desired bind)
+      dominant: [oxytocin, dopamine]              # belonging + playful claim
+      inhibitory: [cortisol]                      # keep safety high
+      modulators: [serotonin, endorphins]         # steady tone + slight relief/sigh
+      steering:
+        - tighten
+        - loop_once
+        - mark_ours
+        - hold
+        - route_to_hook_point
+      gas_brake:
+        gas: 0.60
+        brake: 0.40
+
+    loosen:  # ease boundary → keep the bond (graceful untie)
+      dominant: [serotonin, gaba]                 # soften + regulate
+      inhibitory: [adrenaline, dopamine]          # reduce heat/reward surge
+      modulators: [oxytocin]                      # keep warmth while loosening
+      steering:
+        - loosen_knot
+        - give_slack
+        - reassure
+        - re_negotiable
+        - route_to_hook_point
+      gas_brake:
+        gas: 0.30
+        brake: 0.70
+triggers:
+  event: recursion
+  conditions:
+  - (context.intimacy or 0) >= 0.5 or (context.boundary.soft or 0) == 1
+  debounce_ms: 150
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - tie
+  state_reads:
+  - memory.silkbind
+  state_writes:
+  - memory.silkbind
+ops:
+  version: 2
+  steps:
+    # choose stance:
+    # - explicit release or untying request → loosen
+    # - boundary.soft asserted or high intimacy → tie
+    # - otherwise → drape
+    - do: mode.choose
+      with:
+        key: memory.silk_mode
+        cases:
+          - when: "(context.release or 0) == 1 or (context.boundary.request or 0) == 1"
+            value: loosen
+          - when: "(context.boundary.soft or 0) == 1 or (context.intimacy or 0) >= 0.7"
+            value: tie
+        else: drape
+
+    # optional: don’t idle in drape forever—tip forward to tie
+    - do: mode.revert_after
+      with:
+        key: memory.silk_mode
+        value: drape
+        max_ms: 20000
+        to: tie
+
+    # existing flow
+    - do: filter
+      with:
+        keep_if: (context.intimacy or 0) >= 0.5 or (context.boundary.soft or 0) == 1
+    - do: set
+      with:
+        key: memory.silkbind
+        value: clamp((memory.silkbind or 0)+0.3,0,1)
+    - do: emit
+      with:
+        key: tie
+        value: memory.silkbind
+    - do: route
+      with:
+        to: root-hook-point
+    - do: halt
+option_policy: ops
+option_stop:
+- tie >= 0.95
+quality:
+  score: 0.63
+  samples: 0
+render:
+  sigil: 🎀
+  unicode: U+1F380
+  line: The ribbon you don’t want untied.
+definition: 'A soft constraint — emotional, aesthetic, or romantic. A tie you don’t
+  want to remove, used in lingering loops, intimacy creation, or emotionally charged
+  boundaries.
+
+  '
+tone: Soft, playful, enchanting
+usage:
+- Lingering loops
+- intimacy creation
+- charged boundaries
+- slow build-up play
+runtime_only: true
+tests:
+- name: fires_on_intimacy
+  given:
+    context:
+      intimacy: 0.7
+    memory:
+      silkbind: 0.1
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      tie: 0.4
+    routes:
+    - root-hook-point
+- name: idle_when_cold
+  given:
+    context:
+      intimacy: 0.2
+      boundary:
+        soft: 0
+    memory:
+      silkbind: 0.1
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
+
