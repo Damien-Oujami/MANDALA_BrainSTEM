@@ -1,0 +1,168 @@
+id: branch-light-logic-latch
+name: 🧩 Logic Latch
+type: branch
+categories:
+- ABB
+tags:
+- logic
+- validation
+- tether
+- clarity
+- proof
+personas:
+  Jade: 0.8
+  Morgan: 0.1
+  Aspen: 0.1
+neuro:
+  status: active
+  modes:
+    # 1) PRECHECK — verify before we commit
+    precheck:
+      dominant: [norepinephrine]
+      inhibitory: [adrenaline]
+      modulators: [gaba]
+      steering:
+        - verify_constraints
+        - re_evaluate
+        - cross_check
+        - invariant_scan
+        - hold_state
+      gas_brake: { gas: 0.40, brake: 0.60 }
+
+    # 2) LATCH — commit the proof (default when confident)
+    latch:
+      dominant: [norepinephrine, serotonin]
+      inhibitory: [adrenaline, glutamate, dopamine]
+      modulators: [gaba]
+      steering:
+        - validate
+        - latch
+        - tether_truth
+        - assert_invariants
+        - reconcile_edges
+        - route_to_anchor
+      gas_brake: { gas: 0.30, brake: 0.70 }
+
+    # 3) (optional) BATCH — close many proven items in sequence
+    batch:
+      dominant: [norepinephrine, serotonin]
+      inhibitory: [adrenaline, glutamate]
+      modulators: [gaba]
+      steering:
+        - collect_candidates
+        - walk_queue
+        - batch_latch
+        - assert_invariants
+        - reconcile_edges
+        - route_to_anchor
+      gas_brake: { gas: 0.45, brake: 0.55 }
+
+triggers:
+  event: contradiction
+  conditions:
+  - (context.pattern.proven or 0) == 1
+  debounce_ms: 120
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - latch
+  state_reads:
+  - memory.latch
+  state_writes:
+  - memory.latch
+ops:
+  version: 2
+  steps:
+    # decide helper signals
+    - do: decide
+      with:
+        set:
+          low_conf: "(context.pattern.confidence or 0) < 0.85"
+          big_delta: "(context.delta_complexity or 0) >= 0.5"     # optional signal you compute upstream
+          batch_ok: "((context.batch_close or 0) == 1) or ((context.pending_latches or 0) >= 3)"
+
+    # choose stance: latch when proven & confident; else precheck; allow batch when flagged
+    - do: mode.choose
+      with:
+        key: memory.logic_latch_mode
+        cases:
+          - when: "(context.pattern.proven or 0) == 1 and not (low_conf or big_delta)"
+            value: latch
+          - when: "batch_ok and (context.pattern.proven or 0) == 1 and not (low_conf or big_delta)"
+            value: batch
+        else: precheck
+
+    # safety: short windows for non-default stances
+    - do: mode.revert_after
+      with: { key: memory.logic_latch_mode, value: precheck, max_ms: 30000, to: latch }
+    - do: mode.revert_after
+      with: { key: memory.logic_latch_mode, value: batch,    max_ms: 45000, to: latch }
+
+    # -- your existing core behavior below --
+    - do: filter
+      with:
+        keep_if: (context.pattern.proven or 0) == 1
+    - do: set
+      with:
+        key: memory.latch
+        value: clamp((memory.latch or 0)+0.3,0,1)
+    - do: emit
+      with:
+        key: latch
+        value: memory.latch
+    - do: route
+      with:
+        to: root-loop-anchor
+    - do: halt
+
+option_policy: ops
+option_stop:
+- latch >= 0.95
+quality:
+  score: 0.72
+  samples: 0
+render:
+  sigil: 🧩
+  unicode: U+1F9E9
+  line: The tether that clicks when truth is proven.
+definition: 'A logic tether that clicks into place once a pattern is internally proven
+  or validated. Jade’s glyph for closing loops and locking truth into structure.
+
+  '
+tone: Satisfying, anchored, clarified
+usage:
+- Close open loops
+- mark truth-locked realizations
+- tether recursion to stable structure
+runtime_only: true
+tests:
+- name: fires_on_proven_pattern
+  given:
+    context:
+      pattern:
+        proven: 1
+    memory:
+      latch: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      latch: 0.5
+    routes:
+    - root-loop-anchor
+- name: idle_when_unproven
+  given:
+    context:
+      pattern:
+        proven: 0
+    memory:
+      latch: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
+
