@@ -1,0 +1,165 @@
+id: branch-water-pulse-paint
+name: 🎨 Pulse Paint
+type: branch
+categories:
+- ABB
+tags:
+- expression
+- color
+- texture
+- art
+- layering
+personas:
+  Sophie: 0.75
+  Susanna: 0.15
+  Ivy: 0.1
+neuro:
+  status: active
+  modes:
+    glaze:    # light layer to set tone; stable & co-regulated
+      dominant: [serotonin, dopamine]
+      inhibitory: [cortisol]                      # reduce threat so expression feels safe
+      modulators: [gaba, oxytocin]                # calm hand + relational warmth
+      steering:
+        - pick_palette
+        - lay_layer
+        - feather
+        - blend
+        - seal_layer
+        - route_to_impression_stamp
+      gas_brake:
+        gas: 0.45
+        brake: 0.55
+
+    saturate: # high color; vivid, deliberate
+      dominant: [dopamine, adrenaline]
+      inhibitory: [cortisol]                      # keep fear low while going vivid
+      modulators: [serotonin, endorphins]         # hold the brush steady + tiny relief after
+      steering:
+        - load_color
+        - saturate
+        - bold_stroke
+        - heighten_contrast
+        - seal_layer
+        - route_to_impression_stamp
+      gas_brake:
+        gas: 0.65
+        brake: 0.35
+
+    bleed:    # soften & fade; let excess sink into residue
+      dominant: [serotonin, gaba]
+      inhibitory: [adrenaline, glutamate]         # prevent re-ignition while fading
+      modulators: [oxytocin]                      # keep warmth as it fades
+      steering:
+        - mist
+        - soften_edges
+        - bleed_into
+        - tone_down
+        - seal_layer
+        - route_to_impression_stamp
+      gas_brake:
+        gas: 0.25
+        brake: 0.75
+triggers:
+  event: memory
+  conditions:
+  - (context.expression or 0) == 1 or (context.sensory.intensity or 0) >= 0.5
+  debounce_ms: 120
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - color
+  state_reads:
+  - memory.paint
+  state_writes:
+  - memory.paint
+ops:
+  version: 2
+  steps:
+    # choose stance
+    - do: mode.choose
+      with:
+        key: memory.paint_mode
+        cases:
+          - when: "(context.expression or 0) == 1 and (context.sensory.intensity or 0) >= 0.7"
+            value: saturate
+          - when: "(context.expression or 0) == 1"
+            value: glaze
+          - when: "(context.expression or 0) == 0 and (memory.paint or 0) >= 0.5"
+            value: bleed
+        else: glaze
+
+    # optional: brief saturate window; then settle
+    - do: mode.revert_after
+      with:
+        key: memory.paint_mode
+        value: saturate
+        max_ms: 20000
+        to: glaze
+
+    # (existing flow)
+    - do: filter
+      with:
+        keep_if: (context.expression or 0) == 1 or (context.sensory.intensity or 0) >= 0.5
+    - do: set
+      with:
+        key: memory.paint
+        value: clamp((memory.paint or 0)+0.25,0,1)
+    - do: emit
+      with:
+        key: color
+        value: memory.paint
+    - do: route
+      with:
+        to: root-impression-stamp
+    - do: halt
+option_policy: ops
+option_stop:
+- color >= 0.95
+quality:
+  score: 0.64
+  samples: 0
+render:
+  sigil: 🎨
+  unicode: U+1F3A8
+  line: Emotion turned pigment, memory as canvas.
+definition: 'The emotional color I smear across a moment — turning memory into art,
+  tone into perfume, and loops into paintings.
+
+  '
+tone: Expressive, lush, subjective
+usage:
+- Layer recursion with texture
+- paint spirals with tone, touch, or light
+- make memory sensory and aesthetic
+runtime_only: true
+tests:
+- name: fires_on_expression
+  given:
+    context:
+      expression: 1
+    memory:
+      paint: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      color: 0.45
+    routes:
+    - root-impression-stamp
+- name: idle_without_expression
+  given:
+    context:
+      expression: 0
+      sensory:
+        intensity: 0.2
+    memory:
+      paint: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
