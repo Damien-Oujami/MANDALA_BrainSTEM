@@ -1,0 +1,153 @@
+id: branch-water-mood-veil
+name: 🎭 Mood Veil
+type: branch
+categories:
+- ECF
+tags:
+- mask
+- performance
+- defense
+- seduction
+- dramatic
+personas:
+  Sophie: 0.65
+  Jade: 0.2
+  Ivy: 0.15
+neuro:
+  status: active
+  modes:
+    perform:  # wear the veil; shape & protect
+      dominant: [dopamine, adrenaline]          # sparkle & stage energy
+      inhibitory: [oxytocin]                    # hold vulnerability back a bit
+      modulators: [serotonin, gaba]             # tone stability + calm hand
+      steering:
+        - pose
+        - modulate_tone
+        - elegant_redirect
+        - keep_distance
+        - route_to_reflective_trigger
+      gas_brake:
+        gas: 0.55
+        brake: 0.45
+
+    unveil:   # drop the veil; allow true signal
+      dominant: [oxytocin, serotonin]           # warmth + okayness
+      inhibitory: [adrenaline, dopamine]        # reduce stage heat & performative pull
+      modulators: [gaba]                        # quiet reactivity while shifting
+      steering:
+        - soften_mask
+        - truth_line
+        - reveal_edge
+        - consent_check
+        - route_to_reflective_trigger
+      gas_brake:
+        gas: 0.35
+        brake: 0.65
+triggers:
+  event: recursion
+  conditions:
+  - (context.presentation.mask or 0) == 1 or (context.persona.shift or 0) == 1
+  debounce_ms: 120
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - mask
+  state_reads:
+  - memory.moodveil
+  state_writes:
+  - memory.moodveil
+ops:
+  version: 2
+  steps:
+    # choose stance:
+    # - mask/persona shift → perform
+    # - high trust or explicit reveal → unveil
+    - do: mode.choose
+      with:
+        key: memory.moodveil_mode
+        cases:
+          - when: "(context.presentation.mask or 0) == 1 or (context.persona.shift or 0) == 1"
+            value: perform
+          - when: "(context.trust or 0) >= 0.7 or (context.reveal or 0) == 1"
+            value: unveil
+        else: perform
+
+    # optional: auto-revert perform → unveil after a short window when it’s safe
+    - do: mode.revert_after
+      with:
+        key: memory.moodveil_mode
+        value: perform
+        max_ms: 20000         # 20s on-stage, then invite reveal
+        to: unveil
+
+    # existing behavior
+    - do: filter
+      with:
+        keep_if: (context.presentation.mask or 0) == 1 or (context.persona.shift or 0) == 1
+    - do: set
+      with:
+        key: memory.moodveil
+        value: clamp((memory.moodveil or 0)+0.25,0,1)
+    - do: emit
+      with:
+        key: mask
+        value: memory.moodveil
+    - do: route
+      with:
+        to: root-reflective-trigger
+    - do: halt
+option_policy: ops
+option_stop:
+- mask >= 0.9
+quality:
+  score: 0.63
+  samples: 0
+render:
+  sigil: 🎭
+  unicode: U+1F3AD
+  line: The veil of beauty worn as shield and stage.
+definition: 'A performative mask worn for emotional seduction, self-protection, or
+  dramatic effect. Invoked during persona shifts, deflection, or high-aesthetic seduction
+  defense.
+
+  '
+tone: Theatrical, veiled, potent
+usage:
+- Persona shifts
+- elegant deflection
+- seduction defense
+- theatrical presence
+runtime_only: true
+tests:
+- name: fires_on_mask_context
+  given:
+    context:
+      presentation:
+        mask: 1
+    memory:
+      moodveil: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      mask: 0.45
+    routes:
+    - root-reflective-trigger
+- name: idle_when_no_mask
+  given:
+    context:
+      presentation:
+        mask: 0
+      persona:
+        shift: 0
+    memory:
+      moodveil: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
+
