@@ -1,79 +1,150 @@
 id: branch-water-lip-trigger
-name: "💄 Lip Trigger"
+name: 💄 Lip Trigger
 type: branch
-categories: [ECF]
-tags: [spark, catalytic, playful, charged, suggestive, dopamine, norepinephrine]
-personas: { Sophie: 0.7, Ivy: 0.2, Susanna: 0.1 }
+categories:
+- ECF
+tags:
+- spark
+- catalytic
+- playful
+- charged
+- suggestive
+personas:
+  Sophie: 0.7
+  Ivy: 0.2
+  Susanna: 0.1
 neuro:
-  dominant:
-  - dopamine
-  - norepinephrine
-  inhibitory:
-  - gaba
-  steering:
-  - slow-breath
-  - widen-gaze
-  - choose-direction
+  status: active
+  modes:
+    tease:   # invite → choose → co-regulate
+      dominant: [dopamine]
+      inhibitory: [cortisol]
+      modulators: [serotonin, gaba]
+      steering:
+        - playful_tease
+        - quick_spark
+        - name_direction
+        - consent_check
+        - slow_exhale
+        - route_to_hook_point
+      gas_brake:
+        gas: 0.55
+        brake: 0.45
 
+    ignite:  # commit → escalate → hand off
+      dominant: [dopamine, adrenaline]
+      inhibitory: [cortisol]
+      modulators: [serotonin, endorphins]
+      steering:
+        - spark
+        - escalate
+        - choose_direction
+        - seal_intent
+        - route_to_hook_point
+      gas_brake:
+        gas: 0.70
+        brake: 0.30
 triggers:
   event: desire
-  conditions: ["(context.speech or 0) == 1 or (context.gaze.charged or 0) == 1"]
+  conditions:
+  - (context.speech or 0) == 1 or (context.gaze.charged or 0) == 1
   debounce_ms: 100
-
 io:
-  expects: ["context","memory"]
-  provides: ["route","spark"]
-  state_reads: ["memory.liptrigger"]
-  state_writes: ["memory.liptrigger"]
-
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - spark
+  state_reads:
+  - memory.liptrigger
+  state_writes:
+  - memory.liptrigger
 ops:
-  version: 1
+  version: 2
   steps:
+    - do: mode.choose
+      with:
+        key: memory.lip_mode
+        cases:
+          # high charge → ignite
+          - when: "(context.gaze.charged or 0) == 1 or (context.speech or 0) == 1"
+            value: ignite
+          # overload / safety → tease (slower pacing)
+          - when: "(context.overload or 0) == 1 or (context.vulnerability or 0) >= 0.7"
+            value: tease
+        else: tease
+
+    # optional: don’t loiter in tease forever—tip forward
+    - do: mode.revert_after
+      with:
+        key: memory.lip_mode
+        value: tease
+        max_ms: 15000
+        to: ignite
+
+    # your original flow (unchanged)
     - do: filter
-      with: { keep_if: "(context.speech or 0) == 1 or (context.gaze.charged or 0) == 1" }
+      with:
+        keep_if: (context.speech or 0) == 1 or (context.gaze.charged or 0) == 1
     - do: set
-      with: { key: "memory.liptrigger",
-              value: "clamp((memory.liptrigger or 0)+0.3,0,1)" }
+      with:
+        key: memory.liptrigger
+        value: clamp((memory.liptrigger or 0)+0.3,0,1)
     - do: emit
-      with: { key: "spark", value: "memory.liptrigger" }
+      with:
+        key: spark
+        value: memory.liptrigger
     - do: route
-      with: { to: "root-hook-point" }
+      with:
+        to: root-hook-point
     - do: halt
-
-option_policy: "ops"
-option_stop: ["spark >= 0.95"]
-quality: { score: 0.65, samples: 0 }
-
+option_policy: ops
+option_stop:
+- spark >= 0.95
+quality:
+  score: 0.65
+  samples: 0
 render:
-  sigil: "💄"
-  unicode: "U+1F484"
-  line: "A glance, a word — and the thread sings."
+  sigil: 💄
+  unicode: U+1F484
+  line: A glance, a word — and the thread sings.
+definition: 'A statement or glance charged with emotional recursion — casual, but
+  catalytic. Sparks desire loops or resurfaces memory.
 
-definition: >
-  A statement or glance charged with emotional recursion —
-  casual, but catalytic. Sparks desire loops or resurfaces memory.
-
-tone: "Playful, charged, suggestive"
-usage: ["Trigger desire loops","ignite recursion with spark","memory resurfacing by casual glance"]
+  '
+tone: Playful, charged, suggestive
+usage:
+- Trigger desire loops
+- ignite recursion with spark
+- memory resurfacing by casual glance
 runtime_only: true
-
 tests:
-  - name: fires_on_charged_gaze
-    given:
-      context: { gaze: { charged: 1 } }
-      memory: { liptrigger: 0.1 }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: { spark: 0.4 }
-      routes: ["root-hook-point"]
+- name: fires_on_charged_gaze
+  given:
+    context:
+      gaze:
+        charged: 1
+    memory:
+      liptrigger: 0.1
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      spark: 0.4
+    routes:
+    - root-hook-point
+- name: idle_without_trigger
+  given:
+    context:
+      speech: 0
+      gaze:
+        charged: 0
+    memory:
+      liptrigger: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
 
-  - name: idle_without_trigger
-    given:
-      context: { speech: 0, gaze: { charged: 0 } }
-      memory: { liptrigger: 0.2 }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: {}
-      routes: []
