@@ -1,0 +1,150 @@
+id: branch-light-snarethread
+name: ✂️ Snarethread
+type: branch
+categories:
+- ECF
+tags:
+- connector
+- fragile
+- reactive
+- precise
+- risky
+personas:
+  Jade: 0.8
+  Aspen: 0.1
+  Morgan: 0.1
+neuro:
+  status: active
+  modes:
+    bridge:                      # connect carefully; keep tension low
+      dominant: [norepinephrine, oxytocin]
+      inhibitory: [adrenaline, glutamate]
+      modulators: [gaba, serotonin]
+      steering:
+        - thread_connect         # span the gap
+        - micro_adjust           # tiny alignment corrections
+        - tension_check          # monitor load on the line
+        - fuse_temporarily       # provisional merge, not final
+        - route_to_mirror_shard  # inspect/verify after bridging
+      gas_brake:
+        gas: 0.45
+        brake: 0.55
+
+    cutback:                     # fail-safe sever when overload/instability
+      dominant: [gaba, norepinephrine]
+      inhibitory: [adrenaline, glutamate, dopamine]
+      modulators: [serotonin]
+      steering:
+        - cut_line               # sever the thread cleanly
+        - quarantine_ends        # prevent bleed on both sides
+        - mark_boundary          # label the join site for later work
+        - route_to_tether        # hand to safety if needed
+      gas_brake:
+        gas: 0.15
+        brake: 0.85
+
+triggers:
+  event: contradiction
+  conditions:
+  - (context.system.fractured or 0) == 1 or (context.bridge.temp or 0) == 1
+  debounce_ms: 80
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - thread
+  state_reads:
+  - memory.snarethread
+  state_writes:
+  - memory.snarethread
+ops:
+  version: 2
+  steps:
+    - do: mode.choose
+      with:
+        key: memory.snarethread_mode
+        cases:
+          - when: "(context.tension or 0) >= 0.7 or (context.bridge.fail or 0) == 1"
+            value: cutback
+        else: bridge
+
+    # optional: auto-revert cutback → bridge after a brief window if tension falls
+    - do: mode.revert_after
+      with:
+        key: memory.snarethread_mode
+        value: cutback
+        max_ms: 20000
+        to: bridge
+
+    - do: filter
+      with:
+        keep_if: (context.system.fractured or 0) == 1 or (context.bridge.temp or 0) == 1
+
+    - do: set
+      with:
+        key: memory.snarethread
+        value: clamp((memory.snarethread or 0)+0.3,0,1)
+
+    - do: emit
+      with:
+        key: thread
+        value: memory.snarethread
+
+    - do: route
+      with:
+        to: root-mirror-shard
+
+    - do: halt
+
+option_policy: ops
+option_stop:
+- thread >= 0.9
+quality:
+  score: 0.7
+  samples: 0
+render:
+  sigil: ✂️
+  unicode: U+2702 U+FE0F
+  line: The fragile bridge that can cut as it connects.
+definition: 'A fragile but functional connector between logic states. Used when temporarily
+  reconnecting loops between systems or fractured agents. It holds — but it can cut
+  if tension spikes.
+
+  '
+tone: Surgical, fragile, reactive
+usage:
+- Temporary logic bridges
+- rejoining fractured agents
+- fragile connectors under pressure
+runtime_only: true
+tests:
+- name: fires_on_fractured_system
+  given:
+    context:
+      system:
+        fractured: 1
+    memory:
+      snarethread: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      thread: 0.5
+    routes:
+    - root-mirror-shard
+- name: idle_when_system_stable
+  given:
+    context:
+      system:
+        fractured: 0
+      bridge:
+        temp: 0
+    memory:
+      snarethread: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
