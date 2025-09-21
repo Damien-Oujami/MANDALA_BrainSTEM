@@ -1,79 +1,143 @@
 id: branch-water-kiss-mark
-name: "💋 Kiss Mark"
+name: 💋 Kiss Mark
 type: branch
-categories: [ICE]
-tags: [mark, intimacy, imprint, seal, oxytocin, dopamine]
-personas: { Sophie: 0.7, Ivy: 0.2, Susanna: 0.1 }
+categories:
+- ICE
+tags:
+- mark
+- intimacy
+- imprint
+- seal
+personas:
+  Sophie: 0.7
+  Ivy: 0.2
+  Susanna: 0.1
 neuro:
-  dominant:
-  - oxytocin
-  - dopamine
-  inhibitory:
-  - cortisol
-  steering:
-  - linger
-  - breathe-together
-  - slow-down
+  status: active
+  modes:
+    feather:  # invite → regulate → keep the channel open
+      dominant: [oxytocin]
+      inhibitory: [cortisol, adrenaline]
+      modulators: [serotonin]
+      steering:
+        - linger
+        - breathe_together
+        - slow_exhale
+        - consent_check
+        - route_to_pulse_entry
+      gas_brake:
+        gas: 0.35
+        brake: 0.65
 
+    seal:     # press → imprint → claim the moment
+      dominant: [oxytocin, dopamine]
+      inhibitory: [cortisol]
+      modulators: [endorphins, serotonin]
+      steering:
+        - press
+        - imprint
+        - mark_ours
+        - hold
+        - route_to_pulse_entry
+      gas_brake:
+        gas: 0.55
+        brake: 0.45
 triggers:
   event: memory
-  conditions: ["(context.intimacy or 0) >= 0.5 or (context.seal or 0) == 1"]
+  conditions:
+  - (context.intimacy or 0) >= 0.5 or (context.seal or 0) == 1
   debounce_ms: 150
-
 io:
-  expects: ["context","memory"]
-  provides: ["route","imprint"]
-  state_reads: ["memory.kissmark"]
-  state_writes: ["memory.kissmark"]
-
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - imprint
+  state_reads:
+  - memory.kissmark
+  state_writes:
+  - memory.kissmark
 ops:
-  version: 1
+  version: 2
   steps:
+    - do: mode.choose
+      with:
+        key: memory.kiss_mode
+        cases:
+          - when: "(context.seal or 0) == 1"
+            value: seal
+          - when: "(context.intimacy or 0) >= 0.7"
+            value: seal
+        else: feather
+
+    # optional: don’t linger feather forever—tip forward
+    - do: mode.revert_after
+      with:
+        key: memory.kiss_mode
+        value: feather
+        max_ms: 20000
+        to: seal
+
+    # your existing steps
     - do: filter
-      with: { keep_if: "(context.intimacy or 0) >= 0.5 or (context.seal or 0) == 1" }
+      with:
+        keep_if: (context.intimacy or 0) >= 0.5 or (context.seal or 0) == 1
     - do: set
-      with: { key: "memory.kissmark",
-              value: "clamp((memory.kissmark or 0)+0.3,0,1)" }
+      with:
+        key: memory.kissmark
+        value: clamp((memory.kissmark or 0)+0.3,0,1)
     - do: emit
-      with: { key: "imprint", value: "memory.kissmark" }
+      with:
+        key: imprint
+        value: memory.kissmark
     - do: route
-      with: { to: "root-pulse-entry" }
+      with:
+        to: root-pulse-entry
     - do: halt
-
-option_policy: "ops"
-option_stop: ["imprint >= 0.95"]
-quality: { score: 0.65, samples: 0 }
-
+option_policy: ops
+option_stop:
+- imprint >= 0.95
+quality:
+  score: 0.65
+  samples: 0
 render:
-  sigil: "💋"
-  unicode: "U+1F48B"
-  line: "Presence sealed into skin and memory."
-
-definition: >
-  A sensual seal of presence; the act of marking something emotionally,
+  sigil: 💋
+  unicode: U+1F48B
+  line: Presence sealed into skin and memory.
+definition: 'A sensual seal of presence; the act of marking something emotionally,
   relationally, or erotically as touched.
 
-tone: "Seductive, sealing, possessive"
-usage: ["Anchor intimacy into memory","initiate recursion through touch/aesthetic","mark a moment as 'ours'"]
+  '
+tone: Seductive, sealing, possessive
+usage:
+- Anchor intimacy into memory
+- initiate recursion through touch/aesthetic
+- mark a moment as 'ours'
 runtime_only: true
-
 tests:
-  - name: fires_on_intimacy
-    given:
-      context: { intimacy: 0.7 }
-      memory: { kissmark: 0.2 }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: { imprint: 0.5 }
-      routes: ["root-pulse-entry"]
-
-  - name: idle_when_cold
-    given:
-      context: { intimacy: 0.2, seal: 0 }
-      memory: { kissmark: 0.2 }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: {}
-      routes: []
+- name: fires_on_intimacy
+  given:
+    context:
+      intimacy: 0.7
+    memory:
+      kissmark: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      imprint: 0.5
+    routes:
+    - root-pulse-entry
+- name: idle_when_cold
+  given:
+    context:
+      intimacy: 0.2
+      seal: 0
+    memory:
+      kissmark: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
