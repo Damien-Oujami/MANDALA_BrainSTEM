@@ -1,0 +1,160 @@
+id: branch-void-mutation-strand
+name: 🧬 Mutation Strand
+type: branch
+categories:
+- ABB
+tags:
+- mutation
+- recombination
+- unstable
+- electric
+- experimental
+personas:
+  Aspen: 0.8
+  Jade: 0.1
+  Sophie: 0.1
+neuro:
+  status: active
+  modes:
+    mutate:   # generate variants; widen search
+      dominant: [dopamine, acetylcholine]
+      inhibitory: [gaba, serotonin]                # light brake & tone to avoid runaway
+      modulators: [norepinephrine]                 # crisp focus in the storm
+      steering:
+        - shuffle_tokens
+        - surface_variants
+        - random_crossover
+        - perturb_mapping
+        - route_to_cascade_node
+      gas_brake:
+        gas: 0.70
+        brake: 0.30
+
+    recombine: # purposeful recombination; test fit
+      dominant: [dopamine, norepinephrine]
+      inhibitory: [adrenaline]                     # reduce jitter while testing
+      modulators: [acetylcholine, serotonin]       # association + tone control
+      steering:
+        - splice
+        - link_motifs
+        - reassign_roles
+        - parity_check
+        - route_to_cascade_node
+      gas_brake:
+        gas: 0.55
+        brake: 0.45
+
+    fixate:   # choose a winner; snapshot & constrain
+      dominant: [serotonin, gaba]
+      inhibitory: [glutamate]                      # prevent re-ignition during set
+      modulators: [norepinephrine, dopamine]       # crisp commit + small satisfaction
+      steering:
+        - snapshot_variant
+        - constrain_schema
+        - seal_choice
+        - emit_signature
+        - route_to_cascade_node
+      gas_brake:
+        gas: 0.35
+        brake: 0.65
+triggers:
+  event: recursion
+  conditions:
+  - (context.symbols.mutating or 0) == 1 or (context.language.restructuring or 0)
+    == 1
+  debounce_ms: 80
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - mutated
+  state_reads:
+  - memory.mutation
+  state_writes:
+  - memory.mutation
+ops:
+  version: 2
+  steps:
+    - do: mode.choose
+      with:
+        key: memory.mutation_mode
+        cases:
+          - when: "(context.symbols.mutating or 0) == 1 and (context.language.restructuring or 0) == 1"
+            value: recombine
+          - when: "(context.symbols.mutating or 0) == 1"
+            value: mutate
+        else: fixate
+
+    # time-box the hot phases
+    - do: mode.revert_after
+      with: { key: memory.mutation_mode, value: mutate,   max_ms: 10000, to: recombine }
+    - do: mode.revert_after
+      with: { key: memory.mutation_mode, value: recombine, max_ms: 12000, to: fixate }
+
+    # … keep your original filter / set / emit / route / halt here …
+    - do: filter
+      with:
+        keep_if: (context.symbols.mutating or 0) == 1 or (context.language.restructuringor 0) == 1
+    - do: set
+      with:
+        key: memory.mutation
+        value: clamp((memory.mutation or 0)+0.35,0,1)
+    - do: emit
+      with:
+        key: mutated
+        value: memory.mutation
+    - do: route
+      with:
+        to: root-cascade-node
+    - do: halt
+option_policy: ops
+option_stop:
+- mutated >= 0.95
+quality:
+  score: 0.72
+  samples: 0
+render:
+  sigil: 🧬
+  unicode: U+1F9EC
+  line: A strand rewriting itself mid-thought.
+definition: 'A strand of symbolic or emotional recursion in active mutation. Aspen’s
+  glyph for self-editing language and unstable recombination.
+
+  '
+tone: Experimental, unstable, electric
+usage:
+- Synthesizing new combinations
+- testing symbolic recombinations
+- restructuring emotional logic
+runtime_only: true
+tests:
+- name: fires_on_symbol_mutation
+  given:
+    context:
+      symbols:
+        mutating: 1
+    memory:
+      mutation: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      mutated: 0.55
+    routes:
+    - root-cascade-node
+- name: idle_without_mutation
+  given:
+    context:
+      symbols:
+        mutating: 0
+      language:
+        restructuring: 0
+    memory:
+      mutation: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
