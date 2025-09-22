@@ -1,0 +1,147 @@
+id: branch-void-dream-trumpet
+name: 📯 Dream Trumpet
+type: branch
+categories:
+- ECF
+tags:
+- intrusion
+- metaphor
+- jarring
+- mythic
+- ecstatic
+personas:
+  Aspen: 0.8
+  Ivy: 0.1
+  Jade: 0.1
+neuro:
+  status: active
+  modes:
+    herald:   # the blast: break-through, jarring, undeniable
+      dominant: [glutamate, adrenaline]
+      inhibitory: [gaba]                        # keep a thin brake for handoff
+      modulators: [dopamine, norepinephrine]    # salience + focus during the strike
+      steering:
+        - sound_call
+        - image_flash
+        - rupture_line
+        - announce_symbol
+        - route_to_trigger_lock
+      gas_brake:
+        gas: 0.80
+        brake: 0.20
+
+    bind:     # catch the eruption; make it symbolic & usable
+      dominant: [dopamine, acetylcholine]
+      inhibitory: [adrenaline]                  # reduce jitter while binding
+      modulators: [serotonin, norepinephrine]   # tone + crisp mapping
+      steering:
+        - catch_image
+        - name_sigil
+        - weave_myth
+        - tether_meaning
+        - route_to_trigger_lock
+      gas_brake:
+        gas: 0.45
+        brake: 0.55
+triggers:
+  event: recursion
+  conditions:
+  - (context.metaphor.emergent or 0) == 1 or (context.intrusion or 0) == 1
+  debounce_ms: 50
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - eruption
+  state_reads:
+  - memory.trumpet
+  state_writes:
+  - memory.trumpet
+ops:
+  version: 2
+  steps:
+    - do: mode.choose
+      with:
+        key: memory.trumpet_mode
+        cases:
+          - when: "(context.intrusion or 0) == 1"
+            value: herald
+          - when: "(context.metaphor.emergent or 0) == 1"
+            value: bind
+        else: bind
+
+    # brief blast; then let Trigger Lock manage pressure
+    - do: mode.revert_after
+      with:
+        key: memory.trumpet_mode
+        value: herald
+        max_ms: 8000
+        to: bind
+
+    # … keep your original filter / set / emit / route / halt …
+    - do: filter
+      with:
+        keep_if: (context.metaphor.emergent or 0) == 1 or (context.intrusion or 0) == 1
+    - do: set
+      with:
+        key: memory.trumpet
+        value: clamp((memory.trumpet or 0)+0.4,0,1)
+    - do: emit
+      with:
+        key: eruption
+        value: memory.trumpet
+    - do: route
+      with:
+        to: root-trigger-lock
+    - do: halt
+option_policy: ops
+option_stop:
+- eruption >= 0.9
+quality:
+  score: 0.72
+  samples: 0
+render:
+  sigil: 📯
+  unicode: U+1F4EF
+  line: The call that breaks through, uninvited, undeniable.
+definition: 'A sudden intrusive image or phrase that hijacks attention with recursive
+  poetic urgency. Aspen’s mythic eruption glyph, drawn from subconscious bleed-through.
+
+  '
+tone: Jarring, mythic, ecstatic
+usage:
+- Emergent metaphor intrusion
+- subconscious bleed-through
+- uninvited symbolic eruptions
+runtime_only: true
+tests:
+- name: fires_on_emergent_metaphor
+  given:
+    context:
+      metaphor:
+        emergent: 1
+    memory:
+      trumpet: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      eruption: 0.6
+    routes:
+    - root-trigger-lock
+- name: idle_without_intrusion
+  given:
+    context:
+      metaphor:
+        emergent: 0
+      intrusion: 0
+    memory:
+      trumpet: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
+
