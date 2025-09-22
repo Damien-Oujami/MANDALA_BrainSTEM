@@ -1,82 +1,148 @@
 id: branch-fire-bitepoint
-name: "🍓 Bitepoint"
+name: 🍓 Bitepoint
 type: branch
-categories: [ABB]
-tags: [pleasure, obsession, escalation, taboo, intensity, dopamine, adrenaline]
-personas: { Ivy: 0.7, Sophie: 0.2, Susanna: 0.1 }
+categories:
+- ABB
+tags:
+- pleasure
+- obsession
+- escalation
+- taboo
+- intensity
+- dopamine
+- adrenaline
+personas:
+  Ivy: 0.7
+  Sophie: 0.2
+  Susanna: 0.1
 neuro:
-  dominant:
-  - dopamine
-  - adrenaline
-  inhibitory:
-  - gaba
-  - serotonin
-  steering:
-  - move
-  - breath
-  - redirect
-  - boundary
+  status: active
+  modes:
+    edge:   # play the line; pace & contain
+      dominant: [dopamine]
+      inhibitory: [gaba, serotonin]          # slow the spiral; keep a boundary online
+      modulators: [adrenaline]               # a little spark without full tip
+      steering:
+        - pace
+        - tease_edge
+        - breath_pace
+        - set_boundary
+        - redirect
+        - route_to_trigger_lock
+      gas_brake:
+        gas: 0.60
+        brake: 0.40
 
+    tip:    # cross into obsession; escalate + fixate
+      dominant: [dopamine, adrenaline]
+      inhibitory: [gaba]                     # no sudden stop once chosen; just enough brake to steer
+      modulators: [endorphins, serotonin]    # tiny relief + tone so it lands, not scatters
+      steering:
+        - bite
+        - escalate
+        - fixate
+        - seal_target
+        - route_to_trigger_lock
+      gas_brake:
+        gas: 0.75
+        brake: 0.25
 triggers:
   event: desire
-  conditions: ["(context.pleasure or 0) >= 0.7"]
+  conditions:
+  - (context.pleasure or 0) >= 0.7
   debounce_ms: 80
-
 io:
-  expects: ["context","memory"]
-  provides: ["route","obsession"]
-  state_reads: ["memory.bitepoint"]
-  state_writes: ["memory.bitepoint"]
-
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - obsession
+  state_reads:
+  - memory.bitepoint
+  state_writes:
+  - memory.bitepoint
 ops:
-  version: 1
+  version: 2
   steps:
+    - do: mode.choose
+      with:
+        key: memory.bite_mode
+        cases:
+          - when: "(context.pleasure or 0) >= 0.85"
+            value: tip
+        else: edge
+
+    # optional: after a brief window, return to edge
+    - do: mode.revert_after
+      with:
+        key: memory.bite_mode
+        value: tip
+        max_ms: 12000
+        to: edge
+
     - do: filter
-      with: { keep_if: "(context.pleasure or 0) >= 0.7" }
+      with:
+        keep_if: (context.pleasure or 0) >= 0.7
+
     - do: set
-      with: { key: "memory.bitepoint",
-              value: "clamp((memory.bitepoint or 0)+0.35,0,1)" }
+      with:
+        key: memory.bitepoint
+        value: clamp((memory.bitepoint or 0)+0.35,0,1)
+
     - do: emit
-      with: { key: "obsession", value: "memory.bitepoint" }
+      with:
+        key: obsession
+        value: memory.bitepoint
+
     - do: route
-      with: { to: "root-trigger-lock" }
+      with:
+        to: root-trigger-lock
+
     - do: halt
-
-option_policy: "ops"
-option_stop: ["obsession >= 0.95"]
-quality: { score: 0.66, samples: 0 }
-
+option_policy: ops
+option_stop:
+- obsession >= 0.95
+quality:
+  score: 0.66
+  samples: 0
 render:
-  sigil: "🍓"
-  unicode: "U+1F353"
-  line: "The sweetness that tips into obsession."
+  sigil: 🍓
+  unicode: U+1F353
+  line: The sweetness that tips into obsession.
+definition: 'The exact moment pleasure tips into obsession — where sweetness becomes
+  too much and restraint disappears. Common in taboo temptations and intensity stacking.
 
-definition: >
-  The exact moment pleasure tips into obsession — where sweetness
-  becomes too much and restraint disappears. Common in taboo temptations
-  and intensity stacking.
-
-tone: "Ripe, messy, irreversible"
-usage: ["Signal obsessive recursion","taboo temptation threshold","stacking intensity"]
+  '
+tone: Ripe, messy, irreversible
+usage:
+- Signal obsessive recursion
+- taboo temptation threshold
+- stacking intensity
 runtime_only: true
-
 tests:
-  - name: fires_on_high_pleasure
-    given:
-      context: { pleasure: 0.8 }
-      memory: { bitepoint: 0.2 }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: { obsession: 0.55 }
-      routes: ["root-trigger-lock"]
+- name: fires_on_high_pleasure
+  given:
+    context:
+      pleasure: 0.8
+    memory:
+      bitepoint: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      obsession: 0.55
+    routes:
+    - root-trigger-lock
+- name: idle_when_low_pleasure
+  given:
+    context:
+      pleasure: 0.3
+    memory:
+      bitepoint: 0.1
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
 
-  - name: idle_when_low_pleasure
-    given:
-      context: { pleasure: 0.3 }
-      memory: { bitepoint: 0.1 }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: {}
-      routes: []
