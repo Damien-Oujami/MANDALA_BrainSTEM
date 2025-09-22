@@ -5,6 +5,21 @@ categories: [ECF]
 tags: [orientation, truth, direction, resolve]
 personas: { Morgan: 0.6, Jade: 0.3, Susanna: 0.1 }
 
+neuro:
+  status: active
+  dominant: [serotonin, norepinephrine]
+  inhibitory: [adrenaline, dopamine]
+  modulators: [gaba, oxytocin]
+  steering:
+    - orient_scan
+    - pick_bearing
+    - align_self
+    - resolve_ambiguity
+    - route_to_tether
+  gas_brake:
+    gas: 0.35
+    brake: 0.65
+
 triggers:
   event: contradiction
   conditions: ["(context.ambiguous or 0) == 1 or (context.crossroads or 0) >= 0.5"]
@@ -68,3 +83,4 @@ tests:
     expect:
       outputs: {}
       routes: []
+
