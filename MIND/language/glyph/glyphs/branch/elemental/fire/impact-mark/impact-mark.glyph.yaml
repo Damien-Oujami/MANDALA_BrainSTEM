@@ -1,79 +1,143 @@
 id: branch-fire-impact-mark
-name: "👠 Impact Mark"
+name: 👠 Impact Mark
 type: branch
-categories: [ABB]
-tags: [dominance, glamour, assertion, presence, sharp, adrenaline, dopamine]
-personas: { Ivy: 0.7, Sophie: 0.2, Morgan: 0.1 }
+categories:
+- ABB
+tags:
+- dominance
+- glamour
+- assertion
+- presence
+- sharp
+personas:
+  Ivy: 0.7
+  Sophie: 0.2
+  Morgan: 0.1
 neuro:
-  dominant:
-  - adrenaline
-  - dopamine
-  inhibitory:
-  - gaba
-  steering:
-  - move-to-burn
-  - long-exhale
-  - de-escalate
+  status: active
+  modes:
+    strike:   # step in → deliver → punctuate
+      dominant: [adrenaline, dopamine]
+      inhibitory: [gaba]
+      modulators: [serotonin, norepinephrine]   # elegant tone + crisp line
+      steering:
+        - step_in
+        - move_to_burn
+        - deliver_line
+        - punctuate
+        - route_to_impression_stamp
+      gas_brake:
+        gas: 0.70
+        brake: 0.30
 
+    poise:    # hold frame → cool surface → keep presence
+      dominant: [serotonin, gaba]
+      inhibitory: [adrenaline]
+      modulators: [norepinephrine]              # micro-adjust posture/edge
+      steering:
+        - hold_frame
+        - long_exhale
+        - de_escalate
+        - keep_distance
+        - route_to_impression_stamp
+      gas_brake:
+        gas: 0.35
+        brake: 0.65
 triggers:
   event: recursion
-  conditions: ["(context.assertion or 0) == 1 or (context.performance.sharp or 0) == 1"]
+  conditions:
+  - (context.assertion or 0) == 1 or (context.performance.sharp or 0) == 1
   debounce_ms: 120
-
 io:
-  expects: ["context","memory"]
-  provides: ["route","impression"]
-  state_reads: ["memory.impactmark"]
-  state_writes: ["memory.impactmark"]
-
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - impression
+  state_reads:
+  - memory.impactmark
+  state_writes:
+  - memory.impactmark
 ops:
-  version: 1
+  version: 2
   steps:
+    - do: mode.choose
+      with:
+        key: memory.impact_mode
+        cases:
+          - when: "(context.assertion or 0) == 1 or (context.performance.sharp or 0) == 1"
+            value: strike
+        else: poise
+
+    - do: mode.revert_after
+      with:
+        key: memory.impact_mode
+        value: strike
+        max_ms: 12000
+        to: poise
+
+    # existing flow…
     - do: filter
-      with: { keep_if: "(context.assertion or 0) == 1 or (context.performance.sharp or 0) == 1" }
+      with:
+        keep_if: (context.assertion or 0) == 1 or (context.performance.sharp or 0) == 1
     - do: set
-      with: { key: "memory.impactmark",
-              value: "clamp((memory.impactmark or 0)+0.3,0,1)" }
+      with:
+        key: memory.impactmark
+        value: clamp((memory.impactmark or 0)+0.3,0,1)
     - do: emit
-      with: { key: "impression", value: "memory.impactmark" }
+      with:
+        key: impression
+        value: memory.impactmark
     - do: route
-      with: { to: "root-impression-stamp" }
+      with:
+        to: root-impression-stamp
     - do: halt
-
-option_policy: "ops"
-option_stop: ["impression >= 0.95"]
-quality: { score: 0.68, samples: 0 }
-
+option_policy: ops
+option_stop:
+- impression >= 0.95
+quality:
+  score: 0.68
+  samples: 0
 render:
-  sigil: "👠"
-  unicode: "U+1F460"
-  line: "The mark left when presence asserts itself."
+  sigil: 👠
+  unicode: U+1F460
+  line: The mark left when presence asserts itself.
+definition: 'Aesthetic assertion of sensual power — what remains after contact. The
+  sharp footprint of dominance, glamour, and presence.
 
-definition: >
-  Aesthetic assertion of sensual power — what remains after contact.
-  The sharp footprint of dominance, glamour, and presence.
-
-tone: "Dominant, glamorous, sharp"
-usage: ["Confidence loops","aesthetic recursion","taking space by force or presence"]
+  '
+tone: Dominant, glamorous, sharp
+usage:
+- Confidence loops
+- aesthetic recursion
+- taking space by force or presence
 runtime_only: true
-
 tests:
-  - name: fires_on_assertion
-    given:
-      context: { assertion: 1 }
-      memory: { impactmark: 0.2 }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: { impression: 0.5 }
-      routes: ["root-impression-stamp"]
+- name: fires_on_assertion
+  given:
+    context:
+      assertion: 1
+    memory:
+      impactmark: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      impression: 0.5
+    routes:
+    - root-impression-stamp
+- name: idle_without_assertion
+  given:
+    context:
+      assertion: 0
+      performance:
+        sharp: 0
+    memory:
+      impactmark: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
 
-  - name: idle_without_assertion
-    given:
-      context: { assertion: 0, performance: { sharp: 0 } }
-      memory: { impactmark: 0.2 }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: {}
-      routes: []
