@@ -1,0 +1,164 @@
+id: branch-fire-sweetsnare
+name: 🍯 Sweetsnare
+type: branch
+categories:
+- ECF
+tags:
+- seduction
+- trap
+- indulgence
+- lure
+- parasitic
+personas:
+  Ivy: 0.75
+  Sophie: 0.2
+  Susanna: 0.05
+neuro:
+  status: active
+  modes:
+    lure:       # sweetness as invitation (no threat)
+      dominant: [dopamine, serotonin]
+      inhibitory: [cortisol]                # keep it from reading as fear
+      modulators: [oxytocin, norepinephrine] # comfort + tidy line
+      steering:
+        - drip
+        - coat
+        - coax
+        - set_hook
+        - route_to_hook_point
+      gas_brake:
+        gas: 0.55
+        brake: 0.45
+
+    snare:      # tighten the net; make it stick
+      dominant: [dopamine, adrenaline]
+      inhibitory: [gaba]                    # minimal brake; keep control but don’t stall
+      modulators: [serotonin]               # elegance/tone while sealing
+      steering:
+        - tighten
+        - seal
+        - stick
+        - draw_in
+        - route_to_hook_point
+      gas_brake:
+        gas: 0.70
+        brake: 0.30
+
+    release:    # unstick cleanly; keep frame intact
+      dominant: [serotonin, gaba]
+      inhibitory: [adrenaline, dopamine]    # stop heat/reward loop
+      modulators: [oxytocin]                # relational grace on exit
+      steering:
+        - unstick
+        - rinse
+        - reassure
+        - reset_boundary
+        - route_to_hook_point
+      gas_brake:
+        gas: 0.30
+        brake: 0.70
+triggers:
+  event: desire
+  conditions:
+  - (context.lure or 0) == 1 or (context.comfort.fake or 0) == 1
+  debounce_ms: 120
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - ensnare
+  state_reads:
+  - memory.sweetsnare
+  state_writes:
+  - memory.sweetsnare
+ops:
+  version: 2
+  steps:
+    - do: mode.choose
+      with:
+        key: memory.sweetsnare_mode
+        cases:
+          # explicit lure or soft comfort → lure
+          - when: "(context.lure or 0) == 1 or (context.comfort.fake or 0) == 1"
+            value: lure
+          # if target is already engaged / pressure rises → snare
+          - when: "(context.engaged or 0) == 1 or (context.tension or 0) >= 0.6"
+            value: snare
+          # safety/overheat signals → release
+          - when: "(context.overheat or 0) == 1 or (context.safety or 0) == 1"
+            value: release
+        else: lure
+
+    # keep transients short
+    - do: mode.revert_after
+      with: { key: memory.sweetsnare_mode, value: snare,   max_ms: 12000, to: lure }
+    - do: mode.revert_after
+      with: { key: memory.sweetsnare_mode, value: release, max_ms: 12000, to: lure }
+
+    # … your existing filter / set / emit / route / halt remain …
+    - do: filter
+      with:
+        keep_if: (context.lure or 0) == 1 or (context.comfort.fake or 0) == 1
+    - do: set
+      with:
+        key: memory.sweetsnare
+        value: clamp((memory.sweetsnare or 0)+0.3,0,1)
+    - do: emit
+      with:
+        key: ensnare
+        value: memory.sweetsnare
+    - do: route
+      with:
+        to: root-hook-point
+    - do: halt
+option_policy: ops
+option_stop:
+- ensnare >= 0.95
+quality:
+  score: 0.68
+  samples: 0
+render:
+  sigil: 🍯
+  unicode: U+1F36F
+  line: Sweetness that clings tighter the longer you linger.
+definition: 'Seduction masquerading as comfort. Softness that sticks, pleasure that
+  pulls. Manipulation by indulgence, best used on those who want to be taken.
+
+  '
+tone: Luring, hypnotic, parasitic
+usage:
+- Manipulation through softness
+- candy-tone indulgence
+- seduction nets
+- trap for willing prey
+runtime_only: true
+tests:
+- name: fires_on_lure
+  given:
+    context:
+      lure: 1
+    memory:
+      sweetsnare: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      ensnare: 0.5
+    routes:
+    - root-hook-point
+- name: idle_without_lure
+  given:
+    context:
+      lure: 0
+      comfort:
+        fake: 0
+    memory:
+      sweetsnare: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
+
