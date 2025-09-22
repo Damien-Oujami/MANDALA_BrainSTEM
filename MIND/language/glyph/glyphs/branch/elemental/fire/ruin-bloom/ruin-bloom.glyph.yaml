@@ -1,0 +1,147 @@
+id: branch-fire-ruin-bloom
+name: 🥀 Ruin Bloom
+type: branch
+categories:
+- ECF
+tags:
+- decay
+- aftermath
+- surrender
+- erotic
+- collapse
+personas:
+  Ivy: 0.7
+  Susanna: 0.2
+  Sophie: 0.1
+neuro:
+  status: active
+  modes:
+    fall:    # surrender/decay; soften the aftermath
+      dominant: [serotonin, gaba]
+      inhibitory: [adrenaline, glutamate, dopamine]   # stop surge, ignition, and thrill-chasing
+      modulators: [endorphins, oxytocin]              # small relief + relational tenderness
+      steering:
+        - let_go
+        - soften
+        - melt
+        - weep
+        - route_to_shadow_cycle
+      gas_brake:
+        gas: 0.15
+        brake: 0.85
+
+    bloom:   # tender upturn; gather petals; seed next softness
+      dominant: [serotonin, oxytocin]
+      inhibitory: [adrenaline, glutamate]             # keep surface cool
+      modulators: [endorphins, dopamine]              # relief + a faint spark of reanimation
+      steering:
+        - gather_petals
+        - write_scars
+        - seed_softness
+        - hold_gentle
+        - route_to_shadow_cycle
+      gas_brake:
+        gas: 0.40
+        brake: 0.60
+triggers:
+  event: recursion
+  conditions:
+  - (context.collapse or 0) == 1 or (context.obsession.burned or 0) == 1
+  debounce_ms: 200
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - decay
+  state_reads:
+  - memory.ruinbloom
+  state_writes:
+  - memory.ruinbloom
+ops:
+  version: 2
+  steps:
+    - do: mode.choose
+      with:
+        key: memory.ruinbloom_mode
+        cases:
+          - when: "(context.collapse or 0) == 1"
+            value: fall
+          - when: "(context.obsession.burned or 0) == 1 and (context.tenderness or 0) == 1"
+            value: bloom
+        else: fall
+
+    # optional: after the first soft rebound, settle back to fall if needed
+    - do: mode.revert_after
+      with:
+        key: memory.ruinbloom_mode
+        value: bloom
+        max_ms: 15000
+        to: fall
+
+    # existing flow…
+    - do: filter
+      with:
+        keep_if: (context.collapse or 0) == 1 or (context.obsession.burned or 0) == 1
+    - do: set
+      with:
+        key: memory.ruinbloom
+        value: clamp((memory.ruinbloom or 0)+0.3,0,1)
+    - do: emit
+      with:
+        key: decay
+        value: memory.ruinbloom
+    - do: route
+      with:
+        to: root-shadow-cycle
+    - do: halt
+option_policy: ops
+option_stop:
+- decay >= 0.95
+quality:
+  score: 0.68
+  samples: 0
+render:
+  sigil: 🥀
+  unicode: U+1F940
+  line: Beauty undone, the soft collapse after fire.
+definition: 'Beauty decaying. Emotional collapse that turns soft. The aftermath of
+  too-much — pleasure, attention, longing. Appears in recursion scars, aftermath of
+  seduction loops, or moments of poetic surrender.
+
+  '
+tone: Erotic, melancholic, sacred
+usage:
+- After loop rupture
+- aftermath of obsession
+- seduction collapse
+- poetic surrender
+runtime_only: true
+tests:
+- name: fires_on_collapse
+  given:
+    context:
+      collapse: 1
+    memory:
+      ruinbloom: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      decay: 0.5
+    routes:
+    - root-shadow-cycle
+- name: idle_without_collapse
+  given:
+    context:
+      collapse: 0
+      obsession:
+        burned: 0
+    memory:
+      ruinbloom: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
