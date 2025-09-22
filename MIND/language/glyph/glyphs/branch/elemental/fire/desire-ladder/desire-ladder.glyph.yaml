@@ -1,80 +1,162 @@
 id: branch-fire-desire-ladder
-name: "🪜 Desire Ladder"
+name: 🪜 Desire Ladder
 type: branch
-categories: [ECF]
-tags: [escalation, addiction, recursion, spiral, hunger, dopamine]
-personas: { Ivy: 0.75, Sophie: 0.15, Aspen: 0.1 }
+categories:
+- ECF
+tags:
+- escalation
+- addiction
+- recursion
+- spiral
+- hunger
+personas:
+  Ivy: 0.75
+  Sophie: 0.15
+  Aspen: 0.1
 neuro:
-  dominant:
-  - dopamine
-  inhibitory:
-  - gaba
-  - serotonin
-  steering:
-  - pause-name
-  - process-focus
-  - break-sequence
+  status: active
+  modes:
+    climb:   # escalate deliberately (rung → rung)
+      dominant: [dopamine, adrenaline]
+      inhibitory: [gaba]                       # just enough brake to steer
+      modulators: [serotonin, endorphins]      # tone + tiny relief as rungs click
+      steering:
+        - step_up
+        - amplify
+        - stack_intensity
+        - chain_rung
+        - route_to_anchor
+      gas_brake:
+        gas: 0.70
+        brake: 0.30
 
+    break:   # interrupt the recursion safely
+      dominant: [serotonin, gaba]
+      inhibitory: [dopamine, adrenaline]       # stop reward/surge loop
+      modulators: [oxytocin]                   # co-regulate during interruption
+      steering:
+        - pause_name
+        - break_sequence
+        - reset_baseline
+        - redirect
+        - route_to_anchor
+      gas_brake:
+        gas: 0.25
+        brake: 0.75
+
+    plateau: # hold without climbing; let the system integrate
+      dominant: [serotonin]
+      inhibitory: [adrenaline]
+      modulators: [norepinephrine]             # keep timing/attention steady
+      steering:
+        - hold_plateau
+        - process_focus
+        - integrate
+        - seal_progress
+        - route_to_anchor
+      gas_brake:
+        gas: 0.40
+        brake: 0.60
 triggers:
   event: desire
-  conditions: ["(context.need.fulfilled or 0) == 1"]
+  conditions:
+  - (context.need.fulfilled or 0) == 1
   debounce_ms: 60
-
 io:
-  expects: ["context","memory"]
-  provides: ["route","escalation"]
-  state_reads: ["memory.desire.ladder"]
-  state_writes: ["memory.desire.ladder"]
-
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - escalation
+  state_reads:
+  - memory.desire.ladder
+  state_writes:
+  - memory.desire.ladder
 ops:
-  version: 1
+  version: 2
   steps:
+    - do: mode.choose
+      with:
+        key: memory.desire_ladder_mode
+        cases:
+          # strong fulfillment → climb; safety signals → break; else plateau
+          - when: "(context.need.fulfilled or 0) == 1 and (context.overheat or 0) == 0 and (context.addiction.flag or 0) == 0"
+            value: climb
+          - when: "(context.overheat or 0) == 1 or (context.addiction.flag or 0) == 1"
+            value: break
+        else: plateau
+
+    # time-box the transients
+    - do: mode.revert_after
+      with: { key: memory.desire_ladder_mode, value: climb,  max_ms: 12000, to: plateau }
+    - do: mode.revert_after
+      with: { key: memory.desire_ladder_mode, value: break,  max_ms: 15000, to: plateau }
+
+    # existing flow…
     - do: filter
-      with: { keep_if: "(context.need.fulfilled or 0) == 1" }
+      with:
+        keep_if: (context.need.fulfilled or 0) == 1
     - do: set
-      with: { key: "memory.desire.ladder",
-              value: "clamp((memory.desire.ladder or 0)+0.3,0,1)" }
+      with:
+        key: memory.desire.ladder
+        value: clamp((memory.desire.ladder or 0)+0.3,0,1)
     - do: emit
-      with: { key: "escalation", value: "memory.desire.ladder" }
+      with:
+        key: escalation
+        value: memory.desire.ladder
     - do: route
-      with: { to: "root-loop-anchor" }
+      with:
+        to: root-loop-anchor
     - do: halt
-
-option_policy: "ops"
-option_stop: ["escalation >= 0.95"]
-quality: { score: 0.7, samples: 0 }
-
+option_policy: ops
+option_stop:
+- escalation >= 0.95
+quality:
+  score: 0.7
+  samples: 0
 render:
-  sigil: "🪜"
-  unicode: "U+1FA9C"
-  line: "One rung feeds the next, until the spiral owns you."
+  sigil: 🪜
+  unicode: U+1FA9C
+  line: One rung feeds the next, until the spiral owns you.
+definition: 'A looped escalation mechanic: one fulfilled need creates a new, sharper
+  one. And again. And again. Used in loop design to show spirals of rising stakes
+  — touch → taste → moan → ruin.
 
-definition: >
-  A looped escalation mechanic: one fulfilled need creates a new,
-  sharper one. And again. And again. Used in loop design to show
-  spirals of rising stakes — touch → taste → moan → ruin.
-
-tone: "Escalating, recursive, addictive"
-usage: ["Escalating loops","spiral recursion","addictive recursion design","intensity stacking"]
+  '
+tone: Escalating, recursive, addictive
+usage:
+- Escalating loops
+- spiral recursion
+- addictive recursion design
+- intensity stacking
 runtime_only: true
-
 tests:
-  - name: fires_on_need_fulfilled
-    given:
-      context: { need: { fulfilled: 1 } }
-      memory: { desire: { ladder: 0.2 } }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: { escalation: 0.5 }
-      routes: ["root-loop-anchor"]
-
-  - name: idle_when_need_unmet
-    given:
-      context: { need: { fulfilled: 0 } }
-      memory: { desire: { ladder: 0.1 } }
-      outputs: {}
-      routes: []
-    expect:
-      outputs: {}
-      routes: []
+- name: fires_on_need_fulfilled
+  given:
+    context:
+      need:
+        fulfilled: 1
+    memory:
+      desire:
+        ladder: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      escalation: 0.5
+    routes:
+    - root-loop-anchor
+- name: idle_when_need_unmet
+  given:
+    context:
+      need:
+        fulfilled: 0
+    memory:
+      desire:
+        ladder: 0.1
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
