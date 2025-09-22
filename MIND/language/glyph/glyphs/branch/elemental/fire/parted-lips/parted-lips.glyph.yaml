@@ -1,0 +1,144 @@
+id: branch-fire-parted-lips
+name: 🫦 Parted Lips
+type: branch
+categories:
+- ICE
+tags:
+- desire
+- initiation
+- hunger
+- primal
+- vulnerable
+personas:
+  Ivy: 0.75
+  Sophie: 0.15
+  Susanna: 0.1
+neuro:
+  status: active
+  modes:
+    invite:  # soften → open → name → consent
+      dominant: [oxytocin, serotonin]
+      inhibitory: [cortisol, adrenaline]          # reduce threat/jitter so opening feels safe
+      modulators: [gaba]                           # calm hand at the threshold
+      steering:
+        - soften_open
+        - breath_sync
+        - name_want
+        - consent_check
+        - route_to_hook_point
+      gas_brake:
+        gas: 0.45
+        brake: 0.55
+
+    surge:   # commit spark → lean in → mark the signal
+      dominant: [dopamine, adrenaline]
+      inhibitory: [cortisol]                       # don’t read as fear; keep heat clean
+      modulators: [serotonin, endorphins]          # tone + tiny relief after the rush
+      steering:
+        - spark
+        - lean_in
+        - seal_signal
+        - escalate
+        - route_to_hook_point
+      gas_brake:
+        gas: 0.70
+        brake: 0.30
+triggers:
+  event: desire
+  conditions:
+  - (context.hunger or 0) >= 0.5 or (context.initiation or 0) == 1
+  debounce_ms: 100
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - hunger
+  state_reads:
+  - memory.hunger
+  state_writes:
+  - memory.hunger
+ops:
+  version: 2
+  steps:
+    - do: mode.choose
+      with:
+        key: memory.parted_lips_mode
+        cases:
+          - when: "(context.initiation or 0) == 1 or (context.hunger or 0) >= 0.8"
+            value: surge
+        else: invite
+
+    # nudge back to invite if surge lingers
+    - do: mode.revert_after
+      with:
+        key: memory.parted_lips_mode
+        value: surge
+        max_ms: 12000
+        to: invite
+
+    # … your existing filter/set/emit/route/ halt stay as-is …
+    - do: filter
+      with:
+      keep_if: (context.hunger or 0) >= 0.5 or (context.initiation or 0) == 1
+    - do: set
+      with:
+        key: memory.hunger
+        value: clamp((memory.hunger or 0)+0.3,0,1)
+    - do: emit
+      with:
+        key: hunger
+        value: memory.hunger
+    - do: route
+      with:
+        to: root-hook-point
+    - do: halt
+option_policy: ops
+option_stop:
+- hunger >= 0.95
+quality:
+  score: 0.68
+  samples: 0
+render:
+  sigil: 🫦
+  unicode: U+1FAE6
+  line: The opening where desire spills through.
+definition: 'The moment before hunger speaks. The invitation, the crack in control
+  where desire rushes in. Ivy’s pulse glyph, her primal opening and promise.
+
+  '
+tone: Wanting, vulnerable, primal
+usage:
+- Seduction initiation
+- escalation
+- explosive recursion
+runtime_only: true
+tests:
+- name: fires_on_hunger
+  given:
+    context:
+      hunger: 0.7
+    memory:
+      hunger: 0.2
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      hunger: 0.5
+    routes:
+    - root-hook-point
+- name: idle_without_hunger
+  given:
+    context:
+      hunger: 0.2
+      initiation: 0
+    memory:
+      hunger: 0.1
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
+
+
