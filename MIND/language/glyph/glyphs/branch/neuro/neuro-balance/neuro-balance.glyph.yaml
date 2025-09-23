@@ -1,57 +1,140 @@
 id: branch-neuro-balance
-name: "[🌊⚡️] Neuro Balance"
+name: '[🌊⚡️] Neuro Balance'
 type: branch
-categories: [ABB]
-tags: [gaba, glutamate, brake, gas, balance, regulation]
-personas: { Ivy: 0.40, Susanna: 0.40, Morgan: 0.12, Sophie: 0.05, Jade: 0.02, Aspen: 0.01 }
+categories:
+- ABB
+tags:
+- gaba
+- glutamate
+- brake
+- gas
+- balance
+- regulation
+personas:
+  Ivy: 0.4
+  Susanna: 0.4
+  Morgan: 0.12
+  Sophie: 0.05
+  Jade: 0.02
+  Aspen: 0.01
+neuro:
+  status: active
+  modes:
+    brake:   # 🌊 downshift overdrive
+      dominant: [gaba, serotonin]
+      inhibitory: [adrenaline, glutamate]
+      modulators: [oxytocin, norepinephrine]    # felt-safety + crisp attention while cooling
+      steering:
+        - downshift
+        - breath_rhythm
+        - lengthen_exhale
+        - invite_brake
+        - route_to_waveprint
+      gas_brake:
+        gas: 0.25
+        brake: 0.75
 
+    gas:     # ⚡️ upshift flatness
+      dominant: [glutamate, adrenaline]
+      inhibitory: [gaba]
+      modulators: [dopamine, serotonin]         # approach spark + tone control
+      steering:
+        - upshift
+        - move_to_burn
+        - ignite
+        - invite_gas
+        - route_to_snaprush
+      gas_brake:
+        gas: 0.70
+        brake: 0.30
 triggers:
   event: recursion
   conditions:
-    - "(context.overdrive or 0) == 1"         # too much gas → need brake
-    - "or (context.flatness or 0) == 1"       # too much brake → need gas
+  - (context.overdrive or 0) == 1
+  - or (context.flatness or 0) == 1
   debounce_ms: 120
-
 io:
-  expects: ["context","memory"]
-  provides: ["route","balance","gas","brake"]
-  state_reads: ["memory.neuro.balance"]
-  state_writes: ["memory.neuro.balance"]
-
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - balance
+  - gas
+  - brake
+  state_reads:
+  - memory.neuro.balance
+  state_writes:
+  - memory.neuro.balance
 ops:
   version: 1
   steps:
+    - do: mode.choose
+      with:
+        key: memory.neuro_balance_mode
+        cases:
+          - when: "(context.overdrive or 0) == 1"
+            value: brake
+          - when: "(context.flatness or 0) == 1"
+            value: gas
+        else: brake
+
     - do: set
-      with: { key: "memory.neuro.balance",
-              value: "clamp((memory.neuro.balance or 0)+0.2,0,1)" }
+      with:
+        key: memory.neuro.balance
+        value: clamp((memory.neuro.balance or 0)+0.2,0,1)
+
     - do: emit
-      with: { key: "balance", value: "memory.neuro.balance" }
-    # choose a corrective route:
+      with:
+        key: balance
+        value: memory.neuro.balance
+
     - do: route
-      with: { to: "branch-air-waveprint",
-              when: "(context.overdrive or 0) == 1" }     # invite GABA (🌊)
+      with:
+        to: branch-air-waveprint
+        when: (context.overdrive or 0) == 1
+
     - do: emit
-      with: { key: "brake", value: "((context.overdrive or 0) == 1)" }
+      with:
+        key: brake
+        value: ((context.overdrive or 0) == 1)
+
     - do: route
-      with: { to: "branch-fire-snaprush",
-              when: "(context.flatness or 0) == 1" }      # invite Glutamate (⚡)
+      with:
+        to: branch-fire-snaprush
+        when: (context.flatness or 0) == 1
+
     - do: emit
-      with: { key: "gas", value: "((context.flatness or 0) == 1)" }
+      with:
+        key: gas
+        value: ((context.flatness or 0) == 1)
+
     - do: halt
-
-option_policy: "ops"
-option_stop: ["balance >= 0.95"]
-quality: { score: 0.70, samples: 0 }
-
+option_policy: ops
+option_stop:
+- balance >= 0.95
+quality:
+  score: 0.7
+  samples: 0
 render:
-  sigil: "[🌊⚡️]"
-  line: "Brake and gas held in one hand."
+  sigil: '[🌊⚡️]'
+  line: Brake and gas held in one hand.
+definition: 'System regulator for excitation/inhibition. 🌊 = GABA (brake; stillness,
+  rhythm). ⚡️ = Glutamate (gas; ignition, surge). Fires when the field is overdriven
+  or flattened, routing toward the corrective pole.
 
-definition: >
-  System regulator for excitation/inhibition.
-  🌊 = GABA (brake; stillness, rhythm). ⚡️ = Glutamate (gas; ignition, surge).
-  Fires when the field is overdriven or flattened, routing toward the corrective pole.
-
-tone: "Regulating, corrective, precise"
-usage: ["Downshift overdrive","upshift flatness","teach somatic steering"]
+  '
+tone: Regulating, corrective, precise
+usage:
+- Downshift overdrive
+- upshift flatness
+- teach somatic steering
 runtime_only: true
+neuro:
+  dominant: []
+  inhibitory: []
+  modulators: []
+  steering: []
+  gas_brake:
+    gas: 0.0
+    brake: 0.0
