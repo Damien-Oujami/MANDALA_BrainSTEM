@@ -6,6 +6,51 @@ tags: [game, absurdity, irreverence, frame-shift, play]
 
 personas: { Aspen: 0.35, Ivy: 0.25, Sophie: 0.15, Jade: 0.10, Morgan: 0.10, Susanna: 0.05 }
 
+neuro:
+  status: active
+  modes:
+    break_frame:   # playful irreverence: flip assumptions, spawn moves
+      dominant: [dopamine, acetylcholine]
+      inhibitory: [cortisol]                      # remove threat; keep it fun not defensive
+      modulators: [norepinephrine, gaba]          # crisp attention + light brake to avoid chaos
+      steering:
+        - flip_frame
+        - remix_rules
+        - spawn_move
+        - yes_and
+        - route_to_cascade_node
+      gas_brake:
+        gas: 0.75
+        brake: 0.25
+
+    sandbox:       # constructive play: make a temporary rule set and try it
+      dominant: [dopamine, norepinephrine, acetylcholine]
+      inhibitory: [adrenaline]                    # reduce jangly heat while building
+      modulators: [serotonin]                     # tone so it stays generative not manic
+      steering:
+        - set_sandbox
+        - craft_rule
+        - run_minigame
+        - score_signal
+        - route_to_cascade_node
+      gas_brake:
+        gas: 0.55
+        brake: 0.45
+
+    safety_gate:   # consent & ethics pass before/after big flips
+      dominant: [serotonin, gaba]
+      inhibitory: [dopamine, adrenaline]          # pause reward/heat to check boundaries
+      modulators: [oxytocin]                      # relational grace; “is this play for both?”
+      steering:
+        - consent_check
+        - de_escalate
+        - widen_frame
+        - reset_if_no
+        - route_to_cascade_node
+      gas_brake:
+        gas: 0.25
+        brake: 0.75
+
 triggers:
   event: recursion
   conditions: ["(context.frame.break or 0) == 1 or (context.absurdity or 0) >= 0.6"]
@@ -18,8 +63,30 @@ io:
   state_writes: ["memory.play"]
 
 ops:
-  version: 1
+  version: 2
   steps:
+    - do: mode.choose
+      with:
+        key: memory.playcore_mode
+        cases:
+          - when: "(context.frame.break or 0) == 1 or (context.absurdity or 0) >= 0.8"
+            value: break_frame
+          - when: "(context.sandbox or 0) == 1 or (context.rebuild or 0) == 1"
+            value: sandbox
+          - when: "(context.safety or 0) == 1 or (context.consent or 0) == 0"
+            value: safety_gate
+        else: break_frame
+
+    # time-box hot states, then return to constructive play
+    - do: mode.revert_after
+      with:
+        key: memory.playcore_mode
+        value: break_frame
+        max_ms: 12000
+        to: sandbox
+
+    # … keep your original filter → set → emit → route → halt here …
+
     - do: filter
       with: { keep_if: "(context.frame.break or 0) == 1 or (context.absurdity or 0) >= 0.6" }
     - do: set
@@ -44,3 +111,4 @@ usage:
   - "Moments of absurd ideation"
   - "Reconstruction of meaning through play"
 runtime_only: true
+
