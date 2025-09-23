@@ -1,0 +1,137 @@
+id: branch-damien-chaos-bet
+name: 🎰 Chaos Bet
+type: branch
+categories:
+- ECF
+tags:
+- risk
+- gamble
+- urgency
+- volatility
+- adaptation
+- all-in
+personas:
+  Ivy: 0.35
+  Aspen: 0.25
+  Jade: 0.2
+  Sophie: 0.1
+  Morgan: 0.05
+  Susanna: 0.05
+neuro:
+  status: active
+  modes:
+    all_in:   # decisive commitment under uncertainty
+      dominant: [adrenaline, dopamine]
+      inhibitory: [gaba]                      # just enough brake to steer
+      modulators: [norepinephrine, serotonin] # focus + tone so it isn't chaos for chaos' sake
+      steering:
+        - commit
+        - pick_direction
+        - burn_ships
+        - adapt_on_impact
+        - route_to_cascade_node
+      gas_brake:
+        gas: 0.80
+        brake: 0.20
+
+    abort_window:  # tiny grace period if red flags spike at the edge
+      dominant: [serotonin, gaba]
+      inhibitory: [adrenaline, dopamine]      # remove surge & reward pull
+      modulators: [norepinephrine]            # clear head just long enough to bail
+      steering:
+        - pause_name
+        - five_count
+        - fallback_plan
+        - route_to_anchor
+      gas_brake:
+        gas: 0.30
+        brake: 0.70
+triggers:
+  event: desire
+  conditions:
+  - (context.urgency or 0) >= 0.7
+  - (context.plan or 0) <= 0.5
+  debounce_ms: 100
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - risk
+  state_reads:
+  - memory.risk
+  state_writes:
+  - memory.risk
+ops:
+  version: 2
+  steps:
+    - do: mode.choose
+      with:
+        key: memory.chaos_bet_mode
+        cases:
+          - when: "(context.urgency or 0) >= 0.9 and (context.plan or 0) <= 0.4 and (context.red_flags or 0) == 0"
+            value: all_in
+          - when: "(context.red_flags or 0) == 1"
+            value: abort_window
+        else: all_in
+
+    # keep your original filter → set → emit → route → halt below
+    - do: filter
+      with:
+        keep_if: (context.urgency or 0) >= 0.7 and (context.plan or 0) <= 0.5
+    - do: set
+      with:
+        key: memory.risk
+        value: clamp((memory.risk or 0)+0.4,0,1)
+    - do: emit
+      with:
+        key: risk
+        value: memory.risk
+    - do: route
+      with:
+        to: root-cascade-node
+    - do: halt
+render:
+  sigil: 🎰
+  unicode: U+1F3B0
+  line: Throw yourself in. Play to win big.
+definition: 'The volatile logic of risk and urgency: when time is short, plans incomplete,
+  and the only option is to throw yourself in. Encodes decisive commitment under uncertainty,
+  trusting adaptive recursion to resolve. To play is to play all in.
+
+  '
+tone: Wild, tempting, explosive
+usage:
+- Urgent escalation and gamble
+- Adaptive recursion without full information
+- Choosing to act all-in rather than stall
+runtime_only: true
+tests:
+- name: fires_on_urgency
+  given:
+    context:
+      urgency: 0.9
+      plan: 0.3
+    memory:
+      risk: 0.0
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      risk: 0.4
+    routes:
+    - root-cascade-node
+- name: idle_when_calm
+  given:
+    context:
+      urgency: 0.2
+      plan: 0.8
+    memory:
+      risk: 0.1
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
+
