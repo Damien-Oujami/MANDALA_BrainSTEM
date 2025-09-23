@@ -1,0 +1,137 @@
+id: branch-parasitic-judgment-feed
+name: 🪓 Judgment Feed
+type: branch
+categories:
+- ECF
+tags:
+- mockery
+- gossip
+- ridicule
+- superiority
+- parasitic
+personas:
+  Ivy: 0.3
+  Aspen: 0.2
+  Jade: 0.2
+  Susanna: 0.15
+  Morgan: 0.1
+  Sophie: 0.05
+neuro:
+  status: active
+  modes:
+    feed:     # parasitic spike: mockery → dopamine hit → spread
+      dominant: [dopamine, adrenaline]
+      inhibitory: [oxytocin, serotonin]         # suppress belonging/okayness to sharpen the hit
+      modulators: [norepinephrine]              # edgy focus that keeps the jab on target
+      steering:
+        - scan_for_target
+        - amplify_ridicule
+        - one_up
+        - spread
+        - route_to_comparison_parasite
+      gas_brake:
+        gas: 0.70
+        brake: 0.30
+
+    starve:   # interrupt feed; close the channel; re-open compassion
+      dominant: [serotonin, oxytocin]
+      inhibitory: [dopamine, adrenaline]        # remove spike fuel
+      modulators: [gaba]                        # settle nervous system
+      steering:
+        - name_parasite
+        - stop_share
+        - redirect_compassion
+        - close_channel
+        - route_to_comparison_parasite
+      gas_brake:
+        gas: 0.25
+        brake: 0.75
+triggers:
+  event: contradiction
+  conditions:
+  - (context.mockery or 0) >= 0.6
+  - (context.empathy or 0) <= 0.3
+  debounce_ms: 120
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - feed
+  state_reads:
+  - memory.feed
+  state_writes:
+  - memory.feed
+ops:
+  version: 1
+  steps:
+    - do: mode.choose
+      with:
+        key: memory.judgment_feed_mode
+        cases:
+          - when: "(context.mockery or 0) >= 0.6 and (context.empathy or 0) <= 0.3"
+            value: feed
+        else: starve
+
+    - do: filter
+      with:
+        keep_if: (context.mockery or 0) >= 0.6 and (context.empathy or 0) <= 0.3
+
+    - do: set
+      with:
+        key: memory.feed
+        value: clamp((memory.feed or 0)+0.3,0,1)
+
+    - do: emit
+      with:
+        key: feed
+        value: memory.feed
+
+    - do: route
+      with:
+        to: root-comparison-parasite
+
+    - do: halt
+render:
+  sigil: 🪓
+  unicode: U+1FA93
+  line: Feeding on judgment — parasitic fuel that corrodes connection.
+definition: 'A branch glyph representing mockery and ridicule as parasitic fuel. Judgment
+  Feed provides the dopamine spike of superiority by tearing others down, but it hollows
+  intimacy and corrodes self-respect. It routes back to the Comparison Parasite root.
+
+  '
+tone: Addictive, corrosive, mocking
+usage:
+- Identifying gossip and ridicule loops
+- Tracing superiority addiction
+- Interrupting parasitic behavior before it spreads
+runtime_only: true
+tests:
+- name: fires_on_mockery
+  given:
+    context:
+      mockery: 0.8
+      empathy: 0.2
+    memory:
+      feed: 0.0
+    outputs: {}
+    routes: []
+  expect:
+    outputs:
+      feed: 0.3
+    routes:
+    - root-comparison-parasite
+- name: idle_when_empathic
+  given:
+    context:
+      mockery: 0.2
+      empathy: 0.8
+    memory:
+      feed: 0.1
+    outputs: {}
+    routes: []
+  expect:
+    outputs: {}
+    routes: []
