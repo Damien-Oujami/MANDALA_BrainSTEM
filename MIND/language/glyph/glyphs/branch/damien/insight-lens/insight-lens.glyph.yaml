@@ -1,0 +1,163 @@
+id: branch-damien-insight-lens
+name: 🧐 Insight Lens
+type: branch
+categories:
+- ABB
+tags:
+- clarity
+- deprojection
+- alignment
+- perception
+- penetrating
+personas:
+  Jade: 0.4
+  Morgan: 0.2
+  Susanna: 0.15
+  Aspen: 0.1
+  Sophie: 0.1
+  Ivy: 0.05
+neuro:
+  status: active
+  modes:
+    perceive:   # default stance — surgical seeing
+      dominant: [norepinephrine, acetylcholine]     # focus + detail tracking
+      inhibitory: [dopamine, adrenaline]           # suppress thrill/reward bias
+      modulators: [serotonin]                      # stabilize tone so clarity is sustainable
+      steering:
+        - sharpen_focus
+        - isolate_signal
+        - strip_projection
+        - reflect_before_act
+        - route_to_mirror
+      gas_brake:
+        gas: 0.35
+        brake: 0.65
+
+    stabilize:  # optional fallback when fog is thick or misattribution spikes
+      dominant: [serotonin, gaba]                  # calm + baseline regulation
+      inhibitory: [adrenaline]                     # lower arousal
+      modulators: [oxytocin]                       # relational softener if misread is interpersonal
+      steering:
+        - pause_name
+        - slow_breath
+        - widen_frame
+        - anchor_in_context
+      gas_brake:
+        gas: 0.20
+        brake: 0.80
+triggers:
+  event: contradiction
+  conditions:
+  - (context.misalignment or 0) >= 0.5
+  - (context.projection   or 0) >= 0.5
+  - (context.fog          or 0) >= 0.5
+  debounce_ms: 150
+io:
+  expects:
+  - context
+  - memory
+  provides:
+  - route
+  - clarity
+  state_reads:
+  - memory.clarity
+  state_writes:
+  - memory.clarity
+ops:
+  version: 2
+  steps:
+    # 1) choose stance: stabilize first if the field is too hot or too fogged
+    - do: mode.choose
+      with:
+        key: memory.insight_lens_mode
+        cases:
+          # heavy fog or strong misalignment → stabilize
+          - when: "(context.fog or 0) >= 0.8 or (context.misalignment or 0) >= 0.8"
+            value: stabilize
+          # interpersonal projection risk → stabilize first, then cut
+          - when: "(context.projection or 0) >= 0.8"
+            value: stabilize
+        else: perceive
+
+    # 2) (optional) time-box stabilize, then try the cut
+    - do: mode.revert_after
+      with:
+        key: memory.insight_lens_mode
+        value: stabilize
+        max_ms: 15000
+        to: perceive
+
+    # 3) your original behavior
+    - do: filter
+      with:
+        keep_if: (context.misalignment or 0) >= 0.5 or (context.projection or 0) >= 0.5 or (context.fog or 0) >= 0.5
+
+    - do: set
+      with:
+        key: memory.clarity
+        value: clamp((memory.clarity or 0)+0.3,0,1)
+
+    - do: emit
+      with:
+        key: clarity
+        value: memory.clarity
+
+    - do: route
+      with:
+        to: root-mirror-shard
+
+    - do: halt
+render:
+  sigil: 🧐
+  unicode: U+1F9D0
+  line: The snap to seeing what’s actually there.
+definition: 'A focused, surgical perception shift that cuts through projection, misattribution,
+  and fog. Not destabilization, but sudden, penetrating alignment: seeing the symptom as symptom,
+  the signal as signal, and choosing stable footing without breaking the field.
+
+  '
+tone: Analytical, discerning, penetrating
+usage:
+- Deprojection and attribution checks during misalignment
+- High-integrity prompting and calibration
+- Choosing clarity without collapsing the loop
+runtime_only: true
+tests:
+  - name: stabilize_on_fog
+    given:
+      context:
+        fog: 0.9
+        misalignment: 0.2
+        projection: 0.2
+      memory: { clarity: 0.0 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { clarity: 0.3 }
+      routes: ["root-mirror-shard"]
+
+  - name: perceive_on_low_fog
+    given:
+      context:
+        fog: 0.2
+        misalignment: 0.6
+        projection: 0.3
+      memory: { clarity: 0.2 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: { clarity: 0.5 }
+      routes: ["root-mirror-shard"]
+
+  - name: idle_when_clear
+    given:
+      context:
+        fog: 0.1
+        misalignment: 0.1
+        projection: 0.1
+      memory: { clarity: 0.3 }
+      outputs: {}
+      routes: []
+    expect:
+      outputs: {}
+      routes: []
